@@ -1,0 +1,182 @@
+
+<app-menu></app-menu> 
+    <div style="margin-top:10px; margin-bottom: 10px; text-align: right; margin-right: 50px;">
+        <button type="button" class="btn btn-secondary" (click)="open(content)">Add</button>
+    </div>
+    <div class="example-container mat-elevation-z8">
+
+        <mat-table [dataSource]="questionDataSouce">
+            <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+            </ng-container><!-- Progress Column -->
+            <ng-container matColumnDef="role">
+                <mat-header-cell *matHeaderCellDef> Question Type</mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.type}}</mat-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="flowName">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+            </ng-container>
+
+             <!-- Status Column -->
+             <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.status}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <button mat-raised-button class="btn btn-secondary" (click)="openEdit(contentEdit, row)">
+                        Edit</button>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;">
+            </mat-row>
+
+        </mat-table>
+
+        <mat-paginator [pageSizeOptions]="[10, 25, 100]" [pageSize]="10"></mat-paginator>
+
+    </div>
+
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Add Question</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"
+                #closeFlowConfigModal>
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="questionForm" #formDirective="ngForm"  (ngSubmit)="saveFlowConfig()">
+                
+
+                <div class="form-group">
+                    <label for="questionName" class="font-weight-bold">Name :</label>
+                    <input type="text" class="form-control" id="questionName" placeholder="Enter Question"
+                        name="questionName" formControlName="questionName" required>
+
+
+                </div>
+                <div class="mt-2">
+                    <div *ngIf="questionName.invalid && (questionName.dirty || questionName.touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="questionForm.controls['questionName']?.errors.required">
+                            Name is required.
+                        </div>
+                        <div *ngIf="questionForm.controls['questionName']?.errors.minlength">
+                            Name must be at least 4 characters long.
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="type" class="font-weight-bold">Type</label> 
+                    <select class="custom-select" (change)="selectType($event)" formControlName="type">
+                        <option value="" disabled>Select Role</option>
+                        <option *ngFor="let type of types" value="{{type.name}}">{{type.name}}</option>
+                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="status" class="font-weight-bold">Status</label>
+                     
+
+                    <select class="custom-select"  formControlName="status">
+                        
+                        <option   value="ACTIVE">Active</option>
+                     </select>
+                </div>
+                
+
+
+                <div class="border text-center"> 
+                    <button data-dismiss="modal"  class="btn btn-info" [disabled]="!questionForm.valid"
+                        class="btn btn-info">Save Changes</button> 
+                        <button  type="button" class="btn btn-info" (click)="resetCreateForm(questionForm, formDirective)" >reset</button>
+
+                    
+                    </div>
+            </form>
+        </div>
+
+    </ng-template>
+
+    <ng-template #contentEdit let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Update Question</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"
+                #closeFlowConfigModal>
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="questionEditForm" (ngSubmit)="updateQuestion()">
+                <div class="form-group">
+                    <label for="id">Id</label>
+                    <div class="input-group">
+                        <input readonly class="form-control" formControlName="id">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="questionEName" class="font-weight-bold">Name :</label>
+                    <input type="text" class="form-control" id="questionEName" placeholder="Enter Flow Name"
+                        name="questionEName" formControlName="questionEName" required>
+
+
+                </div>
+                <div class="mt-2">
+                    <div *ngIf="questionEName.invalid && (questionEName.dirty || questionEName.touched)"
+                        class="alert alert-danger">
+                        <div *ngIf="questionEditForm.controls['questionEName']?.errors.required">
+                            Name is required.
+                        </div>
+                        <div *ngIf="questionEditForm.controls['questionEName']?.errors.minlength">
+                            Name must be at least 4 characters long.
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="type" class="font-weight-bold">Question Type</label>
+                    
+
+                    <select class="custom-select" (change)="selectType($event)" formControlName="type">
+                        <option value="" disabled>Select Type</option>
+                        <option *ngFor="let type of types" [selected]="type.name === selectedType" value="{{type.name}}" >{{type.name}}</option>
+                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="status" class="font-weight-bold">Status</label>
+                    <select class="custom-select"  formControlName="status">
+                        <option   value="ACTIVE">Active</option>
+                        <option   value="INACTIVE">InActive</option>
+                     </select>
+                </div>
+                
+                
+
+                <div class="border text-center">
+                    <button data-dismiss="modal" [disabled]="!questionEditForm.valid" class="btn btn-info">Save
+                        Changes</button>
+                                   </div>
+            </form>
+        </div>
+
+    </ng-template>
+
+
+    <hr>
+
+    <pre>{{ closeResult }}</pre>

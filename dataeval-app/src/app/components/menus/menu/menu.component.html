@@ -1,0 +1,33 @@
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div><h1  class="navbar-brand">Testing</h1></div>
+        <ul class="navbar-nav navbar-collapse">
+            <!-- <li>
+                <a *ngIf="!isLoggedIn" class="nav-link" href="/login">Login</a>
+            </li> -->
+            
+            <li>
+                <a *ngIf="isLoggedIn" class="nav-link" href="/flowconfig" >Manage Flow</a>
+            </li>
+            <li>
+                <a *ngIf="isLoggedIn" class="nav-link" href="/question" >Manage Question</a>
+            </li>
+            <li>
+                <a *ngIf="isLoggedIn" class="nav-link" href="/patient" >Patient</a>
+            </li>
+            <li>
+                <a *ngIf="isLoggedIn" class="nav-link" href="/user" >User</a>
+            </li>
+        </ul> 
+
+        <ul class="navbar-nav navbar-collapse justify-content-end">
+            <!-- <li>
+                <a *ngIf="!isLoggedIn" class="nav-link" href="/login">Login</a>
+            </li> -->
+            <li>
+                <a *ngIf="isLoggedIn" class="nav-link" href="/logout" (click)=handleLogout()>Logout</a>
+            </li>
+        </ul>
+
+    </nav>
+</header>
