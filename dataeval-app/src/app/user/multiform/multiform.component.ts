@@ -86,7 +86,7 @@ export class MultiformComponent implements OnInit {
               'id': 1
             }
           ],
-          'valids': []
+          'valids': [{}]
         },
         {
           'key': 'gender',
