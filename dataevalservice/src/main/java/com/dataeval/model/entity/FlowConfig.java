@@ -18,6 +18,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  * The persistent class for the FLOW_CONFIG database table.
@@ -88,7 +89,8 @@ public class FlowConfig implements Serializable {
 	}
 
 	// bi-directional one-to-one association to Question
-	@OneToMany(mappedBy = "flowConfig")
+//	@OneToMany(mappedBy = "flowConfig")
+	@Transient
 	public List<Question> getQuestions() {
 		return this.questions;
 	}

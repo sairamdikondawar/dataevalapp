@@ -1,23 +1,68 @@
-<app-menu></app-menu> 
-<p>multiform works!</p>
-<button mat-raised-button (click)="isEditable = !isEditable">
+<app-menu></app-menu>
+
+<div class="container">
+  <p>multiform works!</p>
+  <button mat-raised-button (click)="isEditable = !isEditable">
     {{!isEditable ? 'Enable edit mode' : 'Disable edit mode'}}
   </button>
-  
-  <mat-stepper linear #stepper>
-    <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
-      <form [formGroup]="firstFormGroup">
-        <ng-template matStepLabel>Fill out your name</ng-template>
-        <mat-form-field appearance="fill">
-          <mat-label>Name</mat-label>
-          <input matInput formControlName="firstCtrl" placeholder="Last name, First name" required>
-        </mat-form-field>
-        <div>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </form>
-    </mat-step>
-    <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
+  <mat-stepper linear #stepper class="bg-gradient">
+    <div *ngFor="let form of formGroups; let i = index; trackBy: trackByFn;">
+      <mat-step [stepControl]="form" editable>
+        <form [formGroup]="form" (ngSubmit)="nextClick(form.value,i)">
+          <ng-template (click)="nextClick(form.value,i)" matStepLabel>
+            <div class="stepper-header-overlay" (click)="nextClick(form.value,i)"> </div>{{pages[i].label}}
+          </ng-template>
+          <div *ngFor="let section of pages[i].sections; let j = index;">
+            <mat-expansion-panel hideToggle expanded opened>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-label>{{section.label}}</mat-label>
+                </mat-panel-title>
+
+              </mat-expansion-panel-header>
+              <div class="container">
+                <div class="{{section.layout == 2 ?  'row' :''}}">
+                  <div *ngFor="let fields of section.fields" class="col">
+
+                    <div class="form-group">
+                      <label for="{{fields.controlName}}">{{fields.label}} {{fields.requiredF ? '*' :''}}</label>
+                      <div class="input-group">
+                        <mat-form-field appearance="outline">
+                          <input matInput required={{fields.requiredF}} placeholder="Type here...."
+                            readonly="{{fields.readonly}}" formControlName={{fields.controlName}}>
+                        </mat-form-field>
+                        &nbsp;
+                      </div>
+                    </div>
+                    &nbsp;
+                  </div>
+                </div>
+              </div>
+            </mat-expansion-panel>
+            <br />
+          </div>
+          <div>
+            <div class="row ">
+              <div class="col text-left">
+                <button class="btn btn-secondary" mat-button matStepperPrevious [disabled]="i ==0">Back</button>
+              </div>
+              
+              <div class="col text-center">
+                <button mat-button class="btn btn btn-success" (click)="onFormSubmit()"
+                [disabled]="i !=formGroups.length-1">Submit</button>
+
+              </div>
+              <div class="col text-right">
+                <!-- *ngIf="i !=formGroups.length-1" -->
+                <button mat-button class="btn btn-secondary" [disabled]="i ==formGroups.length-1"
+                  matStepperNext>Next</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+    </div>
+    <!-- <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
       <form [formGroup]="secondFormGroup">
         <ng-template matStepLabel>Fill out your address</ng-template>
         <mat-form-field appearance="fill">
@@ -30,13 +75,14 @@
           <button mat-button matStepperNext>Next</button>
         </div>
       </form>
-    </mat-step>
-    <mat-step>
+    </mat-step> -->
+    <!-- <mat-step>
       <ng-template matStepLabel>Done</ng-template>
       <p>You are now done.</p>
       <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button (click)="stepper.reset()">Reset</button>
       </div>
-    </mat-step>
+    </mat-step> -->
   </mat-stepper>
+</div>

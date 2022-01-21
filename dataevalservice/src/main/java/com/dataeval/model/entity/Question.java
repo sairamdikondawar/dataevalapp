@@ -18,6 +18,7 @@ public class Question implements Serializable {
 	private String status;
 	private FlowConfig flowConfig;
 	private FlowPage flowPage;
+	private PageSection pageSection;
 
 	public Question() {
 	}
@@ -59,8 +60,9 @@ public class Question implements Serializable {
 	}
 
 	// bi-directional one-to-one association to FlowConfig
-	@ManyToOne
-	@JoinColumn(name = "FLOW_ID")
+//	@ManyToOne
+//	@JoinColumn(name = "FLOW_ID")
+	@Transient
 	public FlowConfig getFlowConfig() {
 		return this.flowConfig;
 	}
@@ -70,14 +72,25 @@ public class Question implements Serializable {
 	}
 
 	// bi-directional one-to-one association to FlowPage
-	@ManyToOne
-	@JoinColumn(name = "PAGE_ID")
+//	@ManyToOne
+//	@JoinColumn(name = "PAGE_ID")
+	@Transient
 	public FlowPage getFlowPage() {
 		return this.flowPage;
 	}
 
 	public void setFlowPage(FlowPage flowPage) {
 		this.flowPage = flowPage;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "SECTION_ID")
+	public PageSection getPageSection() {
+		return pageSection;
+	}
+
+	public void setPageSection(PageSection pageSection) {
+		this.pageSection = pageSection;
 	}
 
 }

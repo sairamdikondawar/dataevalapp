@@ -2,16 +2,17 @@ package com.dataeval.model.converter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import com.dataeval.model.entity.FlowConfig;
 import com.dataeval.model.entity.FlowPage;
+import com.dataeval.model.entity.PageSection;
 import com.dataeval.model.entity.Question;
 import com.dataeval.model.entity.QuestionType;
 import com.dataeval.model.entity.Role;
 import com.dataeval.model.entity.User;
 import com.dataeval.model.pojo.FlowConfigModel;
 import com.dataeval.model.pojo.FlowPageModel;
+import com.dataeval.model.pojo.PageSectionModel;
 import com.dataeval.model.pojo.QuestionModel;
 import com.dataeval.model.pojo.QuestionTypeModel;
 import com.dataeval.model.pojo.RoleModel;
@@ -33,6 +34,7 @@ public class ListModelObject {
 	public static List<QuestionModel> getListQuestionModelFromListEntities(List<Question> entities) {
 		List<QuestionModel> dtoList = new ArrayList<QuestionModel>();
 
+		if(entities!=null)
 		entities.stream().forEach(entity -> {
 			QuestionModel dto = EntityModelConverter.getQuestionModel(entity);
 			dtoList.add(dto);
@@ -55,6 +57,7 @@ public class ListModelObject {
 
 		entities.stream().forEach(entity -> {
 			FlowPageModel dto = EntityModelConverter.getFlowPageModel(entity);
+			dto.setSections(getListPageSectionModelFromListEntities(entity.getPageSections()));
 			dtoList.add(dto);
 		}
 
@@ -78,6 +81,17 @@ public class ListModelObject {
 
 		entities.stream().forEach(entity -> {
 			RoleModel dto = EntityModelConverter.getRoleModel(entity);
+			dtoList.add(dto);
+		});
+		return dtoList;
+	}
+	
+	public static List<PageSectionModel> getListPageSectionModelFromListEntities(List<PageSection> entities) {
+		List<PageSectionModel> dtoList = new ArrayList<PageSectionModel>();
+
+		entities.stream().forEach(entity -> {
+			PageSectionModel dto = EntityModelConverter.getPageSectionModel(entity);
+			dto.setQuestions(getListQuestionModelFromListEntities(entity.getQuestions()));
 			dtoList.add(dto);
 		});
 		return dtoList;

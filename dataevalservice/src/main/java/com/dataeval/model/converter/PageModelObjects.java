@@ -6,12 +6,14 @@ import org.springframework.data.domain.Page;
 
 import com.dataeval.model.entity.FlowConfig;
 import com.dataeval.model.entity.FlowPage;
+import com.dataeval.model.entity.PageSection;
 import com.dataeval.model.entity.Question;
 import com.dataeval.model.entity.QuestionType;
 import com.dataeval.model.entity.Role;
 import com.dataeval.model.entity.User;
 import com.dataeval.model.pojo.FlowConfigModel;
 import com.dataeval.model.pojo.FlowPageModel;
+import com.dataeval.model.pojo.PageSectionModel;
 import com.dataeval.model.pojo.QuestionModel;
 import com.dataeval.model.pojo.QuestionTypeModel;
 import com.dataeval.model.pojo.RoleModel;
@@ -57,6 +59,7 @@ public class PageModelObjects {
 			@Override
 			public FlowPageModel apply(FlowPage entity) {
 				FlowPageModel dto = EntityModelConverter.getFlowPageModel(entity);
+				dto.setSections(ListModelObject.getListPageSectionModelFromListEntities(entity.getPageSections()));
 				return dto;
 			}
 		});
@@ -79,6 +82,18 @@ public class PageModelObjects {
 			@Override
 			public RoleModel apply(Role entity) {
 				RoleModel dto = EntityModelConverter.getRoleModel(entity);
+				return dto;
+			}
+		});
+		return dtoPage;
+	}
+	
+	public static Page<PageSectionModel> getPagePageSectionModelFromPageEntities(Page<PageSection> entities) {
+		Page<PageSectionModel> dtoPage = entities.map(new Function<PageSection, PageSectionModel>() {
+			@Override
+			public PageSectionModel apply(PageSection entity) {
+				PageSectionModel dto = EntityModelConverter.getPageSectionModel(entity);
+				dto.setQuestions(ListModelObject.getListQuestionModelFromListEntities(entity.getQuestions()));
 				return dto;
 			}
 		});

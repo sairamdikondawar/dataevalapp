@@ -22,5 +22,13 @@ questionTypes(): Observable<any>{
     return this.http.get(endpoint);
 }
 
+loadPages(): Observable<any>{
+
+  console.log("inside questionTypes service");
+    const endpoint = 'http://localhost:8080/api/v1/lookup/questionTypes';
+     
+    return this.http.get(endpoint);
+}
+
 
 }

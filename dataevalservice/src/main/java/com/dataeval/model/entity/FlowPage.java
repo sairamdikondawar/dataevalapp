@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * The persistent class for the FLOW_PAGES database table.
@@ -26,6 +27,7 @@ public class FlowPage implements Serializable {
 	private String name;
 	private Integer sequence;
 	private List<Question> questions;
+	private List<PageSection> pageSections;
 	private Integer layoutColumns;
 
 	public FlowPage() {
@@ -59,7 +61,8 @@ public class FlowPage implements Serializable {
 	}
 
 	// bi-directional one-to-one association to Question
-	@OneToMany(mappedBy = "flowPage")
+//	@OneToMany(mappedBy = "flowPage")
+	@Transient
 	public List<Question> getQuestions() {
 		return questions;
 	}
@@ -84,6 +87,15 @@ public class FlowPage implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@OneToMany(mappedBy = "page")
+	public List<PageSection> getPageSections() {
+		return pageSections;
+	}
+
+	public void setPageSections(List<PageSection> pageSections) {
+		this.pageSections = pageSections;
 	}
 
 }

@@ -59,6 +59,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { QuestionComponent } from './admin/question/question.component';
 import { MultiformComponent } from './user/multiform/multiform.component';
 import { FormComponent } from './shared/form/form.component';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 @NgModule({
   declarations: [
     AppComponent,
@@ -156,7 +157,8 @@ import { FormComponent } from './shared/form/form.component';
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,
       multi: true
-    }],
+      
+    },{provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {floatLabel: 'always'}}],
   bootstrap: [AppComponent]
   
 })
