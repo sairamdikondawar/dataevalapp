@@ -17,6 +17,7 @@ public class UserQuestion implements Serializable {
 	private String name;
 	private String type;
 	private UserSection userSection;
+	private Integer questionId;
 
 	public UserQuestion() {
 	}
@@ -55,7 +56,7 @@ public class UserQuestion implements Serializable {
 		this.type = type;
 	}
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "USER_SECTION_ID")
 	public UserSection getUserSection() {
 		return userSection;
@@ -63,6 +64,15 @@ public class UserQuestion implements Serializable {
 
 	public void setUserSection(UserSection userSection) {
 		this.userSection = userSection;
+	}
+
+	@Column(name = "ACTUAL_QUESTION_ID")
+	public Integer getQuestionId() {
+		return questionId;
+	}
+
+	public void setQuestionId(Integer questionId) {
+		this.questionId = questionId;
 	}
 
 }

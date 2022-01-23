@@ -1,5 +1,8 @@
 package com.dataeval.model.converter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -35,7 +38,7 @@ public class ModelToEntityConverter {
 		FlowConfig entity = new FlowConfig();
 		try {
 			BeanUtils.copyProperties(model, entity);
-			Role rEntity=getRoleModel(model.getRole());
+			Role rEntity = getRoleModel(model.getRole());
 			entity.setRole(rEntity);
 		} catch (Exception e) {
 			log.error("Unable to prepare FlowConfig Object", e);
@@ -92,7 +95,7 @@ public class ModelToEntityConverter {
 		}
 		return entity;
 	}
-	
+
 	public static PageSection getPageSectionEntity(PageSectionModel model) {
 		PageSection entity = new PageSection();
 		try {
@@ -102,37 +105,68 @@ public class ModelToEntityConverter {
 		}
 		return entity;
 	}
-	
+
 	public static UserForm getUserFormEntity(UserFormModel model) {
 		UserForm entity = new UserForm();
 		try {
 			BeanUtils.copyProperties(model, entity);
+
+			List<UserPage> pages = new ArrayList<UserPage>();
+			model.getUserPages().forEach(page -> {
+
+				pages.add(ModelToEntityConverter.getUserPageEntity(page));
+
+			});
+
+			entity.setUserPages(pages);
+
 		} catch (Exception e) {
 			log.error("Unable to prepare UserForm Object", e);
 		}
 		return entity;
 	}
-	
+
 	public static UserPage getUserPageEntity(UserPageModel model) {
 		UserPage entity = new UserPage();
 		try {
 			BeanUtils.copyProperties(model, entity);
+			List<UserSection> sections = new ArrayList<UserSection>();
+
+			model.getUserSections().forEach(section -> {
+
+				sections.add(ModelToEntityConverter.getUserSectionEntity(section));
+
+			});
+
+			entity.setUserSections(sections);
+
 		} catch (Exception e) {
 			log.error("Unable to prepare UserPage Object", e);
 		}
 		return entity;
 	}
-	
+
 	public static UserSection getUserSectionEntity(UserSectionModel model) {
 		UserSection entity = new UserSection();
 		try {
 			BeanUtils.copyProperties(model, entity);
+			List<UserQuestion> fields = new ArrayList<UserQuestion>();
+
+			model.getUserQuestions().forEach(question -> {
+
+				fields.add(ModelToEntityConverter.getUserQuestionEntity(question));
+
+			});
+			
+			entity.setUserQuestions(fields);
+			
+			
 		} catch (Exception e) {
 			log.error("Unable to prepare UserSection Object", e);
 		}
 		return entity;
 	}
-	
+
 	public static UserQuestion getUserQuestionEntity(UserQuestionModel model) {
 		UserQuestion entity = new UserQuestion();
 		try {

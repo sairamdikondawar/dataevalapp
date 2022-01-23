@@ -23,6 +23,8 @@ public class Question implements Serializable {
 	private Boolean required = false;
 	private Boolean readonly = false;
 
+	private String answer;
+
 	public Question() {
 	}
 
@@ -112,6 +114,15 @@ public class Question implements Serializable {
 
 	public void setSection(PageSection section) {
 		this.section = section;
+	}
+
+	@Transient
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
 	}
 
 }

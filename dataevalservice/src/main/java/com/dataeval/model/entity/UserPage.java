@@ -19,6 +19,8 @@ public class UserPage implements Serializable {
 	private String name;
 	private Integer sequence;
 	private UserForm userForm;;
+	
+	private Integer pageId;
 	private List<UserSection> userSections;
 
 	public UserPage() {
@@ -75,6 +77,15 @@ public class UserPage implements Serializable {
 
 	public void setUserSections(List<UserSection> userSections) {
 		this.userSections = userSections;
+	}
+
+	@Column(name = "Actual_PAGE_ID")
+	public Integer getPageId() {
+		return pageId;
+	}
+
+	public void setPageId(Integer pageId) {
+		this.pageId = pageId;
 	}
 
 }

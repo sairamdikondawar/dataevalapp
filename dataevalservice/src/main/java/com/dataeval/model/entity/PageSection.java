@@ -19,6 +19,7 @@ public class PageSection implements Serializable {
 	private String description;
 	private String name;
 	private String status;
+	private Integer sequence;
 	private FlowPage page;
 	private List<Question> questions;
 	private Integer layout=1;
@@ -87,7 +88,7 @@ public class PageSection implements Serializable {
 	}
 
 
-	@Transient
+	@Column(name = "LAYOUT")
 	public Integer getLayout() {
 		return layout;
 	}
@@ -95,6 +96,17 @@ public class PageSection implements Serializable {
 
 	public void setLayout(Integer layout) {
 		this.layout = layout;
+	}
+
+
+	@Column(name = "SEQUENCE")
+	public Integer getSequence() {
+		return sequence;
+	}
+
+
+	public void setSequence(Integer sequence) {
+		this.sequence = sequence;
 	}
 
 }

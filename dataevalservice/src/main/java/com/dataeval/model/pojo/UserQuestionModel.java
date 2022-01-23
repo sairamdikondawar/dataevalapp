@@ -15,6 +15,7 @@ public class UserQuestionModel implements Serializable {
 	private String name;
 	private String type;
 	private UserSectionModel userSection;
+	private Integer questionId;
 
 	public UserQuestionModel() {
 	}

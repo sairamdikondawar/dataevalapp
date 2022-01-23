@@ -3,11 +3,14 @@ package com.dataeval.model.pojo;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionModel implements Serializable {
 
 	/**
@@ -24,13 +27,15 @@ public class QuestionModel implements Serializable {
 	private String status;
 	private FlowConfigModel flowConfig;
 	private FlowPageModel flowPage;
-	
+
 	private Boolean required;
 	private Boolean readonly;
 
+	private String answer;
+
 	@SuppressWarnings("unused")
 	private String controlName;
-	
+
 	private PageSectionModel section;
 
 	public String getControlName() {

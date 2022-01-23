@@ -10,7 +10,7 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name = "USER_FOMRS")
+@Table(name = "USER_FORMS")
 @NamedQuery(name = "UserForm.findAll", query = "SELECT u FROM UserForm u")
 public class UserForm implements Serializable {
 	private static final long serialVersionUID = 1L;

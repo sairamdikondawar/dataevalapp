@@ -18,6 +18,8 @@ public class UserSection implements Serializable {
 	private String name;
 	private Integer sequence;
 	private UserPage userPage;
+	private Integer sectionId;
+	private Integer layout;
 	private List<UserQuestion> userQuestions;
 
 	public UserSection() {
@@ -49,7 +51,7 @@ public class UserSection implements Serializable {
 		this.sequence = sequence;
 	}
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "USER_PAGE_ID")
 	public UserPage getUserPage() {
 		return userPage;
@@ -66,6 +68,24 @@ public class UserSection implements Serializable {
 
 	public void setUserQuestions(List<UserQuestion> userQuestions) {
 		this.userQuestions = userQuestions;
+	}
+
+	@Column(name = "ACTUAL_SECTION_ID")
+	public Integer getSectionId() {
+		return sectionId;
+	}
+
+	public void setSectionId(Integer sectionId) {
+		this.sectionId = sectionId;
+	}
+
+	@Column(name = "LAYOUT")
+	public Integer getLayout() {
+		return layout;
+	}
+
+	public void setLayout(Integer layout) {
+		this.layout = layout;
 	}
 
 }
