@@ -1,16 +1,20 @@
 import { QuestionType } from "./questionType.model";
+import { Section } from "./section.model";
 
 export class Question {
 
     id: number;
-    name: string;
+    label: string;
     type: string;
-    status :string
+    status :string;
+    section: Section;
 
-constructor(id: number, type: string, name:string, status:string) {
+
+constructor(id: number, type: string, label:string, status:string) {
         this.id = id;
-        this.name = name;
+        this.label = label;
         this.type =type;
         this.status=status;
+        this.section=new Section("",null);
     }
 }

@@ -21,21 +21,22 @@
 
               </mat-expansion-panel-header>
               <div class="container">
-                <div class="{{section.layout == 2 ?  'row' :''}}">
-                  <div *ngFor="let fields of section.fields" class="col">
-
+                <div class="row">
+                  <div *ngFor="let fields of section.fields; let k=index" class="{{section.layout == 2 ?  'col-6' :'col-12'}}">
                     <div class="form-group">
-                      <label for="{{fields.controlName}}">{{fields.label}} {{fields.requiredF ? '*' :''}}</label>
+                      <!--     -->
+                      <label for="{{fields.controlName}}">{{fields.label}} {{fields.required ? '*' :''}}  </label>
                       <div class="input-group">
                         <mat-form-field appearance="outline">
-                          <input matInput required={{fields.requiredF}} placeholder="Type here...."
-                            readonly="{{fields.readonly}}" formControlName={{fields.controlName}}>
+                           
+                          <input matInput placeholder="Type here...."  readonly="{{fields.readonly}}" required={{fields.required}} formControlName={{fields.controlName}}>
                         </mat-form-field>
                         &nbsp;
                       </div>
                     </div>
-                    &nbsp;
+                    <div class="w-100"></div>
                   </div>
+
                 </div>
               </div>
             </mat-expansion-panel>
@@ -46,10 +47,10 @@
               <div class="col text-left">
                 <button class="btn btn-secondary" mat-button matStepperPrevious [disabled]="i ==0">Back</button>
               </div>
-              
+
               <div class="col text-center">
                 <button mat-button class="btn btn btn-success" (click)="onFormSubmit()"
-                [disabled]="i !=formGroups.length-1">Submit</button>
+                  [disabled]="i !=formGroups.length-1">Submit</button>
 
               </div>
               <div class="col text-right">

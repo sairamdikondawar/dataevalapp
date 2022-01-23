@@ -5,7 +5,7 @@ export class Field {
     label: string;
     type: string;
     controlName: string;
-    _readonly: boolean=false;
+    readonly: boolean=false;
     options:Array<Lookup>;
     required:boolean=false;
 
@@ -15,11 +15,11 @@ export class Field {
 
     }
 
-    get readonly(): boolean {
-        return this._readonly;
+    get readonlyF(): boolean {
+        return this.readonly;
     }
-    set readonly(readonly: boolean) {
-        this._readonly = readonly;
+    set readonlyF(readonly: boolean) {
+        this.readonly = readonly;
     }
 
     get requiredF(): boolean {

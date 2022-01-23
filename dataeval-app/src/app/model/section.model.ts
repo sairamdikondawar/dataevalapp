@@ -2,22 +2,24 @@ import { Field } from "./field.model";
 
 export class Section {
 
+    id:number;
     label: string;
-    _layout:number=1;
+    layout:number;
     fields:Array<Field>;
+    status:string;
     
 
-constructor(label: string, fields:Array<Field>) {
+    constructor(label: string, fields:Array<Field>) {
         this.label = label;
         this.fields=fields;
          
     }
 
-    set layout(columns:number){
-        this._layout=columns;
+    set layoutF(columns:number){
+        this.layout=columns;
     }
 
-    get layout(): number{
-        return this._layout;
+    get layoutF(): number{
+        return this.layout;
     }
 }

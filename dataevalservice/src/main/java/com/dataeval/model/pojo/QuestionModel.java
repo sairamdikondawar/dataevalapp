@@ -24,9 +24,14 @@ public class QuestionModel implements Serializable {
 	private String status;
 	private FlowConfigModel flowConfig;
 	private FlowPageModel flowPage;
+	
+	private Boolean required;
+	private Boolean readonly;
 
 	@SuppressWarnings("unused")
 	private String controlName;
+	
+	private PageSectionModel section;
 
 	public String getControlName() {
 

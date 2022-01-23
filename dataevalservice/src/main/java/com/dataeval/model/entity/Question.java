@@ -18,7 +18,10 @@ public class Question implements Serializable {
 	private String status;
 	private FlowConfig flowConfig;
 	private FlowPage flowPage;
-	private PageSection pageSection;
+	private PageSection section;
+
+	private Boolean required = false;
+	private Boolean readonly = false;
 
 	public Question() {
 	}
@@ -83,14 +86,32 @@ public class Question implements Serializable {
 		this.flowPage = flowPage;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "SECTION_ID")
-	public PageSection getPageSection() {
-		return pageSection;
+	@Column(name = "REQUIRED")
+	public Boolean getRequired() {
+		return required;
 	}
 
-	public void setPageSection(PageSection pageSection) {
-		this.pageSection = pageSection;
+	public void setRequired(Boolean required) {
+		this.required = required;
+	}
+
+	@Transient
+	public Boolean getReadonly() {
+		return readonly;
+	}
+
+	public void setReadonly(Boolean readonly) {
+		this.readonly = readonly;
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "SECTION_ID")
+	public PageSection getSection() {
+		return section;
+	}
+
+	public void setSection(PageSection section) {
+		this.section = section;
 	}
 
 }

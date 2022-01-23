@@ -37,6 +37,12 @@ public class PageModelObjects {
 			@Override
 			public QuestionModel apply(Question entity) {
 				QuestionModel dto = EntityModelConverter.getQuestionModel(entity);
+				if(entity.getSection()!=null)
+				{
+					PageSectionModel sec=EntityModelConverter.getPageSectionModel(entity.getSection());
+					sec.setQuestions(null);
+					dto.setSection(sec);
+				}
 				return dto;
 			}
 		});
@@ -48,6 +54,7 @@ public class PageModelObjects {
 			@Override
 			public QuestionTypeModel apply(QuestionType entity) {
 				QuestionTypeModel dto = EntityModelConverter.getQuestionTypeModel(entity);
+
 				return dto;
 			}
 		});
@@ -87,7 +94,7 @@ public class PageModelObjects {
 		});
 		return dtoPage;
 	}
-	
+
 	public static Page<PageSectionModel> getPagePageSectionModelFromPageEntities(Page<PageSection> entities) {
 		Page<PageSectionModel> dtoPage = entities.map(new Function<PageSection, PageSectionModel>() {
 			@Override

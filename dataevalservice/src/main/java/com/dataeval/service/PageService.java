@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -15,6 +16,8 @@ import com.dataeval.model.converter.ListModelObject;
 import com.dataeval.model.converter.ModelToEntityConverter;
 import com.dataeval.model.converter.PageModelObjects;
 import com.dataeval.model.entity.FlowPage;
+import com.dataeval.model.entity.PageSection;
+import com.dataeval.model.entity.Question;
 import com.dataeval.model.pojo.FlowPageModel;
 import com.dataeval.model.pojo.common.CommonCriteria;
 import com.dataeval.repository.PageRepository;
@@ -101,6 +104,43 @@ public class PageService {
 		List<FlowPageModel> modelsList = new ArrayList<FlowPageModel>();
 		try {
 			List<FlowPage> entityList = pageRepository.findAll();
+			
+			FlowPage reviewPage=new FlowPage();
+			reviewPage.setName("Review & Submit");
+			reviewPage.setSequence(9999);
+			List<PageSection> allSections=new ArrayList<PageSection>();
+			
+			for(FlowPage page:entityList)
+			{
+				for(PageSection sec:page.getPageSections())
+				{
+					List<Question> questions=new ArrayList<Question>();
+					PageSection copySec=new PageSection();
+					BeanUtils.copyProperties(sec, copySec);
+					copySec.setLayout(2);
+					
+					
+					for(Question ques:sec.getQuestions())
+					{
+						Question clonQue=new Question();
+						
+						BeanUtils.copyProperties(ques, clonQue);
+						clonQue.setReadonly(Boolean.TRUE);
+						questions.add(clonQue);
+					}
+					copySec.setQuestions(questions);
+					
+					allSections.add(copySec);
+					
+					
+					
+					
+				}
+			}
+			
+			reviewPage.setPageSections(allSections);
+			entityList.add(reviewPage);
+			
 			modelsList = ListModelObject.getListFlowPageModelFromListEntities(entityList);
 		} catch (Exception e) {
 			log.error("Error while findAll  FlowPages ", e);

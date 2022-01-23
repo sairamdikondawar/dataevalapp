@@ -11,13 +11,21 @@ import com.dataeval.model.entity.Question;
 import com.dataeval.model.entity.QuestionType;
 import com.dataeval.model.entity.Role;
 import com.dataeval.model.entity.User;
+import com.dataeval.model.entity.UserForm;
+import com.dataeval.model.entity.UserPage;
+import com.dataeval.model.entity.UserQuestion;
+import com.dataeval.model.entity.UserSection;
 import com.dataeval.model.pojo.FlowConfigModel;
 import com.dataeval.model.pojo.FlowPageModel;
 import com.dataeval.model.pojo.PageSectionModel;
 import com.dataeval.model.pojo.QuestionModel;
 import com.dataeval.model.pojo.QuestionTypeModel;
 import com.dataeval.model.pojo.RoleModel;
+import com.dataeval.model.pojo.UserFormModel;
 import com.dataeval.model.pojo.UserModel;
+import com.dataeval.model.pojo.UserPageModel;
+import com.dataeval.model.pojo.UserQuestionModel;
+import com.dataeval.model.pojo.UserSectionModel;
 
 public class ModelToEntityConverter {
 
@@ -91,6 +99,46 @@ public class ModelToEntityConverter {
 			BeanUtils.copyProperties(model, entity);
 		} catch (Exception e) {
 			log.error("Unable to prepare PageSection Object", e);
+		}
+		return entity;
+	}
+	
+	public static UserForm getUserFormEntity(UserFormModel model) {
+		UserForm entity = new UserForm();
+		try {
+			BeanUtils.copyProperties(model, entity);
+		} catch (Exception e) {
+			log.error("Unable to prepare UserForm Object", e);
+		}
+		return entity;
+	}
+	
+	public static UserPage getUserPageEntity(UserPageModel model) {
+		UserPage entity = new UserPage();
+		try {
+			BeanUtils.copyProperties(model, entity);
+		} catch (Exception e) {
+			log.error("Unable to prepare UserPage Object", e);
+		}
+		return entity;
+	}
+	
+	public static UserSection getUserSectionEntity(UserSectionModel model) {
+		UserSection entity = new UserSection();
+		try {
+			BeanUtils.copyProperties(model, entity);
+		} catch (Exception e) {
+			log.error("Unable to prepare UserSection Object", e);
+		}
+		return entity;
+	}
+	
+	public static UserQuestion getUserQuestionEntity(UserQuestionModel model) {
+		UserQuestion entity = new UserQuestion();
+		try {
+			BeanUtils.copyProperties(model, entity);
+		} catch (Exception e) {
+			log.error("Unable to prepare UserQuestion Object", e);
 		}
 		return entity;
 	}

@@ -1,6 +1,5 @@
 package com.dataeval.model.converter;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -12,13 +11,21 @@ import com.dataeval.model.entity.Question;
 import com.dataeval.model.entity.QuestionType;
 import com.dataeval.model.entity.Role;
 import com.dataeval.model.entity.User;
+import com.dataeval.model.entity.UserForm;
+import com.dataeval.model.entity.UserPage;
+import com.dataeval.model.entity.UserQuestion;
+import com.dataeval.model.entity.UserSection;
 import com.dataeval.model.pojo.FlowConfigModel;
 import com.dataeval.model.pojo.FlowPageModel;
 import com.dataeval.model.pojo.PageSectionModel;
 import com.dataeval.model.pojo.QuestionModel;
 import com.dataeval.model.pojo.QuestionTypeModel;
 import com.dataeval.model.pojo.RoleModel;
+import com.dataeval.model.pojo.UserFormModel;
 import com.dataeval.model.pojo.UserModel;
+import com.dataeval.model.pojo.UserPageModel;
+import com.dataeval.model.pojo.UserQuestionModel;
+import com.dataeval.model.pojo.UserSectionModel;
 
 public class EntityModelConverter {
 
@@ -29,7 +36,7 @@ public class EntityModelConverter {
 		try {
 			BeanUtils.copyProperties(entity, model);
 			model.setRole(getRoleModel(entity.getRole()));
-			
+
 		} catch (Exception e) {
 			log.error("Unable to prepare FlowConfigModel Object", e);
 		}
@@ -75,7 +82,7 @@ public class EntityModelConverter {
 		}
 		return model;
 	}
-	
+
 	public static QuestionTypeModel getQuestionTypeModel(QuestionType entity) {
 		QuestionTypeModel model = new QuestionTypeModel();
 		try {
@@ -85,13 +92,53 @@ public class EntityModelConverter {
 		}
 		return model;
 	}
-	
+
 	public static PageSectionModel getPageSectionModel(PageSection entity) {
 		PageSectionModel model = new PageSectionModel();
 		try {
 			BeanUtils.copyProperties(entity, model);
 		} catch (Exception e) {
 			log.error("Unable to prepare PageSectionModel Object", e);
+		}
+		return model;
+	}
+
+	public static UserFormModel getUserFormModel(UserForm entity) {
+		UserFormModel model = new UserFormModel();
+		try {
+			BeanUtils.copyProperties(entity, model);
+		} catch (Exception e) {
+			log.error("Unable to prepare UserFormModel Object", e);
+		}
+		return model;
+	}
+
+	public static UserPageModel getUserPageModel(UserPage entity) {
+		UserPageModel model = new UserPageModel();
+		try {
+			BeanUtils.copyProperties(entity, model);
+		} catch (Exception e) {
+			log.error("Unable to prepare UserPageModel Object", e);
+		}
+		return model;
+	}
+
+	public static UserSectionModel getUserSectionModel(UserSection entity) {
+		UserSectionModel model = new UserSectionModel();
+		try {
+			BeanUtils.copyProperties(entity, model);
+		} catch (Exception e) {
+			log.error("Unable to prepare UserSectionModel Object", e);
+		}
+		return model;
+	}
+
+	public static UserQuestionModel getUserQuestionModel(UserQuestion entity) {
+		UserQuestionModel model = new UserQuestionModel();
+		try {
+			BeanUtils.copyProperties(entity, model);
+		} catch (Exception e) {
+			log.error("Unable to prepare UserQuestionModel Object", e);
 		}
 		return model;
 	}

@@ -47,48 +47,6 @@ export class FlowconfigComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('closeFlowConfigModal') closeFlowConfigModal: ElementRef;
 
-  // constructor(private flowconfigService: FlowconfigService) {
-  // Create 100 users
-  // const users: UserData[] = [];
-  // for (let i = 1; i <= 100; i++) { users.push(createNewUser(i)); }
-
-  // Assign the data to the data source for the table to render
-  // this.dataSource = new MatTableDataSource(users);
-
-
-
-
-
-  // }
-
-
-
-  /**
-   * Set the paginator and sort after the view init since this component will
-   * be able to query its view for the initialized paginator and sort.
-   */
-  // ngAfterViewInit() {
-  //   this.dataSource.paginator = this.paginator;
-  //   this.dataSource.sort = this.sort;
-  // }
-
-  // applyFilter(filterValue: string) {
-  //   filterValue = filterValue.trim(); // Remove whitespace
-  //   filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-  //   this.dataSource.filter = filterValue;
-  // }
-
-
-  //MEtrial Spring impl
-  //OLD
-  // ngOnInit(): void {
-
-  //   console.log("Inside FlowconfigComponent init");
-  //   this.flowconfigService.flowconfigService().subscribe( (result) => {
-  //     console.log(result);
-  //   });
-  // }
-
 
   fcDataSource: FCDataSource;
 

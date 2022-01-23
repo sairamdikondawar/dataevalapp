@@ -20,4 +20,6 @@ public class PageSectionModel implements Serializable {
 	private String status;
 	@JsonProperty("fields")
 	private List<QuestionModel> questions;
+	
+	private Integer layout;
 }

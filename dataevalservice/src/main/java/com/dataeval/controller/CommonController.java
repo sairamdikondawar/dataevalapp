@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dataeval.model.pojo.FlowPageModel;
+import com.dataeval.model.pojo.PageSectionModel;
 import com.dataeval.model.pojo.common.LookupModel;
 import com.dataeval.model.response.ErrorResponse;
+import com.dataeval.service.PageSectionService;
 import com.dataeval.service.PageService;
 import com.dataeval.service.QuestionTypeService;
 import com.dataeval.service.RoleService;
@@ -30,6 +32,9 @@ public class CommonController {
 	
 	@Autowired
 	private PageService pageService;
+	
+	@Autowired
+	private PageSectionService sectionService;
 
 	private static final Logger log = LoggerFactory.getLogger(RoleController.class);
 
@@ -69,6 +74,21 @@ public class CommonController {
 		}
 
 		return new ResponseEntity<List<FlowPageModel>>(models, HttpStatus.OK);
+	}
+	
+	@GetMapping("/sections")
+	public ResponseEntity<?> lookupSections() {
+
+		List<LookupModel> models = null;
+		try {
+			models = sectionService.lookupSections();
+		} catch (Exception e) {
+			String localizedErrorMessage = messageSource.getMessage("pages.nodata.found", null, currentLocale);
+			ErrorResponse resp = new ErrorResponse(localizedErrorMessage);
+			return new ResponseEntity<ErrorResponse>(resp, HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<List<LookupModel>>(models, HttpStatus.OK);
 	}
 
 }

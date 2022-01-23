@@ -17,6 +17,8 @@ import { Question } from 'src/app/model/question.model';
 import { QuestionService } from 'src/app/services/question.service';
 import { QuestionDataSouce } from 'src/app/datasoruce/fcdatasoruce/questiondatasouce.service';
 import { CommonService } from 'src/app/services/common.service';
+import { Section } from 'src/app/model/section.model';
+import { NULL_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 
@@ -30,6 +32,8 @@ export class QuestionComponent implements OnInit {
 
  
   types: Lookup[];
+
+  sections: Lookup[];
 
   filterTypes: Lookup[];
 
@@ -57,7 +61,7 @@ export class QuestionComponent implements OnInit {
 
     this.type = new Lookup(0, '');
   }
-  displayedColumns = ['id', 'flowName', 'role','status', 'actions'];
+  displayedColumns = ['id', 'flowName', 'role','status', 'required', 'actions'];
 
 
   ngOnInit() {
@@ -70,6 +74,15 @@ export class QuestionComponent implements OnInit {
       )
       .subscribe((result) => {
         this.types = (result);
+      }
+      );
+
+      this.commonService.loadSections()
+      .pipe(
+        catchError(() => of([]))
+      )
+      .subscribe((result) => {
+        this.sections = (result);
       }
       );
 
@@ -143,7 +156,7 @@ export class QuestionComponent implements OnInit {
     // this.vehicleForm.controls.VehicleMake.value
     console.log('inside submit');
 
-    this.questionConfig.name = this.questionForm.controls.questionName.value;
+    this.questionConfig.label = this.questionForm.controls.questionName.value;
     
     this.questionConfig.status= this.questionForm.controls.status.value;
 
@@ -165,19 +178,23 @@ export class QuestionComponent implements OnInit {
 
 
   questionForm = new FormGroup({
-    questionName: new FormControl(this.questionConfig.name, [Validators.required,
+    questionName: new FormControl(this.questionConfig.label, [Validators.required,
     Validators.minLength(4)]),
     type: new FormControl(''),
-    status: new FormControl('ACTIVE', [Validators.required])
+    status: new FormControl('ACTIVE', [Validators.required]),
+    section: new FormControl('', [Validators.required])
 
   });
 
-  questionEditForm = new FormGroup({
-    questionEName: new FormControl(this.questionConfig.name, [Validators.required,
+   
+
+  questionEditForm= new FormGroup({
+    questionEName: new FormControl(this.questionConfig.label, [Validators.required,
     Validators.minLength(4)]),
     type: new FormControl(this.questionConfig.type, [Validators.required]),
     id: new FormControl(this.questionConfig.id),
-    status: new FormControl(this.questionConfig.status, [Validators.required])
+    status: new FormControl(this.questionConfig.status, [Validators.required]),
+    section: new FormControl(this.questionConfig.section.id, [Validators.required])
 
   });
 
@@ -189,12 +206,22 @@ export class QuestionComponent implements OnInit {
       backdrop: 'static',
       size: 'lg'
     });
+
     this.questionConfig=editFlow;
+
+    if( editFlow.section== null)
+    {
+      editFlow.section= new Section(null, null);
+    }  
+     
+    
+
     this.questionEditForm.patchValue({
       id: editFlow.id,
-      questionEName: editFlow.name,
+      questionEName: editFlow.label,
       type: editFlow.type,
-      status:editFlow.status
+      status:editFlow.status,
+      section:(editFlow.section != null ? editFlow.section.id : null)
     });
     // this.selectedRole = editFlow.role.roleName;
     // this.role = this.roles[0];
@@ -210,7 +237,7 @@ export class QuestionComponent implements OnInit {
   resetCreateForm(formData: any, formDirective: FormGroupDirective) {
     this.questionForm.reset();
     this.questionForm=new FormGroup({
-      questionName: new FormControl(this.questionConfig.name, [Validators.required,
+      questionName: new FormControl(this.questionConfig.label, [Validators.required,
       Validators.minLength(4)]),
       type: new FormControl(''),
       status: new FormControl('ACTIVE', [Validators.required])
@@ -223,7 +250,7 @@ export class QuestionComponent implements OnInit {
     // this.vehicleForm.controls.VehicleMake.value
     console.log('inside submit');
 
-    this.questionConfig.name=this.questionEditForm.controls.questionEName.value;
+    this.questionConfig.label=this.questionEditForm.controls.questionEName.value;
     this.questionConfig.status=this.questionEditForm.controls.status.value;
     
     this.questionService.update(this.questionConfig)
@@ -239,6 +266,24 @@ export class QuestionComponent implements OnInit {
     this.questionEditForm.reset();
     this.modalService.dismissAll();
    
+  }
+
+  selectSection(event: any) {
+
+    // console.log(event.target.value);
+    console.log("Inside Select Section :" + event.target.value)
+
+    // this.type = filterByString(this.types, event.target.value);
+
+    this.questionConfig.section.id = event.target.value;
+    // this.questionConfig.role.roleName = this.role.name;
+    // this.selectedRole = this.role.name;
+    // this.selectedRoleId = this.role.id;
+
+
+
+
+    console.log("Inside Select Section :" + event.target.value)
   }
 
 

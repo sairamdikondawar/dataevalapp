@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Service;
 
 import com.dataeval.model.converter.EntityModelConverter;
 import com.dataeval.model.converter.ListModelObject;
@@ -20,8 +19,7 @@ import com.dataeval.repository.PageSectionRepository;
 import com.dataeval.repository.QuestionRepository;
 import com.dataeval.util.Util;
 
-@Service
-public class QuestionService {
+public class UserFormService {
 
 	private static final Logger log = LoggerFactory.getLogger(QuestionService.class);
 

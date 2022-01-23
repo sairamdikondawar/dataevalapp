@@ -16,6 +16,7 @@ import com.dataeval.model.converter.PageModelObjects;
 import com.dataeval.model.entity.PageSection;
 import com.dataeval.model.pojo.PageSectionModel;
 import com.dataeval.model.pojo.common.CommonCriteria;
+import com.dataeval.model.pojo.common.LookupModel;
 import com.dataeval.repository.PageSectionRepository;
 import com.dataeval.util.Util;
 
@@ -101,6 +102,22 @@ public class PageSectionService {
 		try {
 			List<PageSection> entityList = pageSectionRepository.findAll();
 			modelsList = ListModelObject.getListPageSectionModelFromListEntities(entityList);
+		} catch (Exception e) {
+			log.error("Error while findAll  PageSections ", e);
+		}
+		return modelsList;
+	}
+	
+	public List<LookupModel> lookupSections() {
+		List<LookupModel> modelsList = new ArrayList<LookupModel>();
+		try {
+			List<PageSection> entityList = pageSectionRepository.findAll();
+//			modelsList = ListModelObject.getListPageSectionModelFromListEntities(entityList, Boolean.FALSE);
+			
+			entityList.stream().forEach(role -> {
+				LookupModel model = new LookupModel(role.getName(), role.getId());
+				modelsList.add(model);
+			});
 		} catch (Exception e) {
 			log.error("Error while findAll  PageSections ", e);
 		}

@@ -21,6 +21,7 @@ public class PageSection implements Serializable {
 	private String status;
 	private FlowPage page;
 	private List<Question> questions;
+	private Integer layout=1;
 
 	public PageSection() {
 	}
@@ -75,7 +76,7 @@ public class PageSection implements Serializable {
 	}
 
 
-	@OneToMany(mappedBy = "pageSection")
+	@OneToMany(mappedBy = "section")
 	public List<Question> getQuestions() {
 		return questions;
 	}
@@ -83,6 +84,17 @@ public class PageSection implements Serializable {
 
 	public void setQuestions(List<Question> questions) {
 		this.questions = questions;
+	}
+
+
+	@Transient
+	public Integer getLayout() {
+		return layout;
+	}
+
+
+	public void setLayout(Integer layout) {
+		this.layout = layout;
 	}
 
 }
