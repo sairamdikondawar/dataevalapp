@@ -8,6 +8,7 @@ export class Field {
     readonly: boolean=false;
     options:Array<Lookup>;
     required:boolean=false;
+    answer:string;
 
     constructor(label: string, controlName: string) {
         this.label = label;

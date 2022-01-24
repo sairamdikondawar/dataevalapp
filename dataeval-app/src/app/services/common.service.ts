@@ -4,6 +4,7 @@ import { Flowconfig } from '../model/flowconfig.model';
 import { Message } from '../model/message.model';
 import { FlowconfigResponse } from '../model/flowconfigResponse';
 import { Observable } from 'rxjs';
+import { CreateUserForm} from '../model/user-form.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,12 +31,27 @@ loadPages(): Observable<any>{
     return this.http.get(endpoint);
 }
 
+loadUserPages(id:string): Observable<any>{
+
+  console.log("inside User Pages service");
+    const endpoint = 'http://localhost:8080/api/v1/userpage-config/userform/'+id;
+     
+    return this.http.get(endpoint);
+}
+
 loadSections(): Observable<any>{
 
   console.log("inside Section service");
     const endpoint = 'http://localhost:8080/api/v1/lookup/sections';
      
     return this.http.get(endpoint);
+}
+
+submitUserForm(data:CreateUserForm): Observable<any>{
+  const endpoint = 'http://localhost:8080/api/v1/userform-config';
+  return this.http.post(endpoint, data);
+
+  
 }
 
 

@@ -18,6 +18,7 @@ public class UserQuestion implements Serializable {
 	private String type;
 	private UserSection userSection;
 	private Integer questionId;
+	private Boolean required;
 
 	public UserQuestion() {
 	}
@@ -73,6 +74,15 @@ public class UserQuestion implements Serializable {
 
 	public void setQuestionId(Integer questionId) {
 		this.questionId = questionId;
+	}
+
+	@Column(name = "REQUIRED")
+	public Boolean getRequired() {
+		return required;
+	}
+
+	public void setRequired(Boolean required) {
+		this.required = required;
 	}
 
 }

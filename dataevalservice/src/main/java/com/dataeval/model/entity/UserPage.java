@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * The persistent class for the USER_PAGE database table.
  * 
@@ -21,6 +23,8 @@ public class UserPage implements Serializable {
 	private UserForm userForm;;
 	
 	private Integer pageId;
+	
+	
 	private List<UserSection> userSections;
 
 	public UserPage() {

@@ -115,10 +115,9 @@ public class ModelToEntityConverter {
 			model.getUserPages().forEach(page -> {
 
 				pages.add(ModelToEntityConverter.getUserPageEntity(page));
-
 			});
 
-			entity.setUserPages(pages);
+//			entity.setUserPages(pages);
 
 		} catch (Exception e) {
 			log.error("Unable to prepare UserForm Object", e);

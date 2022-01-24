@@ -60,6 +60,8 @@ import { QuestionComponent } from './admin/question/question.component';
 import { MultiformComponent } from './user/multiform/multiform.component';
 import { FormComponent } from './shared/form/form.component';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { UserformsComponent } from './admin/userforms/userforms.component';
+import { UserformdetailsComponent } from './admin/userformdetails/userformdetails.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,7 +72,9 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
     PageconfigComponent,
     QuestionComponent,
     MultiformComponent,
-    FormComponent
+    FormComponent,
+    UserformsComponent,
+    UserformdetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -11,12 +11,14 @@ import com.dataeval.model.entity.Question;
 import com.dataeval.model.entity.QuestionType;
 import com.dataeval.model.entity.Role;
 import com.dataeval.model.entity.User;
+import com.dataeval.model.entity.UserForm;
 import com.dataeval.model.pojo.FlowConfigModel;
 import com.dataeval.model.pojo.FlowPageModel;
 import com.dataeval.model.pojo.PageSectionModel;
 import com.dataeval.model.pojo.QuestionModel;
 import com.dataeval.model.pojo.QuestionTypeModel;
 import com.dataeval.model.pojo.RoleModel;
+import com.dataeval.model.pojo.UserFormModel;
 import com.dataeval.model.pojo.UserModel;
 
 public class PageModelObjects {
@@ -37,9 +39,8 @@ public class PageModelObjects {
 			@Override
 			public QuestionModel apply(Question entity) {
 				QuestionModel dto = EntityModelConverter.getQuestionModel(entity);
-				if(entity.getSection()!=null)
-				{
-					PageSectionModel sec=EntityModelConverter.getPageSectionModel(entity.getSection());
+				if (entity.getSection() != null) {
+					PageSectionModel sec = EntityModelConverter.getPageSectionModel(entity.getSection());
 					sec.setQuestions(null);
 					dto.setSection(sec);
 				}
@@ -101,6 +102,17 @@ public class PageModelObjects {
 			public PageSectionModel apply(PageSection entity) {
 				PageSectionModel dto = EntityModelConverter.getPageSectionModel(entity);
 				dto.setQuestions(ListModelObject.getListQuestionModelFromListEntities(entity.getQuestions()));
+				return dto;
+			}
+		});
+		return dtoPage;
+	}
+
+	public static Page<UserFormModel> getPageUserFormModelFromPageEntities(Page<UserForm> entities) {
+		Page<UserFormModel> dtoPage = entities.map(new Function<UserForm, UserFormModel>() {
+			@Override
+			public UserFormModel apply(UserForm entity) {
+				UserFormModel dto = EntityModelConverter.getUserFormModel(entity);
 				return dto;
 			}
 		});

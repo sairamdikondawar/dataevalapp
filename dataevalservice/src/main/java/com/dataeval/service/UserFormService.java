@@ -8,11 +8,13 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.dataeval.model.converter.EntityModelConverter;
 import com.dataeval.model.converter.ListModelObject;
 import com.dataeval.model.converter.ModelToEntityConverter;
+import com.dataeval.model.converter.PageModelObjects;
 import com.dataeval.model.entity.FlowPage;
 import com.dataeval.model.entity.PageSection;
 import com.dataeval.model.entity.Question;
@@ -22,11 +24,13 @@ import com.dataeval.model.entity.UserQuestion;
 import com.dataeval.model.entity.UserSection;
 import com.dataeval.model.pojo.SubmitFormModel;
 import com.dataeval.model.pojo.UserFormModel;
+import com.dataeval.model.pojo.common.CommonCriteria;
 import com.dataeval.repository.QuestionRepository;
 import com.dataeval.repository.UserFormRepository;
 import com.dataeval.repository.UserPageRepository;
 import com.dataeval.repository.UserQuestionRepository;
 import com.dataeval.repository.UserRepository;
+import com.dataeval.util.Util;
 
 @Service
 public class UserFormService {
@@ -61,14 +65,17 @@ public class UserFormService {
 			entity.setUser(userRepository.findById(1).get());
 			entity = userFormRepository.save(entity);
 
-			List<Integer> questionIds = new ArrayList<Integer>();
+			List<Integer> fieldsIds = new ArrayList<Integer>();
+			Map<Integer, String> filedAndValuesMap = new HashMap<Integer, String>();
 			model.getUserQuestions().forEach(ques -> {
-				questionIds.add(Integer.parseInt(ques.getName().replaceAll("field", "")));
+				Integer fieldId=Integer.parseInt(ques.getName().replaceAll("field", ""));
+				fieldsIds.add(fieldId);
+				filedAndValuesMap.put(fieldId, ques.getAnswer());
 			});
 
-			List<Question> questions = questionRepository.findAllById(questionIds);
+			List<Question> questions = questionRepository.findAllById(fieldsIds);
 
-			saveUserQuestions(questions, entity);
+			saveUserQuestions(questions, entity,filedAndValuesMap);
 
 		} catch (Exception e) {
 			log.error("Error while create  UserForm :: ", e);
@@ -137,17 +144,17 @@ public class UserFormService {
 		return modelsList;
 	}
 
-//	public Page<UserFormModel> findAll(CommonCriteria commonCriteria) {
-//		try {
-//			Page<UserForm> entityList = userFormRepository.findAll(Util.getPageObjectFromCriteria(commonCriteria));
-//			return PageModelObjects.getPageUserFormModelFromPageEntities(entityList);
-//		} catch (Exception e) {
-//			log.error("Error while findAll  UserForms ", e);
-//			throw e;
-//		}
-//	}
+	public Page<UserFormModel> findAll(CommonCriteria commonCriteria) {
+		try {
+			Page<UserForm> entityList = userFormRepository.findAll(Util.getPageObjectFromCriteria(commonCriteria));
+			return PageModelObjects.getPageUserFormModelFromPageEntities(entityList);
+		} catch (Exception e) {
+			log.error("Error while findAll  UserForms ", e);
+			throw e;
+		}
+	}
 
-	public List<UserQuestion> saveUserQuestions(List<Question> questions, UserForm userForm) {
+	public List<UserQuestion> saveUserQuestions(List<Question> questions, UserForm userForm,Map<Integer, String> filedAndValuesMap) {
 		List<UserQuestion> userQuestions = new ArrayList<UserQuestion>();
 		Map<Integer, UserPage> userPageMap = new HashMap<Integer, UserPage>();
 		Map<Integer, UserSection> userSectionMap = new HashMap<Integer, UserSection>();
@@ -157,9 +164,10 @@ public class UserFormService {
 			questions.forEach(question -> {
 
 				UserQuestion userQuestion = new UserQuestion();
-				userQuestion.setAnswer(question.getAnswer());
+				userQuestion.setAnswer(filedAndValuesMap.get(question.getId()));
 				userQuestion.setQuestionId(question.getId());
 				userQuestion.setName(question.getName());
+				userQuestion.setRequired(question.getRequired());
 
 				PageSection ps = question.getSection();
 				FlowPage fp = ps.getPage();

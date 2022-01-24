@@ -5,15 +5,19 @@ import { LoginComponent } from './auth/login/login.component';
 import { ManageuserComponent } from './admin/manageuser/manageuser.component';
 import { QuestionComponent } from './admin/question/question.component';
 import { MultiformComponent } from './user/multiform/multiform.component';
+import { UserformsComponent } from './admin/userforms/userforms.component';
+import { UserformdetailsComponent } from './admin/userformdetails/userformdetails.component';
 
 const routes: Routes = [
-  {path: 'flowconfig', component: FlowconfigComponent},
-  {path: 'question', component: QuestionComponent},
-  {path: 'login', component: LoginComponent},
-  {path: '', component: LoginComponent},
-  {path: 'logout', component: LoginComponent},
-  {path : 'user', component : ManageuserComponent},
-  {path : 'patient',component : MultiformComponent}
+  { path: 'flowconfig', component: FlowconfigComponent },
+  { path: 'question', component: QuestionComponent },
+  { path: 'login', component: LoginComponent },
+  { path: '', component: LoginComponent },
+  { path: 'logout', component: LoginComponent },
+  { path: 'user', component: ManageuserComponent },
+  { path: 'patient', component: MultiformComponent },
+  { path: 'userforms', component: UserformsComponent},
+  { path: 'userformdetails/:id', component: UserformdetailsComponent}
 ];
 
 @NgModule({

@@ -2,6 +2,8 @@ package com.dataeval.model.pojo;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
@@ -14,6 +16,8 @@ public class RoleModel implements Serializable {
 
 	private Integer id;
 	private String roleDesc;
+	
+	@JsonProperty("name")
 	private String roleName;
 
 }

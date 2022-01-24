@@ -14,7 +14,10 @@ import { catchError } from "rxjs/operators";
 import { Field } from "src/app/model/field.model";
 import { Page } from "src/app/model/page.model";
 import { Section } from "src/app/model/section.model";
+import { CreateUserForm } from "src/app/model/user-form.model";
 import { CommonService } from "src/app/services/common.service";
+
+import { MatStep, MatStepper } from "@angular/material/stepper";
 
 @Component({
   selector: 'app-multiform',
@@ -24,6 +27,7 @@ import { CommonService } from "src/app/services/common.service";
 export class MultiformComponent implements OnInit {
 
 
+  stepper:MatStep;
   formGroups: Array<FormGroup>;
 
   reviewData: any;
@@ -94,19 +98,49 @@ export class MultiformComponent implements OnInit {
     this.loadFields();
   }
 
-  onFormSubmit(): void {
+  onFormSubmit(stepper:MatStepper): void {
     // this.formSubmit.emit(this.formData);
     this.reviewData = this.formGroups.reduce(
 
       (formGroups, currentForm) => ({ ...formGroups, ...currentForm.value }),
       {}
+
+     
     );
-
-
 
     this.masterFormFields = Object.keys(this.reviewData);
     // alert(JSON.stringify(this.reviewData))
     console.log(JSON.stringify(this.reviewData));
+
+    let fields:Array<Field> =[];
+
+    let userForm=new CreateUserForm(fields);
+
+    for(let eleme of this.masterFormFields) {
+       let  field=new Field( eleme, "");
+       field.answer=this.reviewData[eleme];
+      console.log(JSON.stringify(field));
+      fields.push(field);
+    };
+
+    console.log(JSON.stringify(userForm));
+
+    this.commonService.submitUserForm(userForm)
+      .pipe(
+        catchError(() => of([]))
+
+      )
+      .subscribe((result) => {
+        console.log(result + " result");
+        this.loadFields();
+        stepper.reset();
+      }
+      );
+    
+
+
+
+    
   }
 
   nextClick(data: any, index: number): number {

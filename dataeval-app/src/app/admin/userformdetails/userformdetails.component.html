@@ -1,0 +1,59 @@
+<app-menu></app-menu>
+
+<div class="container"> 
+    <mat-stepper linear #stepper class="bg-gradient">
+      <div *ngFor="let form of formGroups; let i = index; trackBy: trackByFn;">
+        <mat-step [stepControl]="form" editable>
+          <form [formGroup]="form" (ngSubmit)="nextClick(form.value,i)">
+            <ng-template (click)="nextClick(form.value,i)" matStepLabel>
+              <div class="stepper-header-overlay" (click)="nextClick(form.value,i)"> </div>{{pages[i].label}}
+            </ng-template>
+            <div *ngFor="let section of pages[i].sections; let j = index;">
+              <mat-expansion-panel hideToggle expanded opened>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-label>{{section.label}}</mat-label>
+                  </mat-panel-title>
+  
+                </mat-expansion-panel-header>
+                <div class="container">
+                  <div class="row">
+                    <div *ngFor="let fields of section.fields; let k=index" class="{{section.layout == 2 ?  'col-6' :'col-12'}}">
+                      <div class="form-group">
+                        <!--     -->
+                        <label for="{{fields.controlName}}">{{fields.label}} {{fields.required ? '*' :''}}  </label>
+                        <div class="input-group">
+                          <mat-form-field appearance="outline">
+                             
+                            <input matInput placeholder="Type here...."  readonly="true"    required={{fields.required}} formControlName={{fields.controlName}}>
+                          </mat-form-field>
+                          &nbsp;
+                        </div>
+                      </div>
+                      <div class="w-100"></div>
+                    </div>
+  
+                  </div>
+                </div>
+              </mat-expansion-panel>
+              <br />
+            </div>
+            <div>
+              <div class="row ">
+                <div class="col text-left">
+                  <button class="btn btn-secondary" mat-button matStepperPrevious [disabled]="i ==0">Back</button>
+                </div>
+   
+                <div class="col text-right">
+                  <!-- *ngIf="i !=formGroups.length-1" -->
+                  <button mat-button class="btn btn-secondary" [disabled]="i ==formGroups.length-1"
+                    matStepperNext>Next</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+      </div>
+       
+    </mat-stepper>
+  </div>

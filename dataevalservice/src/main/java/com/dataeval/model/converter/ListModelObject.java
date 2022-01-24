@@ -143,6 +143,7 @@ public class ListModelObject {
 
 		entities.stream().forEach(entity -> {
 			UserSectionModel dto = EntityModelConverter.getUserSectionModel(entity);
+			dto.setUserPage(null);
 			dtoList.add(dto);
 		});
 		return dtoList;

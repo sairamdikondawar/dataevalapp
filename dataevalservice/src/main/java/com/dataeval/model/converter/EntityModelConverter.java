@@ -57,6 +57,8 @@ public class EntityModelConverter {
 		UserModel model = new UserModel();
 		try {
 			BeanUtils.copyProperties(entity, model);
+			
+			model.setRole(getRoleModel(entity.getRole()));
 		} catch (Exception e) {
 			log.error("Unable to prepare UserModel Object", e);
 		}
@@ -107,6 +109,8 @@ public class EntityModelConverter {
 		UserFormModel model = new UserFormModel();
 		try {
 			BeanUtils.copyProperties(entity, model);
+			model.setUser(getUserModel(entity.getUser()));
+
 		} catch (Exception e) {
 			log.error("Unable to prepare UserFormModel Object", e);
 		}
@@ -117,6 +121,8 @@ public class EntityModelConverter {
 		UserPageModel model = new UserPageModel();
 		try {
 			BeanUtils.copyProperties(entity, model);
+			
+			model.setUserSections(ListModelObject.getListUserSectionModelFromListEntities(entity.getUserSections()));
 		} catch (Exception e) {
 			log.error("Unable to prepare UserPageModel Object", e);
 		}
@@ -127,6 +133,7 @@ public class EntityModelConverter {
 		UserSectionModel model = new UserSectionModel();
 		try {
 			BeanUtils.copyProperties(entity, model);
+			model.setUserQuestions(ListModelObject.getListUserQuestionModelFromListEntities(entity.getUserQuestions()));
 		} catch (Exception e) {
 			log.error("Unable to prepare UserSectionModel Object", e);
 		}
@@ -137,6 +144,7 @@ public class EntityModelConverter {
 		UserQuestionModel model = new UserQuestionModel();
 		try {
 			BeanUtils.copyProperties(entity, model);
+			model.setUserSection(null);
 		} catch (Exception e) {
 			log.error("Unable to prepare UserQuestionModel Object", e);
 		}

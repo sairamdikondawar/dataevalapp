@@ -61,7 +61,8 @@ public class Role implements Serializable {
 //		this.flowConfig = flowConfig;
 //	}
 
-	@OneToMany(mappedBy = "role")
+//	@OneToMany(mappedBy = "role")
+	@Transient
 	public List<User> getUsers() {
 		return this.users;
 	}

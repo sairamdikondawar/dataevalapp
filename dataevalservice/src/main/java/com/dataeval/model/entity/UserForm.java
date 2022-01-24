@@ -12,11 +12,12 @@ import javax.persistence.*;
 @Entity
 @Table(name = "USER_FORMS")
 @NamedQuery(name = "UserForm.findAll", query = "SELECT u FROM UserForm u")
-public class UserForm implements Serializable {
+public class UserForm extends AuditEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private User user;
-	private List<UserPage> userPages;
+	
+//	private List<UserPage> userPages;
 
 	public UserForm() {
 	}
@@ -41,13 +42,6 @@ public class UserForm implements Serializable {
 		this.user = user;
 	}
 
-	@OneToMany(mappedBy = "userForm")
-	public List<UserPage> getUserPages() {
-		return userPages;
-	}
-
-	public void setUserPages(List<UserPage> userPages) {
-		this.userPages = userPages;
-	}
+	 
 
 }
