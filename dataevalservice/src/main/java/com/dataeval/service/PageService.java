@@ -99,8 +99,11 @@ public class PageService {
 		return deleted;
 
 	}
-
 	public List<FlowPageModel> findAll() {
+		return this.findAllByRole(null);
+	}
+
+	public List<FlowPageModel> findAllByRole(String role) {
 		List<FlowPageModel> modelsList = new ArrayList<FlowPageModel>();
 		try {
 			List<FlowPage> entityList = pageRepository.findAll();
@@ -122,6 +125,10 @@ public class PageService {
 					
 					for(Question ques:sec.getQuestions())
 					{
+						if(role != null&& !role.isEmpty()) {
+							ques.setReadonly(true);
+						}
+						
 						Question clonQue=new Question();
 						
 						BeanUtils.copyProperties(ques, clonQue);

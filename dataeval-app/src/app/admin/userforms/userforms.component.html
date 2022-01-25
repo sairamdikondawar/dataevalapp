@@ -25,7 +25,7 @@
             <!-- Status Column -->
             <ng-container matColumnDef="status">
                 <mat-header-cell *matHeaderCellDef> Created Date </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.creationDate}} </mat-cell>
+                <mat-cell *matCellDef="let row"> {{row.creationDate | date: "short":'IST'}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="required">

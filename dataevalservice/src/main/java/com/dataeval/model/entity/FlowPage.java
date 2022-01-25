@@ -13,6 +13,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.OrderBy;
+import org.hibernate.annotations.Where;
+
 /**
  * The persistent class for the FLOW_PAGES database table.
  * 
@@ -90,6 +93,8 @@ public class FlowPage implements Serializable {
 	}
 
 	@OneToMany(mappedBy = "page")
+	@Where(clause = "lower(status) like 'active'")
+	@OrderBy(clause = "sequence asc")
 	public List<PageSection> getPageSections() {
 		return pageSections;
 	}

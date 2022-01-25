@@ -1,4 +1,5 @@
 import { Lookup } from "./lookup.model";
+import { Section } from "./section.model";
 
 export class Field {
 

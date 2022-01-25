@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.OrderBy;
+import org.hibernate.annotations.Where;
+
 
 /**
  * The persistent class for the PAGE_SECTIONS database table.
@@ -78,6 +81,8 @@ public class PageSection implements Serializable {
 
 
 	@OneToMany(mappedBy = "section")
+	@Where(clause = "lower(status) like 'active'")
+	@OrderBy(clause = "sequence asc")
 	public List<Question> getQuestions() {
 		return questions;
 	}

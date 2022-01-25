@@ -18,6 +18,7 @@ import { CreateUserForm } from "src/app/model/user-form.model";
 import { CommonService } from "src/app/services/common.service";
 
 import { MatStep, MatStepper } from "@angular/material/stepper";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: 'app-multiform',
@@ -37,11 +38,13 @@ export class MultiformComponent implements OnInit {
 
   pages: Page[];
   formData: Array<Array<any>>;
+
+  role:string;
    
 
 
   firstPage: Page;
-  constructor(private fb: FormBuilder, private commonService: CommonService) {
+  constructor(private fb: FormBuilder, private commonService: CommonService,private route: ActivatedRoute) {
     // formGroups:[];
     this.formData = new Array<Array<any>>();
     
@@ -59,7 +62,9 @@ export class MultiformComponent implements OnInit {
 
   loadFields() {
     this.formGroups = [];
-    this.commonService.loadPages().pipe(
+
+    
+    this.commonService.loadPages({ role : this.role == null ? '' : this.role}).pipe(
         catchError(() => of([]))
       )
       .subscribe((result) => {
@@ -95,6 +100,7 @@ export class MultiformComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.role = this.route.snapshot.paramMap.get('role');
     this.loadFields();
   }
 

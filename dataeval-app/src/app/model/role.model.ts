@@ -4,11 +4,11 @@ export class Role {
 
     roleDesc: string;
 
-    roleName: string;
+    name: string;
 
-constructor(id: number, roleDesc: string, roleName:string) {
+constructor(id: number, roleDesc: string, name:string) {
         this.id = id;
         this.roleDesc = roleDesc;
-        this.roleName =roleName;
+        this.name =name;
     }
 }

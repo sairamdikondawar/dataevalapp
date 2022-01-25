@@ -6,5 +6,6 @@ export class UserField{
     controlName:string;
     required:boolean;
     readonly:boolean;
+    type:string;
 
 }

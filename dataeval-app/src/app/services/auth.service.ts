@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class AuthenticationService {
 
   // BASE_PATH: 'http://localhost:8080'
-  USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser'
+  USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
+
+   runningSubject = new BehaviorSubject(true);
+   running = this.runningSubject.asObservable();
+
+setRunning = (value: boolean) => {
+  this.runningSubject.next(value);
+}
 
   public username: String;
   public password: String;
@@ -25,6 +33,7 @@ export class AuthenticationService {
         this.username = username;
         this.password = password;
         this.registerSuccessfulLogin(username, password);
+        this.isUserLoggedIn();
       }));
   }
 
@@ -40,8 +49,9 @@ export class AuthenticationService {
 
   logout() {
     sessionStorage.removeItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME);
-    this.username= "";
-;    this.password = "";
+    this.username= null;
+;    this.password = null;
+this.isUserLoggedIn();
   }
 
   isUserLoggedIn() {
@@ -49,8 +59,10 @@ export class AuthenticationService {
     console.log("User Name :: "+user);
     if (user === null) {
       // this.router.navigateByUrl("/");
-      return true
+      this.setRunning(false);
+      return false
     }
+    this.setRunning(true)
     return true
   }
 

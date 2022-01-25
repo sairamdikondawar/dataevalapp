@@ -23,12 +23,12 @@ questionTypes(): Observable<any>{
     return this.http.get(endpoint);
 }
 
-loadPages(): Observable<any>{
+loadPages(params:any): Observable<any>{
 
   console.log("inside Pages service");
     const endpoint = 'http://localhost:8080/api/v1/lookup/pages';
      
-    return this.http.get(endpoint);
+    return this.http.get(endpoint , {params});
 }
 
 loadUserPages(id:string): Observable<any>{

@@ -9,15 +9,19 @@ public class CommonCriteria {
 
 	private Integer page = 1;
 
-	private Integer size = 10;
+	private Integer size = 12;
+	
+	private String columnName;
+	
+	private Integer order;
 
-	private List<OrderInfo> sort;
+	private List<SortInfo> sort;
 
-	public List<OrderInfo> getSort() {
+	public List<SortInfo> getSort() {
 		return sort;
 	}
 
-	public void setSort(List<OrderInfo> sort) {
+	public void setSort(List<SortInfo> sort) {
 		this.sort = sort;
 	}
 

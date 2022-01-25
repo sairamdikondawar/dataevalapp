@@ -8,6 +8,7 @@ export class Question {
     type: string;
     status :string;
     section: Section;
+    sequence:number;
 
 
 constructor(id: number, type: string, label:string, status:string) {

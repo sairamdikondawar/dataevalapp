@@ -1,25 +1,16 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { FlowconfigService } from 'src/app/services/flowconfig.service';
-import { Flowconfig } from 'src/app/model/flowconfig.model';
-import { FCDataSource } from 'src/app/datasoruce/fcdatasoruce/fcdatasoruce.service';
-import { tap } from 'rxjs/operators';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { Role } from 'src/app/model/role.model';
-import { RoleService } from 'src/app/services/role.service';
-import { catchError, finalize } from "rxjs/operators";
-import { Observable, BehaviorSubject, of } from "rxjs";
-import { Lookup } from 'src/app/model/lookup.model';
-import { FormControl, FormGroup, Validators, FormGroupDirective } from '@angular/forms';
-import { Question } from 'src/app/model/question.model';
-import { QuestionService } from 'src/app/services/question.service';
+import { MatSort, Sort } from '@angular/material/sort';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { of } from "rxjs";
+import { catchError, tap } from 'rxjs/operators';
 import { QuestionDataSouce } from 'src/app/datasoruce/fcdatasoruce/questiondatasouce.service';
-import { CommonService } from 'src/app/services/common.service';
+import { Lookup } from 'src/app/model/lookup.model';
+import { Question } from 'src/app/model/question.model';
 import { Section } from 'src/app/model/section.model';
-import { NULL_EXPR } from '@angular/compiler/src/output/output_ast';
-
+import { CommonService } from 'src/app/services/common.service';
+import { QuestionService } from 'src/app/services/question.service';
 
 
 @Component({
@@ -30,7 +21,7 @@ import { NULL_EXPR } from '@angular/compiler/src/output/output_ast';
 export class QuestionComponent implements OnInit {
 
 
- 
+
   types: Lookup[];
 
   sections: Lookup[];
@@ -41,16 +32,16 @@ export class QuestionComponent implements OnInit {
 
   selectedRoleId: number = 0;
 
- 
+
 
   selectedType: string = "-- Select Role --";
-  questionConfig = new Question(0,"", "","");
+  questionConfig = new Question(0, "", "", "");
 
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('closeFlowConfigModal') closeFlowConfigModal: ElementRef;
 
-  
+
   questionDataSouce: QuestionDataSouce;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -61,11 +52,12 @@ export class QuestionComponent implements OnInit {
 
     this.type = new Lookup(0, '');
   }
-  displayedColumns = ['id', 'flowName', 'role','status', 'required', 'actions'];
+  displayedColumns = ['id', 'flowName', 'role', 'status', 'sequence', 'section', 'required', 'actions'];
 
 
   ngOnInit() {
     this.questionDataSouce = new QuestionDataSouce(this.questionService);
+    this.questionDataSouce.sort = this.sort;
     this.questionDataSouce.list();
 
     this.commonService.questionTypes()
@@ -77,7 +69,7 @@ export class QuestionComponent implements OnInit {
       }
       );
 
-      this.commonService.loadSections()
+    this.commonService.loadSections()
       .pipe(
         catchError(() => of([]))
       )
@@ -115,7 +107,7 @@ export class QuestionComponent implements OnInit {
 
 
   open(content: any) {
-    this.questionConfig = new Question(0,"", "","");
+    this.questionConfig = new Question(0, "", "", "");
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -157,8 +149,8 @@ export class QuestionComponent implements OnInit {
     console.log('inside submit');
 
     this.questionConfig.label = this.questionForm.controls.questionName.value;
-    
-    this.questionConfig.status= this.questionForm.controls.status.value;
+
+    this.questionConfig.status = this.questionForm.controls.status.value;
 
     this.questionService.create(this.questionConfig)
       .pipe(
@@ -171,9 +163,9 @@ export class QuestionComponent implements OnInit {
       }
       );
     this.questionForm.reset();
-    
+
     this.modalService.dismissAll();
-    
+
   }
 
 
@@ -186,9 +178,9 @@ export class QuestionComponent implements OnInit {
 
   });
 
-   
 
-  questionEditForm= new FormGroup({
+
+  questionEditForm = new FormGroup({
     questionEName: new FormControl(this.questionConfig.label, [Validators.required,
     Validators.minLength(4)]),
     type: new FormControl(this.questionConfig.type, [Validators.required]),
@@ -207,21 +199,20 @@ export class QuestionComponent implements OnInit {
       size: 'lg'
     });
 
-    this.questionConfig=editFlow;
+    this.questionConfig = editFlow;
 
-    if( editFlow.section== null)
-    {
-      editFlow.section= new Section(null, null);
-    }  
-     
-    
+    if (editFlow.section == null) {
+      editFlow.section = new Section(null, null);
+    }
+
+
 
     this.questionEditForm.patchValue({
       id: editFlow.id,
       questionEName: editFlow.label,
       type: editFlow.type,
-      status:editFlow.status,
-      section:(editFlow.section != null ? editFlow.section.id : null)
+      status: editFlow.status,
+      section: (editFlow.section != null ? editFlow.section.id : null)
     });
     // this.selectedRole = editFlow.role.roleName;
     // this.role = this.roles[0];
@@ -236,12 +227,12 @@ export class QuestionComponent implements OnInit {
 
   resetCreateForm(formData: any, formDirective: FormGroupDirective) {
     this.questionForm.reset();
-    this.questionForm=new FormGroup({
+    this.questionForm = new FormGroup({
       questionName: new FormControl(this.questionConfig.label, [Validators.required,
       Validators.minLength(4)]),
       type: new FormControl(''),
       status: new FormControl('ACTIVE', [Validators.required])
-  
+
     });
   }
 
@@ -250,22 +241,22 @@ export class QuestionComponent implements OnInit {
     // this.vehicleForm.controls.VehicleMake.value
     console.log('inside submit');
 
-    this.questionConfig.label=this.questionEditForm.controls.questionEName.value;
-    this.questionConfig.status=this.questionEditForm.controls.status.value;
-    
+    this.questionConfig.label = this.questionEditForm.controls.questionEName.value;
+    this.questionConfig.status = this.questionEditForm.controls.status.value;
+
     this.questionService.update(this.questionConfig)
-    .pipe(
+      .pipe(
         catchError(() => of([]))
-         
-    )
-    .subscribe((result) => {
+
+      )
+      .subscribe((result) => {
         console.log(result + " result");
         this.questionDataSouce.list();
-    }
-    );
+      }
+      );
     this.questionEditForm.reset();
     this.modalService.dismissAll();
-   
+
   }
 
   selectSection(event: any) {
@@ -273,20 +264,16 @@ export class QuestionComponent implements OnInit {
     // console.log(event.target.value);
     console.log("Inside Select Section :" + event.target.value)
 
-    // this.type = filterByString(this.types, event.target.value);
-
     this.questionConfig.section.id = event.target.value;
-    // this.questionConfig.role.roleName = this.role.name;
-    // this.selectedRole = this.role.name;
-    // this.selectedRoleId = this.role.id;
-
-
-
 
     console.log("Inside Select Section :" + event.target.value)
   }
 
-
+  sortData(sort: Sort) {
+ 
+    this.questionDataSouce.sort = sort;
+    this.questionDataSouce.list();
+  }
 
 }
 

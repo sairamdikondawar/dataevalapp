@@ -1,7 +1,9 @@
-<app-menu></app-menu>
-
-<div class="container"> 
-  <mat-stepper linear #stepper class="bg-gradient">
+<div >
+  <div class="container-fluid rounded-top d-block  p-2 bg-dark text-white" style="margin-top: 5px; ;">
+    <label *ngIf="role == null" >User Form</label>
+    <label *ngIf="role != null" > {{role | titlecase}} Form</label>
+  </div>
+  <mat-stepper linear #stepper >
     <div *ngFor="let form of formGroups; let i = index; trackBy: trackByFn;">
       <mat-step [stepControl]="form" editable>
         <form [formGroup]="form" (ngSubmit)="nextClick(form.value,i)">
@@ -16,19 +18,49 @@
                 </mat-panel-title>
 
               </mat-expansion-panel-header>
+              <br/>
               <div class="container">
                 <div class="row">
-                  <div *ngFor="let fields of section.fields; let k=index" class="{{section.layout == 2 ?  'col-6' :'col-12'}}">
+                  <div *ngFor="let field of section.fields; let k=index"
+                    class="{{section.layout == 2 ?  'col-6' :'col-12'}}" [ngSwitch]="field.type">
                     <div class="form-group">
                       <!--     -->
-                      <label for="{{fields.controlName}}">{{fields.label}} {{fields.required ? '*' :''}}  </label>
-                      <div class="input-group">
-                        <mat-form-field appearance="outline">
-                           
-                          <input matInput placeholder="Type here...."  readonly="{{fields.readonly}}" required={{fields.required}} formControlName={{fields.controlName}}>
-                        </mat-form-field>
+                      <label for="{{field.controlName}}">({{k+1}}). {{field.label}} {{field.required ? '*' :''}} </label>
+                     
+
+                        <div *ngSwitchCase="'Text'">
+                          <mat-form-field appearance="outline" style="width: 100%">
+                            <input matInput placeholder="Type here...." readonly="{{field.readonly}}" 
+                              required={{field.required}} formControlName={{field.controlName}}>
+                          </mat-form-field>
+                        </div>
+                        <div *ngSwitchCase="'Date'">
+                          <mat-form-field appearance="outline">
+                            <input matInput type="date" placeholder="Type here...." readonly="{{field.readonly}}"
+                              required={{field.required}} formControlName={{field.controlName}}>
+                          </mat-form-field>
+                        </div>
+
+                        <div *ngSwitchCase="'Radio'">
+
+                          <mat-form-field appearance="outline" style="width: 100%"> 
+
+                            <input matInput style="display: none;" required={{field.required}}
+                              readonly="{{field.readonly}}" formControlName={{field.controlName}}>
+
+                            <mat-radio-group aria-label="test" required={{field.required}}
+                              formControlName={{field.controlName}}>
+                              <mat-radio-button value="Yes" disabled="{{field.readonly}}">Yes</mat-radio-button>
+                              &nbsp;
+                              <mat-radio-button value="No" disabled="{{field.readonly}}">No</mat-radio-button>
+                            </mat-radio-group>
+                          </mat-form-field>
+
+
+                        </div>
+
                         &nbsp;
-                      </div>
+                       
                     </div>
                     <div class="w-100"></div>
                   </div>
@@ -82,4 +114,4 @@
       </div>
     </mat-step> -->
   </mat-stepper>
-</div>
+ </div>

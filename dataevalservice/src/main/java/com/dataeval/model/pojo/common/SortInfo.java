@@ -5,7 +5,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 @Data
-public class OrderInfo implements Serializable {
+public class SortInfo implements Serializable {
 	/**
 	 * 
 	 */

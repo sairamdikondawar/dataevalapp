@@ -2,9 +2,11 @@ import { Section } from "./section.model";
 
 export class Page {
 
+    id:number;
     label: string;
      sections:Array<Section>;
      _layout:number=1;
+     status:string;
     
 
 constructor(label: string, sections:Array<Section>) {

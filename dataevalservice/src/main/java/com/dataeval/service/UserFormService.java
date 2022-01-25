@@ -1,5 +1,6 @@
 package com.dataeval.service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ import com.dataeval.model.entity.UserSection;
 import com.dataeval.model.pojo.SubmitFormModel;
 import com.dataeval.model.pojo.UserFormModel;
 import com.dataeval.model.pojo.common.CommonCriteria;
+import com.dataeval.model.pojo.common.SortInfo;
 import com.dataeval.repository.QuestionRepository;
 import com.dataeval.repository.UserFormRepository;
 import com.dataeval.repository.UserPageRepository;
@@ -48,7 +50,7 @@ public class UserFormService {
 
 	@Autowired
 	private QuestionRepository questionRepository;
-	
+
 	@Autowired
 	private UserQuestionRepository userQuestionRepository;
 
@@ -62,20 +64,25 @@ public class UserFormService {
 		}
 		try {
 			UserForm entity = new UserForm();
+			
 			entity.setUser(userRepository.findById(1).get());
+			entity.setCreatedBy("admin");
+			entity.setCreationDate(new Date(System.currentTimeMillis()));
+			entity.setUpdatedDate(new Date(System.currentTimeMillis()));
+			entity.setUpdatedBy("admin");
 			entity = userFormRepository.save(entity);
 
 			List<Integer> fieldsIds = new ArrayList<Integer>();
 			Map<Integer, String> filedAndValuesMap = new HashMap<Integer, String>();
 			model.getUserQuestions().forEach(ques -> {
-				Integer fieldId=Integer.parseInt(ques.getName().replaceAll("field", ""));
+				Integer fieldId = Integer.parseInt(ques.getName().replaceAll("field", ""));
 				fieldsIds.add(fieldId);
 				filedAndValuesMap.put(fieldId, ques.getAnswer());
 			});
 
 			List<Question> questions = questionRepository.findAllById(fieldsIds);
 
-			saveUserQuestions(questions, entity,filedAndValuesMap);
+			saveUserQuestions(questions, entity, filedAndValuesMap);
 
 		} catch (Exception e) {
 			log.error("Error while create  UserForm :: ", e);
@@ -146,15 +153,23 @@ public class UserFormService {
 
 	public Page<UserFormModel> findAll(CommonCriteria commonCriteria) {
 		try {
+			SortInfo sort = new SortInfo();
+			sort.setColumnName("creationDate");
+			sort.setOrder(0);
+
+			List<SortInfo> sortInfo = new ArrayList<SortInfo>();
+			sortInfo.add(sort);
+			commonCriteria.setSort(sortInfo);
 			Page<UserForm> entityList = userFormRepository.findAll(Util.getPageObjectFromCriteria(commonCriteria));
-			return PageModelObjects.getPageUserFormModelFromPageEntities(entityList);
+ 			return PageModelObjects.getPageUserFormModelFromPageEntities(entityList);
 		} catch (Exception e) {
 			log.error("Error while findAll  UserForms ", e);
 			throw e;
 		}
 	}
 
-	public List<UserQuestion> saveUserQuestions(List<Question> questions, UserForm userForm,Map<Integer, String> filedAndValuesMap) {
+	public List<UserQuestion> saveUserQuestions(List<Question> questions, UserForm userForm,
+			Map<Integer, String> filedAndValuesMap) {
 		List<UserQuestion> userQuestions = new ArrayList<UserQuestion>();
 		Map<Integer, UserPage> userPageMap = new HashMap<Integer, UserPage>();
 		Map<Integer, UserSection> userSectionMap = new HashMap<Integer, UserSection>();
@@ -168,6 +183,7 @@ public class UserFormService {
 				userQuestion.setQuestionId(question.getId());
 				userQuestion.setName(question.getName());
 				userQuestion.setRequired(question.getRequired());
+				userQuestion.setType(question.getType());
 
 				PageSection ps = question.getSection();
 				FlowPage fp = ps.getPage();
@@ -200,7 +216,7 @@ public class UserFormService {
 				userQuestion.setUserSection(us);
 				userQuestions.add(userQuestion);
 			});
-			
+
 			userQuestionRepository.saveAll(userQuestions);
 
 		} catch (Exception e) {

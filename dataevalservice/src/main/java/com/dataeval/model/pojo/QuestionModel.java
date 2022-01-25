@@ -32,6 +32,7 @@ public class QuestionModel implements Serializable {
 	private Boolean readonly;
 
 	private String answer;
+	private Integer sequence;
 
 	@SuppressWarnings("unused")
 	private String controlName;

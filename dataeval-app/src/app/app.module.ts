@@ -62,6 +62,7 @@ import { FormComponent } from './shared/form/form.component';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { UserformsComponent } from './admin/userforms/userforms.component';
 import { UserformdetailsComponent } from './admin/userformdetails/userformdetails.component';
+import { SectionsComponent } from './admin/sections/sections.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -74,7 +75,8 @@ import { UserformdetailsComponent } from './admin/userformdetails/userformdetail
     MultiformComponent,
     FormComponent,
     UserformsComponent,
-    UserformdetailsComponent
+    UserformdetailsComponent,
+    SectionsComponent
   ],
   imports: [
     BrowserModule,

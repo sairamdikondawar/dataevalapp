@@ -19,7 +19,8 @@ export class QuestionService {
   
 
 list(params :any): Observable<any>{
-    const endpoint = 'http://localhost:8080/api/v1/question-config/questions?'+encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}');//environment.apiUrl + "/todos";
+    const endpoint = 'http://localhost:8080/api/v1/question-config/questions';
+    // encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}');//environment.apiUrl + "/todos";
      
     return this.http.get(endpoint, { params });
 }

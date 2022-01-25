@@ -1,16 +1,32 @@
-<app-menu></app-menu>
-<div class="container">
+ 
+ <div style="width:100%">
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+          <div class="md-form">
+            <input
+              type="text"
+              
+              class="form-control"
+              id="search"
+              mdbInput
+            />
+            <label for="search">Search</label>
+          </div>
+        </div>
+      </div>
+
+    
     <div style="margin-top:10px; margin-bottom: 10px; text-align: right; margin-right: 50px;">
         <button type="button" class="btn btn-secondary" (click)="open(content)">Add</button>
     </div>
-    <div class="example-container mat-elevation-z8">
+    <div class="mat-elevation-z8">
 
-        <mat-table [dataSource]="questionDataSouce">
+        <mat-table [dataSource]="questionDataSouce" matSort (matSortChange)="sortData($event)">
             <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
 
             <ng-container matColumnDef="id">
-                <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
             </ng-container><!-- Progress Column -->
             <ng-container matColumnDef="role">
@@ -28,6 +44,16 @@
             <ng-container matColumnDef="status">
                 <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.status}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="sequence">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Sequence </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.sequence}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="section">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Section </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.section.label}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="required">
@@ -51,7 +77,7 @@
         <mat-paginator [pageSizeOptions]="[10, 25, 100]" [pageSize]="10"></mat-paginator>
 
     </div>
-</div>
+ 
 
 <ng-template #content let-modal>
     <div class="modal-header">
@@ -204,6 +230,5 @@
 </ng-template>
 
 
-<hr>
-
-<pre>{{ closeResult }}</pre>
+</div>
+ 

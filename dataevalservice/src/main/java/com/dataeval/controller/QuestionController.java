@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.dataeval.model.pojo.QuestionModel;
 import com.dataeval.model.pojo.common.CommonCriteria;
+import com.dataeval.model.pojo.common.SortInfo;
 import com.dataeval.model.response.EmptySuccessResponse;
 import com.dataeval.model.response.ErrorResponse;
 import com.dataeval.service.QuestionService;
@@ -44,17 +45,13 @@ public class QuestionController {
 	private String[] argumentsToReplace = new String[5];
 
 	@GetMapping("/questions")
-	public Page<QuestionModel> list(@RequestParam(required = false) String searchCriteria, Integer page, Integer size) {
+	public Page<QuestionModel> list( CommonCriteria common) {
 		try {
-			CommonCriteria common = Util.getObjectMapper().readValue(searchCriteria.toString(), CommonCriteria.class);
-
-			common.setPage(page);
-			common.setSize(size);
 
 			return questionService.findAll(common);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		} 
 		return Page.empty();
 	}
 

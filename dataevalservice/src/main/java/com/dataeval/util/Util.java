@@ -9,7 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import com.dataeval.model.pojo.common.CommonCriteria;
-import com.dataeval.model.pojo.common.OrderInfo;
+import com.dataeval.model.pojo.common.SortInfo;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,11 +48,21 @@ public class Util {
 
 		try {
 
-			List<OrderInfo> sortInfo = criteria.getSort();
+			List<SortInfo> sortInfo = criteria.getSort();
 			Sort sortFinal = null;
+			
+			if(criteria.getColumnName()!=null && criteria.getOrder() !=null)
+			{
+				String column=criteria.getColumnName().replaceAll("\"", "");
+				sortFinal=Sort.by(column);
+				if (criteria.getOrder() == 1) {
+					sortFinal = sortFinal.descending();
+				}
+			}
+			
 			if (sortInfo != null) {
 
-				for (OrderInfo sort : sortInfo) {
+				for (SortInfo sort : sortInfo) {
 					if (sort.getColumnName() != null) {
 						if (sortFinal == null) {
 							sortFinal = Sort.by(sort.getColumnName());
@@ -62,7 +72,7 @@ public class Util {
 						} else {
 							Sort columSort = Sort.by(sort.getColumnName());
 
-							if (sort.getOrder() == 0) {
+							if (sort.getOrder() == 1) {
 								columSort = columSort.descending();
 							}
 							sortFinal = sortFinal.and(columSort);
@@ -90,9 +100,9 @@ public class Util {
 													// in particular table
 
 		try {
-			List<OrderInfo> sortInfo = criteria.getSort();
+			List<SortInfo> sortInfo = criteria.getSort();
 			if (sortInfo != null) {
-				for (OrderInfo sort : sortInfo) {
+				for (SortInfo sort : sortInfo) {
 					if (sort.getColumnName() != null) {
 						if (sortFinal == null) {
 							sortFinal = Sort.by(sort.getColumnName());

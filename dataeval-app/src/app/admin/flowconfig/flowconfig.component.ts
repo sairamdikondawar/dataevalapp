@@ -13,6 +13,7 @@ import { catchError, finalize } from "rxjs/operators";
 import { Observable, BehaviorSubject, of } from "rxjs";
 import { Lookup } from 'src/app/model/lookup.model';
 import { FormControl, FormGroup, Validators, FormGroupDirective } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -54,7 +55,7 @@ export class FlowconfigComponent implements OnInit {
 
   constructor(private flowconfigservice: FlowconfigService,
     private modalService: NgbModal,
-    private roleService: RoleService) {
+    private roleService: RoleService, private router:Router) {
 
     this.role = new Lookup(0, '');
   }
@@ -128,7 +129,7 @@ export class FlowconfigComponent implements OnInit {
     this.role = filterByString(this.roles, event.target.value);
 
     this.newFlowConfig.role.id = this.role.id;
-    this.newFlowConfig.role.roleName = this.role.name;
+    this.newFlowConfig.role.name = this.role.name;
     this.selectedRole = this.role.name;
     this.selectedRoleId = this.role.id;
 
@@ -158,11 +159,12 @@ export class FlowconfigComponent implements OnInit {
       )
       .subscribe((result) => {
         console.log(result + " result");
-      }
-      );
-    this.flowConfigForm.reset();
+        this.flowConfigForm.reset();
     this.modalService.dismissAll();
     this.fcDataSource.loadTodos();
+      }
+      );
+    
   }
 
 
@@ -193,14 +195,23 @@ export class FlowconfigComponent implements OnInit {
     this.flowConfigEditForm.patchValue({
       id: editFlow.id,
       flowConfigEName: editFlow.flowName,
-      roleName: editFlow.role.roleName,
+      roleName: editFlow.role.name,
     });
-    this.selectedRole = editFlow.role.roleName;
+    this.selectedRole = editFlow.role.name;
     this.role = this.roles[0];
-    console.log(editFlow.role.roleName);
+    console.log(editFlow.role.name);
     this.selectedRoleId = editFlow.role.id;
     console.log(this.role);
   }
+
+  viewUserForm(targetModal: any, editFlow: Flowconfig) {
+
+    console.log("inside edit flow : " + editFlow)
+     
+    this.router.navigate(['/patient/' + editFlow.role.name]);
+  }
+
+
   get flowConfigName() { return this.flowConfigForm.get('flowConfigName'); }
 
   get flowConfigEName() { return this.flowConfigEditForm.get('flowConfigEName'); }
@@ -211,8 +222,6 @@ export class FlowconfigComponent implements OnInit {
   }
 
   updateFlowConfig() {
-
-    // this.vehicleForm.controls.VehicleMake.value
     console.log('inside submit');
 
     this.newFlowConfig.flowName=this.flowConfigEditForm.controls.flowConfigEName.value;
@@ -232,44 +241,13 @@ export class FlowconfigComponent implements OnInit {
     this.modalService.dismissAll();
    
   }
-
-
-
+ 
 }
-
-
+ 
 function filterByString(data: Lookup[], s: string) {
   return data.filter(e => (e.name == s))[0];
 }
-
-
-
-/** Builds and returns a new User. */
-// function createNewUser(id: number): UserData {
-//   const name =
-//       NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-//       NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
-
-//   return {
-//     id: id.toString(),
-//     name: name,
-//     progress: Math.round(Math.random() * 100).toString(),
-//     color: COLORS[Math.round(Math.random() * (COLORS.length - 1))]
-//   };
-// }
-
-/** Constants used to fill up our data base. */
-const COLORS = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
-  'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
-const NAMES = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
-  'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
-  'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
-
-// export interface UserData {
-//   id: string;
-//   name: string;
-//   progress: string;
-//   color: string;
-// }
+ 
+ 
 
 

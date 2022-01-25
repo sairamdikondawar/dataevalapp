@@ -19,6 +19,7 @@ public class Question implements Serializable {
 	private FlowConfig flowConfig;
 	private FlowPage flowPage;
 	private PageSection section;
+	private Integer sequence;
 
 	private Boolean required = false;
 	private Boolean readonly = false;
@@ -123,6 +124,15 @@ public class Question implements Serializable {
 
 	public void setAnswer(String answer) {
 		this.answer = answer;
+	}
+
+	@Column(name="SEQUENCE")
+	public Integer getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(Integer sequence) {
+		this.sequence = sequence;
 	}
 
 }
