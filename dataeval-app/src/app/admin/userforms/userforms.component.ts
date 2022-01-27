@@ -7,6 +7,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { UserFormDataSouce } from 'src/app/datasoruce/fcdatasoruce/ufdatasouce.service';
+import { UserQuery } from 'src/app/model/common/userquery.model';
 import { Lookup } from 'src/app/model/lookup.model';
 import { UserForm } from 'src/app/model/user/userform.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -20,7 +21,9 @@ import { UserFormService } from 'src/app/services/userform.service';
 export class UserformsComponent implements OnInit {
 
 
+   currentPageIndex:number=0;
 
+   searchForm:FormGroup;
 
 
 
@@ -32,7 +35,7 @@ export class UserformsComponent implements OnInit {
   @ViewChild('closeFlowConfigModal') closeFlowConfigModal: ElementRef;
 
 
-  questionDataSouce: UserFormDataSouce;
+  dataSource: UserFormDataSouce;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -46,12 +49,18 @@ export class UserformsComponent implements OnInit {
 
 
   ngOnInit() {
-    this.questionDataSouce = new UserFormDataSouce(this.userFormService);
-    this.questionDataSouce.list();
+    this.dataSource = new UserFormDataSouce(this.userFormService);
+    this.dataSource.list();
+
+    this.searchForm=new FormGroup({
+      uName:new FormControl(''),
+      rName:new FormControl(''),
+      startDate:new FormControl('')
+    })
   }
 
   ngAfterViewInit() {
-    this.questionDataSouce.counter$
+    this.dataSource.counter$
       .pipe(
         tap((count: any) => {
           this.paginator.length = count;
@@ -67,7 +76,16 @@ export class UserformsComponent implements OnInit {
   }
 
   list() {
-    this.questionDataSouce.list(this.paginator.pageIndex, this.paginator.pageSize);
+
+    this.dataSource.query=new UserQuery();
+    if(this.searchForm.controls.uName.value!=null)
+      this.dataSource.query.userName=this.searchForm.controls.uName.value;
+      this.dataSource.query.startDate=this.searchForm.controls.startDate.value;
+    this.dataSource.query.roleName=this.searchForm.controls.rName.value!=null ? this.searchForm.controls.rName.value : "";
+    this.dataSource.list(this.paginator.pageIndex, this.paginator.pageSize);
+
+
+    this.dataSource.list(this.paginator.pageIndex, this.paginator.pageSize);
   }
 
 
@@ -76,6 +94,29 @@ export class UserformsComponent implements OnInit {
     this.router.navigate(['/userformdetails/' + formId]
     );
 
+  }
+  onPaginateChange(event:any){
+    this.currentPageIndex= event.pageIndex ==  0 ? 0 :(event.pageIndex)*10;
+  }
+
+  search()
+  { 
+  if(this.searchForm.controls.uName.value!=null)
+     this.dataSource.query.userName=this.searchForm.controls.uName.value;
+     this.dataSource.query.startDate=this.searchForm.controls.startDate.value;
+    this.dataSource.query.roleName=this.searchForm.controls.rName.value !=null ? this.searchForm.controls.rName.value : "";
+    this.dataSource.list();
+  }
+  resetSearch()
+  {
+    this.dataSource.query=new UserQuery();
+    this.dataSource.query.userName='';
+    this.dataSource.query.roleName="";
+    this.dataSource.query.startDate=null;
+    this.searchForm.controls.startDate.setValue("");
+    this.searchForm.reset();
+    this.dataSource.list();
+    // alert(this.searchForm.controls.sname.value +  "  "+this.dataSource.query.sectionId)
   }
 
 

@@ -16,7 +16,7 @@ export class PageService {
   } 
 
 list(params :any): Observable<any>{
-    const endpoint = 'http://localhost:8080/api/v1/page-config/page?'+encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}');//environment.apiUrl + "/todos";
+    const endpoint = 'http://localhost:8080/api/v1/page-config/pages?'+encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}');//environment.apiUrl + "/todos";
     return this.http.get(endpoint, { params });
 }
 

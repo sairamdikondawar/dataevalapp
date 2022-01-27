@@ -7,6 +7,7 @@ export class Page {
      sections:Array<Section>;
      _layout:number=1;
      status:string;
+     sequence:number;
     
 
 constructor(label: string, sections:Array<Section>) {

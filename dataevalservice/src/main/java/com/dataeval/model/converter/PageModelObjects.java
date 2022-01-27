@@ -97,11 +97,20 @@ public class PageModelObjects {
 	}
 
 	public static Page<PageSectionModel> getPagePageSectionModelFromPageEntities(Page<PageSection> entities) {
+		 return getPagePageSectionModelFromPageEntities(entities, false);
+	}
+	
+	public static Page<PageSectionModel> getPagePageSectionModelFromPageEntities(Page<PageSection> entities, boolean deepClone) {
 		Page<PageSectionModel> dtoPage = entities.map(new Function<PageSection, PageSectionModel>() {
 			@Override
 			public PageSectionModel apply(PageSection entity) {
 				PageSectionModel dto = EntityModelConverter.getPageSectionModel(entity);
-				dto.setQuestions(ListModelObject.getListQuestionModelFromListEntities(entity.getQuestions()));
+				dto.setQuestions(null);
+				if(deepClone)
+				{
+					dto.setQuestions(ListModelObject.getListQuestionModelFromListEntities(entity.getQuestions()));
+				}
+				dto.setPage(EntityModelConverter.getFlowPageModel(entity.getPage()));
 				return dto;
 			}
 		});

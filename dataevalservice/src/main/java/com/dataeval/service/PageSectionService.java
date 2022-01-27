@@ -17,6 +17,7 @@ import com.dataeval.model.entity.PageSection;
 import com.dataeval.model.pojo.PageSectionModel;
 import com.dataeval.model.pojo.common.CommonCriteria;
 import com.dataeval.model.pojo.common.LookupModel;
+import com.dataeval.repository.PageRepository;
 import com.dataeval.repository.PageSectionRepository;
 import com.dataeval.util.Util;
 
@@ -27,6 +28,9 @@ public class PageSectionService {
 
 	@Autowired
 	private PageSectionRepository pageSectionRepository;
+	
+	@Autowired
+	private PageRepository pageRepository;
 
 	public List<PageSection> loadPageSectionNameAndIdWithNoSec() {
 		return pageSectionRepository.findAll();
@@ -38,6 +42,7 @@ public class PageSectionService {
 		}
 		try {
 			PageSection entity = ModelToEntityConverter.getPageSectionEntity(model);
+			entity.setPage(pageRepository.findById(model.getPage().getId()).get());
 			entity = pageSectionRepository.save(entity);
 			model = EntityModelConverter.getPageSectionModel(entity);
 
@@ -57,6 +62,7 @@ public class PageSectionService {
 		}
 		try {
 			PageSection entity = ModelToEntityConverter.getPageSectionEntity(model);
+			entity.setPage(pageRepository.findById(model.getPage().getId()).get());
 			entity = pageSectionRepository.save(entity);
 			model = EntityModelConverter.getPageSectionModel(entity);
 
@@ -128,7 +134,7 @@ public class PageSectionService {
 		try {
 			Page<PageSection> entityList = pageSectionRepository
 					.findAll(Util.getPageObjectFromCriteria(commonCriteria));
-			return PageModelObjects.getPagePageSectionModelFromPageEntities(entityList);
+			return PageModelObjects.getPagePageSectionModelFromPageEntities(entityList, Boolean.FALSE);
 		} catch (Exception e) {
 			log.error("Error while findAll  PageSections ", e);
 			throw e;

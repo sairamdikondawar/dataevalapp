@@ -1,4 +1,5 @@
 import { Field } from "./field.model";
+import { Page } from "./page.model";
 
 export class Section {
 
@@ -7,11 +8,14 @@ export class Section {
     layout:number;
     fields:Array<Field>;
     status:string;
+    sequence:number;
+    page:Page;
     
 
     constructor(label: string, fields:Array<Field>) {
         this.label = label;
         this.fields=fields;
+        this.page=new Page(null, null);
          
     }
 

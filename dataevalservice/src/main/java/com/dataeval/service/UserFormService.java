@@ -27,6 +27,7 @@ import com.dataeval.model.pojo.SubmitFormModel;
 import com.dataeval.model.pojo.UserFormModel;
 import com.dataeval.model.pojo.common.CommonCriteria;
 import com.dataeval.model.pojo.common.SortInfo;
+import com.dataeval.model.pojo.common.UserFormsQuery;
 import com.dataeval.repository.QuestionRepository;
 import com.dataeval.repository.UserFormRepository;
 import com.dataeval.repository.UserPageRepository;
@@ -151,7 +152,7 @@ public class UserFormService {
 		return modelsList;
 	}
 
-	public Page<UserFormModel> findAll(CommonCriteria commonCriteria) {
+	public Page<UserFormModel> findAll(UserFormsQuery commonCriteria) {
 		try {
 			SortInfo sort = new SortInfo();
 			sort.setColumnName("creationDate");
@@ -160,7 +161,7 @@ public class UserFormService {
 			List<SortInfo> sortInfo = new ArrayList<SortInfo>();
 			sortInfo.add(sort);
 			commonCriteria.setSort(sortInfo);
-			Page<UserForm> entityList = userFormRepository.findAll(Util.getPageObjectFromCriteria(commonCriteria));
+			Page<UserForm> entityList = userFormRepository.findAllUserFomrs(commonCriteria.getRoleName(), commonCriteria.getUserName(), null,Util.getPageObjectFromCriteria(commonCriteria));
  			return PageModelObjects.getPageUserFormModelFromPageEntities(entityList);
 		} catch (Exception e) {
 			log.error("Error while findAll  UserForms ", e);

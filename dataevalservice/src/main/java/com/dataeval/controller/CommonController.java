@@ -78,6 +78,22 @@ public class CommonController {
 		return new ResponseEntity<List<FlowPageModel>>(models, HttpStatus.OK);
 	}
 	
+	@GetMapping("/lpages")
+	public ResponseEntity<?> lookupPages() {
+
+		List<FlowPageModel> models = null;
+		try {
+			models = pageService.lookupPages();
+		} catch (Exception e) {
+			String localizedErrorMessage = messageSource.getMessage("pages.nodata.found", null, currentLocale);
+			ErrorResponse resp = new ErrorResponse(localizedErrorMessage);
+			return new ResponseEntity<ErrorResponse>(resp, HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<List<FlowPageModel>>(models, HttpStatus.OK);
+	}
+	
+	
 	@GetMapping("/sections")
 	public ResponseEntity<?> lookupSections() {
 

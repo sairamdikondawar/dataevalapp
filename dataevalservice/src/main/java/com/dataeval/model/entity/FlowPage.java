@@ -32,8 +32,15 @@ public class FlowPage implements Serializable {
 	private List<Question> questions;
 	private List<PageSection> pageSections;
 	private Integer layoutColumns;
+	private String status;
 
 	public FlowPage() {
+	}
+
+	public FlowPage(Integer id, String name) {
+
+		this.id = id;
+		this.name = name;
 	}
 
 	@Id
@@ -101,6 +108,15 @@ public class FlowPage implements Serializable {
 
 	public void setPageSections(List<PageSection> pageSections) {
 		this.pageSections = pageSections;
+	}
+
+	@Column(name = "STATUS")
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

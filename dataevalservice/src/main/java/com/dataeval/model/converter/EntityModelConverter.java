@@ -44,9 +44,18 @@ public class EntityModelConverter {
 	}
 
 	public static FlowPageModel getFlowPageModel(FlowPage entity) {
+		return getFlowPageModel(entity, false);
+	}
+	
+	public static FlowPageModel getFlowPageModel(FlowPage entity, boolean deepClone) {
 		FlowPageModel model = new FlowPageModel();
 		try {
+			if(!deepClone)
+			  entity.setPageSections(null);
 			BeanUtils.copyProperties(entity, model);
+			
+			if(!deepClone)
+				model.setSections(null);
 		} catch (Exception e) {
 			log.error("Unable to prepare FlowPageModel Object", e);
 		}

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dataeval.model.pojo.SubmitFormModel;
 import com.dataeval.model.pojo.UserFormModel;
 import com.dataeval.model.pojo.common.CommonCriteria;
+import com.dataeval.model.pojo.common.UserFormsQuery;
 import com.dataeval.model.response.EmptySuccessResponse;
 import com.dataeval.model.response.ErrorResponse;
 import com.dataeval.service.UserFormService;
@@ -66,12 +67,9 @@ public class UserFormController {
 	}
 
 	@GetMapping
-	public Page<UserFormModel> list(@RequestParam(required = false) String searchCriteria, Integer page, Integer size) {
+	public Page<UserFormModel> list(UserFormsQuery common) {
 		try {
-			CommonCriteria common = Util.getObjectMapper().readValue(searchCriteria.toString(), CommonCriteria.class);
-			common.setPage(page);
-			common.setSize(size);
-
+			 
 			return userFormService.findAll(common);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.dataeval.model.constants.CommonConstants;
 import com.dataeval.model.converter.EntityModelConverter;
 import com.dataeval.model.converter.ListModelObject;
 import com.dataeval.model.converter.ModelToEntityConverter;
@@ -106,7 +107,7 @@ public class PageService {
 	public List<FlowPageModel> findAllByRole(String role) {
 		List<FlowPageModel> modelsList = new ArrayList<FlowPageModel>();
 		try {
-			List<FlowPage> entityList = pageRepository.findAll();
+			List<FlowPage> entityList = pageRepository.findAllByStatusOrderBySequenceAsc(CommonConstants.ACTIVE);
 			
 			FlowPage reviewPage=new FlowPage();
 			reviewPage.setName("Review & Submit");
@@ -148,7 +149,7 @@ public class PageService {
 			reviewPage.setPageSections(allSections);
 			entityList.add(reviewPage);
 			
-			modelsList = ListModelObject.getListFlowPageModelFromListEntities(entityList);
+			modelsList = ListModelObject.getListFlowPageModelFromListEntities(entityList, true);
 		} catch (Exception e) {
 			log.error("Error while findAll  FlowPages ", e);
 		}
@@ -159,6 +160,16 @@ public class PageService {
 		try {
 			Page<FlowPage> entityList = pageRepository.findAll(Util.getPageObjectFromCriteria(commonCriteria));
 			return PageModelObjects.getPageFlowPageModelFromPageEntities(entityList);
+		} catch (Exception e) {
+			log.error("Error while findAll  FlowPages ", e);
+			throw e;
+		}
+	}
+	
+	public List<FlowPageModel> lookupPages() {
+		try {
+			List<FlowPage> entityList = pageRepository.lookupPages();
+			return ListModelObject.getListFlowPageModelFromListEntities(entityList,false);
 		} catch (Exception e) {
 			log.error("Error while findAll  FlowPages ", e);
 			throw e;

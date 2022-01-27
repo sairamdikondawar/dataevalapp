@@ -74,6 +74,8 @@ export class MultiformComponent implements OnInit {
         // this.setTestData(true);
         this.pages.forEach((page) => {
           let form: any = {};
+          if(page.sections!=null)
+         {
           page.sections.forEach(section => {
     
             section.fields.forEach(field => {
@@ -82,6 +84,7 @@ export class MultiformComponent implements OnInit {
             });
     
           });
+         }
           this.formGroups.push(new FormGroup(form));
           
         });

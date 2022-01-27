@@ -31,6 +31,14 @@ loadPages(params:any): Observable<any>{
     return this.http.get(endpoint , {params});
 }
 
+lookupPages(): Observable<any>{
+
+  console.log("inside Pages service");
+    const endpoint = 'http://localhost:8080/api/v1/lookup/lpages';
+     
+    return this.http.get(endpoint );
+}
+
 loadUserPages(id:string): Observable<any>{
 
   console.log("inside User Pages service");

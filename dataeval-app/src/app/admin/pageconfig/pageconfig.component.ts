@@ -27,20 +27,19 @@ export class PageconfigComponent implements OnInit {
 
 
 
-  types: Lookup[];
-
-  sections: Lookup[];
+   sequenceOptions:Array<number>;
 
   filterTypes: Lookup[];
 
   type: Lookup;
 
   selectedRoleId: number = 0;
+  currentPageIndex:number=0;
 
 
 
   selectedType: string = "-- Select Role --";
-  pageConfig = new Page(null, null);
+  model = new Page(null, null);
 
 
   @ViewChild(MatSort) sort: MatSort;
@@ -57,31 +56,19 @@ export class PageconfigComponent implements OnInit {
 
     this.type = new Lookup(0, '');
   }
-  displayedColumns = ['id', 'flowName', 'role', 'status', 'sequence', 'section', 'required', 'actions'];
+  displayedColumns = ['id', 'name',   'status', 'sequence', 'actions'];
 
 
   ngOnInit() {
     this.dataSource = new PageDataSouce(this.service);
     this.dataSource.sort = this.sort;
     this.dataSource.list();
-
-    this.commonService.questionTypes()
-      .pipe(
-        catchError(() => of([]))
-      )
-      .subscribe((result) => {
-        this.types = (result);
-      }
-      );
-
-    this.commonService.loadSections()
-      .pipe(
-        catchError(() => of([]))
-      )
-      .subscribe((result) => {
-        this.sections = (result);
-      }
-      );
+    this.sequenceOptions=[];
+    for (var _i = 1; _i < 100; _i++) {
+      this.sequenceOptions.push(_i);
+      console.log(this.sequenceOptions);
+  }
+      
 
   }
 
@@ -112,7 +99,7 @@ export class PageconfigComponent implements OnInit {
 
 
   open(content: any) {
-    this.pageConfig = new Page(null, null);
+    this.model = new Page(null, null);
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -132,16 +119,16 @@ export class PageconfigComponent implements OnInit {
 
    
 
-  saveFlowConfig() {
-
-    // this.vehicleForm.controls.VehicleMake.value
+  save() {
+ 
     console.log('inside submit');
 
-    this.pageConfig.label = this.pageForm.controls.questionName.value;
+    this.model.label = this.createForm.controls.sName.value;
 
-    this.pageConfig.status = this.pageForm.controls.status.value;
+    this.model.status = this.createForm.controls.status.value;
+    this.model.sequence=this.createForm.controls.sequence.value;
 
-    this.service.create(this.pageConfig)
+    this.service.create(this.model)
       .pipe(
         catchError(() => of([]))
 
@@ -151,73 +138,73 @@ export class PageconfigComponent implements OnInit {
         this.dataSource.list();
       }
       );
-    this.pageForm.reset();
+    this.createForm.reset();
 
     this.modalService.dismissAll();
 
   }
 
 
-  pageForm = new FormGroup({
-    questionName: new FormControl(this.pageConfig.label, [Validators.required,
+  createForm = new FormGroup({
+    sName: new FormControl(this.model.label, [Validators.required,
     Validators.minLength(4)]),
     type: new FormControl(''),
-    status: new FormControl('ACTIVE', [Validators.required]),
-    section: new FormControl('', [Validators.required])
+    status: new FormControl('Active', [Validators.required]),
+    sequence: new FormControl('', [Validators.required])
 
   });
 
 
 
-  questionEditForm = new FormGroup({
-    questionEName: new FormControl(this.pageConfig.label, [Validators.required,
+  editForm = new FormGroup({
+    eName: new FormControl(this.model.label, [Validators.required,
     Validators.minLength(4)]),
-    id: new FormControl(this.pageConfig.id),
-    status: new FormControl(this.pageConfig.status, [Validators.required])
-
+    id: new FormControl(this.model.id),
+    status: new FormControl(this.model.status, [Validators.required]),
+    sequence: new FormControl(this.model.sequence, [Validators.required])
   });
 
-  openEdit(targetModal: any, editFlow: Page) {
+  openEdit(targetModal: any, selectedModel: Page) {
 
-    console.log("inside edit flow : " + editFlow)
+    console.log("inside edit flow : " + selectedModel)
 
     this.modalService.open(targetModal, {
       backdrop: 'static',
       size: 'lg'
     });
 
-    this.pageConfig = editFlow; 
-    this.questionEditForm.patchValue({
-      id: editFlow.id,
-      questionEName: editFlow.label, 
-      status: editFlow.status
+    this.model = selectedModel; 
+    this.editForm.patchValue({
+      id: selectedModel.id,
+      eName: selectedModel.label, 
+      status: selectedModel.status,
+      sequence:selectedModel.sequence
     }); 
   }
-  get questionName() { return this.pageForm.get('questionName'); }
+  get sName() { return this.createForm.get('sName'); }
 
-  get questionEName() { return this.questionEditForm.get('questionEName'); }
+  get eName() { return this.editForm.get('eName'); }
 
 
   resetCreateForm(formData: any, formDirective: FormGroupDirective) {
-    this.pageForm.reset();
-    this.pageForm = new FormGroup({
-      questionName: new FormControl(this.pageConfig.label, [Validators.required,
+    this.createForm.reset();
+    this.createForm = new FormGroup({
+      sName: new FormControl(this.model.label, [Validators.required,
       Validators.minLength(4)]),
       type: new FormControl(''),
-      status: new FormControl('ACTIVE', [Validators.required])
-
+      status: new FormControl('Active', [Validators.required]),
+      sequence: new FormControl('', [Validators.required])
     });
   }
 
-  updatePage() {
-
-    // this.vehicleForm.controls.VehicleMake.value
+  update() {
+ 
     console.log('inside submit');
 
-    this.pageConfig.label = this.questionEditForm.controls.questionEName.value;
-    this.pageConfig.status = this.questionEditForm.controls.status.value;
-
-    this.service.update(this.pageConfig)
+    this.model.label = this.editForm.controls.eName.value;
+    this.model.status = this.editForm.controls.status.value;
+    this.model.sequence=this.editForm.controls.sequence.value;
+    this.service.update(this.model)
       .pipe(
         catchError(() => of([]))
 
@@ -227,7 +214,7 @@ export class PageconfigComponent implements OnInit {
         this.dataSource.list();
       }
       );
-    this.questionEditForm.reset();
+    this.editForm.reset();
     this.modalService.dismissAll();
 
   } 

@@ -61,11 +61,12 @@ public class ListModelObject {
 		return dtoList;
 	}
 
-	public static List<FlowPageModel> getListFlowPageModelFromListEntities(List<FlowPage> entities) {
+	public static List<FlowPageModel> getListFlowPageModelFromListEntities(List<FlowPage> entities, boolean deepClone) {
 		List<FlowPageModel> dtoList = new ArrayList<FlowPageModel>();
 
 		entities.stream().forEach(entity -> {
-			FlowPageModel dto = EntityModelConverter.getFlowPageModel(entity);
+			FlowPageModel dto = EntityModelConverter.getFlowPageModel(entity,deepClone);
+			if(entity.getPageSections()!=null)
 			dto.setSections(getListPageSectionModelFromListEntities(entity.getPageSections()));
 			dtoList.add(dto);
 		}
@@ -98,18 +99,20 @@ public class ListModelObject {
 	public static List<PageSectionModel> getListPageSectionModelFromListEntities(List<PageSection> entities,
 			boolean deepClone) {
 		List<PageSectionModel> dtoList = new ArrayList<PageSectionModel>();
-
-		entities.stream().forEach(entity -> {
-			PageSectionModel dto = EntityModelConverter.getPageSectionModel(entity);
-			if (deepClone)
-			{
-				dto.setQuestions(getListQuestionModelFromListEntities(entity.getQuestions()));
-			}
-			else {
-				dto.setQuestions(null);
-			}
-			dtoList.add(dto);
-		});
+      if(entities!=null)
+      {
+    	  entities.stream().forEach(entity -> {
+  			PageSectionModel dto = EntityModelConverter.getPageSectionModel(entity);
+  			if (deepClone)
+  			{
+  				dto.setQuestions(getListQuestionModelFromListEntities(entity.getQuestions()));
+  			}
+  			else {
+  				dto.setQuestions(null);
+  			}
+  			dtoList.add(dto);
+  		});
+      }
 		return dtoList;
 	}
 

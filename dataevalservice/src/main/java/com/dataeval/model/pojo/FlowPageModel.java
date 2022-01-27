@@ -25,5 +25,6 @@ public class FlowPageModel implements Serializable {
 	private QuestionModel question;
 	private Integer layoutColumns;
 	private List<PageSectionModel> sections;
+	private String status;
 
 }

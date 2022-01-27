@@ -1,8 +1,8 @@
 <div >
-  <div class="container-fluid rounded-top d-block  p-2 bg-dark text-white" style="margin-top: 5px; ;">
-    <label *ngIf="role == null" >User Form</label>
-    <label *ngIf="role != null" > {{role | titlecase}} Form</label>
-  </div>
+    <div class="container-fluid rounded-top d-block  p-2 bg-dark text-white" style="margin-top: 5px; ;">
+      <label *ngIf="role == null" >User Form</label>
+      <label *ngIf="role != null" > {{role | titlecase}} Form</label>
+    </div>
   <mat-stepper linear #stepper >
     <div *ngFor="let form of formGroups; let i = index; trackBy: trackByFn;">
       <mat-step [stepControl]="form" editable>
@@ -78,7 +78,7 @@
 
               <div class="col text-center">
                 <button mat-button class="btn btn btn-success" (click)="onFormSubmit(stepper)"
-                  [disabled]="i !=formGroups.length-1">Submit</button>
+                  [disabled]="i !=formGroups.length-1 || role != null ">Submit</button>
 
               </div>
               <div class="col text-right">

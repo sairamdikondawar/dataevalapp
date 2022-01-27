@@ -6,6 +6,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from "rxjs";
 import { catchError, tap } from 'rxjs/operators';
 import { QuestionDataSouce } from 'src/app/datasoruce/fcdatasoruce/questiondatasouce.service';
+import { QuestionQuery } from 'src/app/model/common/questionquery.model';
 import { Lookup } from 'src/app/model/lookup.model';
 import { Question } from 'src/app/model/question.model';
 import { Section } from 'src/app/model/section.model';
@@ -32,6 +33,12 @@ export class QuestionComponent implements OnInit {
 
   selectedRoleId: number = 0;
 
+  currentPageIndex:number=0;
+
+  searchForm:FormGroup;
+
+  numberOfPages :number=0;
+
 
 
   selectedType: string = "-- Select Role --";
@@ -52,7 +59,7 @@ export class QuestionComponent implements OnInit {
 
     this.type = new Lookup(0, '');
   }
-  displayedColumns = ['id', 'flowName', 'role', 'status', 'sequence', 'section', 'required', 'actions'];
+  displayedColumns = ['id', 'name', 'type', 'status', 'sequence', 'section', 'required', 'actions'];
 
 
   ngOnInit() {
@@ -69,6 +76,8 @@ export class QuestionComponent implements OnInit {
       }
       );
 
+      
+
     this.commonService.loadSections()
       .pipe(
         catchError(() => of([]))
@@ -77,6 +86,11 @@ export class QuestionComponent implements OnInit {
         this.sections = (result);
       }
       );
+
+      this.searchForm=new FormGroup({
+        sname:new FormControl(''),
+        qname:new FormControl('')
+      })
 
   }
 
@@ -97,6 +111,10 @@ export class QuestionComponent implements OnInit {
   }
 
   list() {
+    this.questionDataSouce.query=new QuestionQuery();
+    if(this.searchForm.controls.sname.value!=null)
+      this.questionDataSouce.query.sectionId=this.searchForm.controls.sname.value;
+    this.questionDataSouce.query.qName=this.searchForm.controls.qname.value!=null ? this.searchForm.controls.qname.value : "";
     this.questionDataSouce.list(this.paginator.pageIndex, this.paginator.pageSize);
 
 
@@ -173,7 +191,7 @@ export class QuestionComponent implements OnInit {
     questionName: new FormControl(this.questionConfig.label, [Validators.required,
     Validators.minLength(4)]),
     type: new FormControl(''),
-    status: new FormControl('ACTIVE', [Validators.required]),
+    status: new FormControl('Active', [Validators.required]),
     section: new FormControl('', [Validators.required])
 
   });
@@ -231,7 +249,7 @@ export class QuestionComponent implements OnInit {
       questionName: new FormControl(this.questionConfig.label, [Validators.required,
       Validators.minLength(4)]),
       type: new FormControl(''),
-      status: new FormControl('ACTIVE', [Validators.required])
+      status: new FormControl('Active', [Validators.required])
 
     });
   }
@@ -273,6 +291,32 @@ export class QuestionComponent implements OnInit {
  
     this.questionDataSouce.sort = sort;
     this.questionDataSouce.list();
+  }
+
+  onPaginateChange(event:any){
+    this.currentPageIndex= event.pageIndex ==  0 ? 0 :(event.pageIndex)*10;
+  }
+
+  getNumberOfPages(){
+    return this.paginator.getNumberOfPages();
+  }
+
+  search()
+  { 
+  if(this.searchForm.controls.sname.value!=null)
+     this.questionDataSouce.query.sectionId=this.searchForm.controls.sname.value;
+    this.questionDataSouce.query.qName=this.searchForm.controls.qname.value !=null ? this.searchForm.controls.qname.value : "";
+    this.questionDataSouce.list();
+  }
+  resetSearch()
+  {
+    this.questionDataSouce.query=new QuestionQuery();
+    this.questionDataSouce.query.sectionId='';
+    this.questionDataSouce.query.qName="";
+    this.searchForm.controls.sname.setValue("");
+    this.searchForm.reset();
+    this.questionDataSouce.list();
+    // alert(this.searchForm.controls.sname.value +  "  "+this.questionDataSouce.query.sectionId)
   }
 
 }

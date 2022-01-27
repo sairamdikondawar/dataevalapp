@@ -16,6 +16,7 @@ import com.dataeval.model.converter.PageModelObjects;
 import com.dataeval.model.entity.Question;
 import com.dataeval.model.pojo.QuestionModel;
 import com.dataeval.model.pojo.common.CommonCriteria;
+import com.dataeval.model.pojo.common.QuestionCriteria;
 import com.dataeval.repository.PageSectionRepository;
 import com.dataeval.repository.QuestionRepository;
 import com.dataeval.util.Util;
@@ -113,9 +114,9 @@ public class QuestionService {
 		return modelsList;
 	}
 
-	public Page<QuestionModel> findAll(CommonCriteria commonCriteria) {
+	public Page<QuestionModel> findAll(QuestionCriteria commonCriteria) {
 		try {
-			Page<Question> entityList = questionRepository.findAll(Util.getPageObjectFromCriteria(commonCriteria));
+			Page<Question> entityList = questionRepository.findAllQuestions(commonCriteria.getSectionId(), commonCriteria.getQName() ,Util.getPageObjectFromCriteria(commonCriteria));
 			return PageModelObjects.getPageQuestionModelFromPageEntities(entityList);
 		} catch (Exception e) {
 			log.error("Error while findAll  Questions ", e);

@@ -12,6 +12,7 @@ import { Page } from '../model/page.model';
 import { PageService } from '../services/page.service';
 import { PageResponse } from '../model/pageResponse.model';
 import { Sort } from '@angular/material/sort';
+import { CustomQuery } from '../model/common/customquery.model';
 
 @Injectable({
     providedIn: 'root'
@@ -19,6 +20,7 @@ import { Sort } from '@angular/material/sort';
 export class PageDataSouce implements DataSource<Page> {
 
     sort:Sort;
+    query = new CustomQuery();
   private todoSubject = new BehaviorSubject<Page[]>([]);
   private loadingSubject = new BehaviorSubject<boolean>(false);
   private countSubject = new BehaviorSubject<number>(0);
@@ -36,9 +38,21 @@ disconnect(collectionViewer: CollectionViewer): void {
     this.countSubject.complete();
 }
 
-list(pageNumber = 0, pageSize = 10) {
+list(pageNumber = 0, pageSize = 100) {
+
     this.loadingSubject.next(true);
-    this.service.list({ page: pageNumber, size: pageSize })
+
+    this.query.page = pageNumber;
+    this.query.size = pageSize;
+
+    if (this.sort != null) {
+        this.query.columnName = JSON.stringify(this.sort.active);
+        this.query.order = this.sort.direction == 'asc' ? 0 : 1;
+    }
+
+ 
+    this.loadingSubject.next(true);
+    this.service.list(this.query)
         .pipe(
             catchError(() => of([])),
             finalize(() => this.loadingSubject.next(false))

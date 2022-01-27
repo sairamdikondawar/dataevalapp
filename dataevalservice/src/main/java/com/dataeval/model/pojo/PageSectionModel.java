@@ -3,6 +3,7 @@ package com.dataeval.model.pojo;
 import java.io.Serializable;
 import java.util.List;
 
+import com.dataeval.model.converter.PageModelObjects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
@@ -22,4 +23,7 @@ public class PageSectionModel implements Serializable {
 	private List<QuestionModel> questions;
 	
 	private Integer layout;
+	private Integer sequence;
+	
+	private FlowPageModel page;
 }

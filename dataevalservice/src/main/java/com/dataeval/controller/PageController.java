@@ -47,12 +47,8 @@ public class PageController {
 	private String[] argumentsToReplace = new String[5];
 
 	@GetMapping("/pages")
-	public Page<FlowPageModel> list(@RequestParam(required = false) String searchCriteria, Integer page, Integer size) {
+	public Page<FlowPageModel> list(CommonCriteria common) {
 		try {
-			CommonCriteria common = Util.getObjectMapper().readValue(searchCriteria.toString(), CommonCriteria.class);
-
-			common.setPage(page);
-			common.setSize(size);
 
 			return pageService.findAll(common);
 		} catch (Exception e) {

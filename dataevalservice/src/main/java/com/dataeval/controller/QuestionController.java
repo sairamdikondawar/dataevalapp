@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.dataeval.model.pojo.QuestionModel;
 import com.dataeval.model.pojo.common.CommonCriteria;
+import com.dataeval.model.pojo.common.QuestionCriteria;
 import com.dataeval.model.pojo.common.SortInfo;
 import com.dataeval.model.response.EmptySuccessResponse;
 import com.dataeval.model.response.ErrorResponse;
@@ -45,9 +46,9 @@ public class QuestionController {
 	private String[] argumentsToReplace = new String[5];
 
 	@GetMapping("/questions")
-	public Page<QuestionModel> list( CommonCriteria common) {
+	public Page<QuestionModel> list(QuestionCriteria common) {
 		try {
-
+            
 			return questionService.findAll(common);
 		} catch (Exception e) {
 			e.printStackTrace();
