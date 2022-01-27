@@ -1,11 +1,6 @@
-import { MatEndDate } from "@angular/material/datepicker";
-import { CustomQuery } from "./customquery.model";
+ import { CustomQuery } from "./customquery.model";
 
-export class UserQuery extends CustomQuery{
-
-
-    startDate : Date;
-    endDate:Date;
+export class UserQuery extends CustomQuery{ 
     roleName:string;
     userName:string;
 

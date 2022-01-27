@@ -88,6 +88,7 @@ public class EntityModelConverter {
 		QuestionModel model = new QuestionModel();
 		try {
 			BeanUtils.copyProperties(entity, model);
+			model.setUserTypesList(entity.getUserTypeList());
 		} catch (Exception e) {
 			log.error("Unable to prepare QuestionModel Object", e);
 		}

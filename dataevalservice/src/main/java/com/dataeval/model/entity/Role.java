@@ -19,6 +19,7 @@ public class Role implements Serializable {
 	private List<FlowConfig> flowConfigs;
 //	private User user;
 	private List<User> users;
+	private String status;
 
 	public Role() {
 	}
@@ -78,6 +79,15 @@ public class Role implements Serializable {
 
 	public void setFlowConfigs(List<FlowConfig> flowConfigs) {
 		this.flowConfigs = flowConfigs;
+	}
+
+	@Column(name="STATUS")
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	// bi-directional one-to-one association to User Note : below were automated

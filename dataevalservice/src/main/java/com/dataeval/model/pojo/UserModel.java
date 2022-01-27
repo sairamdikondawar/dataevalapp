@@ -18,7 +18,7 @@ public class UserModel implements Serializable {
 	@JsonIgnore
 	private String password;
 	private String status;
-	@JsonProperty(value = "name")
+	@JsonProperty(value = "label")
 	private String userName;
 	private RoleModel role;
 

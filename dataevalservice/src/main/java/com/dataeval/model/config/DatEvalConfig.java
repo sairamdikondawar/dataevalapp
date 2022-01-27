@@ -1,5 +1,8 @@
 package com.dataeval.model.config;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.catalina.connector.Connector;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
@@ -24,6 +27,8 @@ public class DatEvalConfig {
 		});
 		return factory;
 	}
+	
+	  private final static Map<String, String> revokedTokensMap=new HashMap<String, String>();
 
 	@Bean
 	public ModelMapper modelMapper() {
@@ -45,4 +50,10 @@ public class DatEvalConfig {
 		bean.setValidationMessageSource(messageSource());
 		return bean;
 	}
+	
+//	@Bean
+//	public Map<String, String> getRevokedTokensMap()
+//	{
+//		return revokedTokensMap;
+//	};
 }

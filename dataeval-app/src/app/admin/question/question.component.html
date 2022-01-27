@@ -48,6 +48,17 @@
                 <mat-header-cell *matHeaderCellDef> S.No </mat-header-cell>
                 <mat-cell *matCellDef="let row; let i=index"> {{ i + (currentPageIndex)+1}} </mat-cell>
             </ng-container><!-- Progress Column -->
+
+            <ng-container matColumnDef="userType">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> User Type</mat-header-cell>
+                <mat-cell *matCellDef="let row" [matTooltip]="getToolTipData(row.userTypesList)">
+                    
+                     <div *ngFor="let userT of row.userTypesList, let j=index" >  
+                  {{ (j &lt; 2) ? (userT | titlecase) : '' }} {{ (j &lt; 1  && j != (row.userTypesList.length-1) ) ? ',' : ''}} {{ (j ==  2) ? ('...') : '' }} 
+
+                </div>  
+                </mat-cell>
+            </ng-container>
             <ng-container matColumnDef="type">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Question Type</mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.type}}</mat-cell>
@@ -107,7 +118,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <form [formGroup]="questionForm" #formDirective="ngForm" (ngSubmit)="saveFlowConfig()">
+            <form [formGroup]="questionForm" #formDirective="ngForm" (ngSubmit)="save()">
 
 
                 <div class="form-group">
@@ -139,6 +150,14 @@
                     <div class="invalid-feedback">
                         Please provide a valid city.
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="userType" class="font-weight-bold">User Type</label>
+                    <select class="custom-select" multiple formControlName="userType"> 
+                        <option *ngFor="let role of roles" [selected]="role.name === selectedType"
+                            value="{{role.name}}">
+                            {{role.name | titlecase}}</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="section" class="font-weight-bold">Section</label>
@@ -222,6 +241,16 @@
                         <option *ngFor="let type of types" [selected]="type.name === selectedType"
                             value="{{type.name}}">
                             {{type.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userType" class="font-weight-bold">User Type</label>
+
+
+                    <select class="custom-select" multiple formControlName="userType"> 
+                        <option *ngFor="let role of roles" [selected]="role.name === selectedType"
+                            value="{{role.name}}">
+                            {{role.name | titlecase}}</option>
                     </select>
                 </div>
                 <div class="form-group">

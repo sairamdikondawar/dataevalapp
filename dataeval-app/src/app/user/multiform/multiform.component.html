@@ -8,7 +8,7 @@
       <mat-step [stepControl]="form" editable>
         <form [formGroup]="form" (ngSubmit)="nextClick(form.value,i)">
           <ng-template (click)="nextClick(form.value,i)" matStepLabel>
-            <div class="stepper-header-overlay" (click)="nextClick(form.value,i)"> </div>{{pages[i].label}}
+            <div class="stepper-header-overlay" (click)="nextClick(form.value,i)"> </div>{{pages[i].label | titlecase}}
           </ng-template>
           <div *ngFor="let section of pages[i].sections; let j = index;">
             <mat-expansion-panel hideToggle expanded opened>

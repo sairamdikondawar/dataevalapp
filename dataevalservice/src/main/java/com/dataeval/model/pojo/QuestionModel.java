@@ -1,9 +1,9 @@
 package com.dataeval.model.pojo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -38,6 +38,8 @@ public class QuestionModel implements Serializable {
 	private String controlName;
 
 	private PageSectionModel section;
+	
+	private List<String> userTypesList;
 
 	public String getControlName() {
 

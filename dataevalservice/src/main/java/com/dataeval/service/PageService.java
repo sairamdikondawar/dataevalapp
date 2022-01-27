@@ -149,7 +149,7 @@ public class PageService {
 			reviewPage.setPageSections(allSections);
 			entityList.add(reviewPage);
 			
-			modelsList = ListModelObject.getListFlowPageModelFromListEntities(entityList, true);
+			modelsList = ListModelObject.getListFlowPageModelFromListEntities(entityList, true, role);
 		} catch (Exception e) {
 			log.error("Error while findAll  FlowPages ", e);
 		}

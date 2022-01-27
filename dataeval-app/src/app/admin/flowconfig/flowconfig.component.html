@@ -5,9 +5,9 @@
     <div class="container-fluid rounded-top d-block  p-2 bg-dark text-white">
         <h4 class="modal-title" id="modal-basic-title">View Role Forms</h4>
     </div>
-    <!-- <div style="margin-top:10px; margin-bottom: 10px; text-align: right; margin-right: 50px;">
+      <div style="margin-top:10px; margin-bottom: 10px; text-align: right; margin-right: 50px;">
         <button type="button" class="btn btn-secondary" (click)="open(content)">Add</button>
-    </div> -->
+    </div>   
     <div class="example-container mat-elevation-z8">
 
         <mat-table [dataSource]="fcDataSource">
@@ -19,13 +19,13 @@
                 <mat-cell *matCellDef="let row; let i=index"> {{i+1}}</mat-cell>
             </ng-container><!-- Progress Column -->
             <ng-container matColumnDef="role">
-                <mat-header-cell *matHeaderCellDef> Role Name </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.role.name}}</mat-cell>
+                <mat-header-cell *matHeaderCellDef> User Type </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.role.name | titlecase}}</mat-cell>
             </ng-container>
             <!-- Name Column -->
             <ng-container matColumnDef="flowName">
                 <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.flowName}} </mat-cell>
+                <mat-cell *matCellDef="let row"> {{row.flowName | titlecase}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
@@ -54,7 +54,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <form [formGroup]="flowConfigForm" #formDirective="ngForm" (ngSubmit)="saveFlowConfig()">
+            <form [formGroup]="createForm" #formDirective="ngForm" (ngSubmit)="save()">
                 <!-- <div class="form-group">
                     <label for="dateOfBirth">Date of birth</label>
                     <div class="input-group">
@@ -74,10 +74,10 @@
                 <div class="mt-2">
                     <div *ngIf="flowConfigName.invalid && (flowConfigName.dirty || flowConfigName.touched)"
                         class="alert alert-danger">
-                        <div *ngIf="flowConfigForm.controls['flowConfigName']?.errors.required">
+                        <div *ngIf="createForm.controls['flowConfigName']?.errors.required">
                             Name is required.
                         </div>
-                        <div *ngIf="flowConfigForm.controls['flowConfigName']?.errors.minlength">
+                        <div *ngIf="createForm.controls['flowConfigName']?.errors.minlength">
                             Name must be at least 4 characters long.
                         </div>
                     </div>
@@ -100,11 +100,11 @@
                 </div>
 
                 <div class="border text-center">
-                    <button data-dismiss="modal" class="btn btn-info" [disabled]="!flowConfigForm.valid"
+                    <button data-dismiss="modal" class="btn btn-info" [disabled]="!createForm.valid"
                         class="btn btn-info">Save</button>
                     &nbsp;
                     <button type="button" class="btn btn-info"
-                        (click)="resetCreateForm(flowConfigForm, formDirective)">Reset</button>
+                        (click)="resetCreateForm(createForm, formDirective)">Reset</button>
 
 
                 </div>
@@ -122,7 +122,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <form [formGroup]="flowConfigEditForm" (ngSubmit)="updateFlowConfig()">
+            <form [formGroup]="editForm" (ngSubmit)="update()">
                 <div class="form-group">
                     <label for="id">Id</label>
                     <div class="input-group">
@@ -140,10 +140,10 @@
                 <div class="mt-2">
                     <div *ngIf="flowConfigEName.invalid && (flowConfigEName.dirty || flowConfigEName.touched)"
                         class="alert alert-danger">
-                        <div *ngIf="flowConfigEditForm.controls['flowConfigEName']?.errors.required">
+                        <div *ngIf="editForm.controls['flowConfigEName']?.errors.required">
                             Name is required.
                         </div>
-                        <div *ngIf="flowConfigEditForm.controls['flowConfigEName']?.errors.minlength">
+                        <div *ngIf="editForm.controls['flowConfigEName']?.errors.minlength">
                             Name must be at least 4 characters long.
                         </div>
 
@@ -168,7 +168,7 @@
                     </select>
                 </div>
                 <div class="border text-center">
-                    <button data-dismiss="modal" [disabled]="!flowConfigEditForm.valid" class="btn btn-info">Save
+                    <button data-dismiss="modal" [disabled]="!editForm.valid" class="btn btn-info">Save
                         Changes</button>
                 </div>
             </form>

@@ -59,7 +59,7 @@ public class ModelToEntityConverter {
 	public static User getUserModel(UserModel model) {
 		User entity = new User();
 		try {
-			BeanUtils.copyProperties(model, entity);
+			BeanUtils.copyProperties(model, entity, "password");
 		} catch (Exception e) {
 			log.error("Unable to prepare User Object", e);
 		}
@@ -80,6 +80,7 @@ public class ModelToEntityConverter {
 		Question entity = new Question();
 		try {
 			BeanUtils.copyProperties(model, entity);
+			entity.setUserTypes(String.join(",", model.getUserTypesList()));
 		} catch (Exception e) {
 			log.error("Unable to prepare Question Object", e);
 		}

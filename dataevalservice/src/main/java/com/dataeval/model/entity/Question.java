@@ -1,7 +1,19 @@
 package com.dataeval.model.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * The persistent class for the QUESTIONS database table.
@@ -20,6 +32,8 @@ public class Question implements Serializable {
 	private FlowPage flowPage;
 	private PageSection section;
 	private Integer sequence;
+	private List<String> userTypeList;
+	private String userTypes;
 
 	private Boolean required = false;
 	private Boolean readonly = false;
@@ -133,6 +147,24 @@ public class Question implements Serializable {
 
 	public void setSequence(Integer sequence) {
 		this.sequence = sequence;
+	}
+
+	@Transient
+	public List<String> getUserTypeList() {
+		userTypeList= userTypes!=null ? Arrays.asList( userTypes.split(",")): userTypeList;
+		return userTypeList;
+	}
+
+	public void setUserTypeList(List<String> userTypeList) {
+		this.userTypeList = userTypeList;
+	}
+
+	public String getUserTypes() {
+		return userTypes;
+	}
+
+	public void setUserTypes(String userTypes) {
+		this.userTypes = userTypes;
 	}
 
 }

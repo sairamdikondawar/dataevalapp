@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dataeval.model.constants.CommonConstants;
 import com.dataeval.model.entity.Role;
+import com.dataeval.model.pojo.common.CommonCriteria;
 import com.dataeval.model.pojo.common.LookupModel;
 import com.dataeval.repository.RoleRepository;
 
@@ -23,7 +25,7 @@ public class RoleService {
 	public List<LookupModel> lookupRoles() {
 		List<LookupModel> modelsList = new ArrayList<LookupModel>();
 		try {
-			List<Role> entityList = roleRepository.findAll();
+			List<Role> entityList = roleRepository.findAllByStatus(CommonConstants.ACTIVE);
 
 			entityList.stream().forEach(role -> {
 				LookupModel model = new LookupModel(role.getRoleName(), role.getId());

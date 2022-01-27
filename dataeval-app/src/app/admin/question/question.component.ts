@@ -12,6 +12,7 @@ import { Question } from 'src/app/model/question.model';
 import { Section } from 'src/app/model/section.model';
 import { CommonService } from 'src/app/services/common.service';
 import { QuestionService } from 'src/app/services/question.service';
+import { RoleService } from 'src/app/services/role.service';
 
 
 @Component({
@@ -22,6 +23,7 @@ import { QuestionService } from 'src/app/services/question.service';
 export class QuestionComponent implements OnInit {
 
 
+  roles: Lookup[];
 
   types: Lookup[];
 
@@ -53,13 +55,15 @@ export class QuestionComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private questionService: QuestionService,
+  constructor(private questionService: QuestionService, private roleService:RoleService,
     private modalService: NgbModal,
     private commonService: CommonService) {
 
     this.type = new Lookup(0, '');
+
+    
   }
-  displayedColumns = ['id', 'name', 'type', 'status', 'sequence', 'section', 'required', 'actions'];
+  displayedColumns = ['id', 'name', 'type', 'userType','status', 'sequence', 'section', 'required', 'actions'];
 
 
   ngOnInit() {
@@ -84,6 +88,15 @@ export class QuestionComponent implements OnInit {
       )
       .subscribe((result) => {
         this.sections = (result);
+      }
+      );
+
+      this.roleService.roleService()
+      .pipe(
+        catchError(() => of([]))
+      )
+      .subscribe((result) => {
+        this.roles = (result);
       }
       );
 
@@ -161,7 +174,7 @@ export class QuestionComponent implements OnInit {
     console.log("Inside Select Role :" + this.type.name)
   }
 
-  saveFlowConfig() {
+  save() {
 
     // this.vehicleForm.controls.VehicleMake.value
     console.log('inside submit');
@@ -169,6 +182,10 @@ export class QuestionComponent implements OnInit {
     this.questionConfig.label = this.questionForm.controls.questionName.value;
 
     this.questionConfig.status = this.questionForm.controls.status.value;
+
+    this.questionConfig.userTypesList=this.questionForm.controls.userType.value;
+
+
 
     this.questionService.create(this.questionConfig)
       .pipe(
@@ -192,8 +209,8 @@ export class QuestionComponent implements OnInit {
     Validators.minLength(4)]),
     type: new FormControl(''),
     status: new FormControl('Active', [Validators.required]),
-    section: new FormControl('', [Validators.required])
-
+    section: new FormControl('', [Validators.required]),
+    userType: new FormControl('', [Validators.required])
   });
 
 
@@ -204,8 +221,8 @@ export class QuestionComponent implements OnInit {
     type: new FormControl(this.questionConfig.type, [Validators.required]),
     id: new FormControl(this.questionConfig.id),
     status: new FormControl(this.questionConfig.status, [Validators.required]),
-    section: new FormControl(this.questionConfig.section.id, [Validators.required])
-
+    section: new FormControl(this.questionConfig.section.id, [Validators.required]),
+    userType: new FormControl(this.questionConfig.userTypesList, [Validators.required])
   });
 
   openEdit(targetModal: any, editFlow: Question) {
@@ -230,7 +247,8 @@ export class QuestionComponent implements OnInit {
       questionEName: editFlow.label,
       type: editFlow.type,
       status: editFlow.status,
-      section: (editFlow.section != null ? editFlow.section.id : null)
+      section: (editFlow.section != null ? editFlow.section.id : null),
+      userType:this.questionConfig.userTypesList
     });
     // this.selectedRole = editFlow.role.roleName;
     // this.role = this.roles[0];
@@ -249,8 +267,8 @@ export class QuestionComponent implements OnInit {
       questionName: new FormControl(this.questionConfig.label, [Validators.required,
       Validators.minLength(4)]),
       type: new FormControl(''),
-      status: new FormControl('Active', [Validators.required])
-
+      status: new FormControl('Active', [Validators.required]),
+      userType: new FormControl('', [Validators.required])
     });
   }
 
@@ -261,7 +279,7 @@ export class QuestionComponent implements OnInit {
 
     this.questionConfig.label = this.questionEditForm.controls.questionEName.value;
     this.questionConfig.status = this.questionEditForm.controls.status.value;
-
+    this.questionConfig.userTypesList=this.questionEditForm.controls.userType.value;
     this.questionService.update(this.questionConfig)
       .pipe(
         catchError(() => of([]))
@@ -283,7 +301,7 @@ export class QuestionComponent implements OnInit {
     console.log("Inside Select Section :" + event.target.value)
 
     this.questionConfig.section.id = event.target.value;
-
+    
     console.log("Inside Select Section :" + event.target.value)
   }
 
@@ -318,6 +336,10 @@ export class QuestionComponent implements OnInit {
     this.questionDataSouce.list();
     // alert(this.searchForm.controls.sname.value +  "  "+this.questionDataSouce.query.sectionId)
   }
+
+  getToolTipData(issueId: string): string { 
+    return issueId;
+}
 
 }
 

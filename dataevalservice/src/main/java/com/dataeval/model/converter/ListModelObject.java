@@ -3,6 +3,9 @@ package com.dataeval.model.converter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import com.dataeval.model.config.UserDetailsImpl;
 import com.dataeval.model.entity.FlowConfig;
 import com.dataeval.model.entity.FlowPage;
 import com.dataeval.model.entity.PageSection;
@@ -25,6 +28,7 @@ import com.dataeval.model.pojo.UserModel;
 import com.dataeval.model.pojo.UserPageModel;
 import com.dataeval.model.pojo.UserQuestionModel;
 import com.dataeval.model.pojo.UserSectionModel;
+import com.dataeval.util.Util;
 
 public class ListModelObject {
 
@@ -39,14 +43,17 @@ public class ListModelObject {
 
 	}
 
-	public static List<QuestionModel> getListQuestionModelFromListEntities(List<Question> entities) {
+	public static List<QuestionModel> getListQuestionModelFromListEntities(List<Question> entities, String userType) {
 		List<QuestionModel> dtoList = new ArrayList<QuestionModel>();
 
 		if (entities != null)
 			entities.stream().forEach(entity -> {
-				QuestionModel dto = EntityModelConverter.getQuestionModel(entity);
+				if (userType != null
+						&& (userType.equalsIgnoreCase("admin") || entity.getUserTypeList().contains(userType))) {
+					QuestionModel dto = EntityModelConverter.getQuestionModel(entity);
 //				dto.setSection(EntityModelConverter.getPageSectionModel(entity.getPageSection()));
-				dtoList.add(dto);
+					dtoList.add(dto);
+				}
 			});
 		return dtoList;
 	}
@@ -60,14 +67,19 @@ public class ListModelObject {
 		});
 		return dtoList;
 	}
+	
+	public static List<FlowPageModel> getListFlowPageModelFromListEntities(List<FlowPage> entities, boolean deepClone) 
+	{
+		return getListFlowPageModelFromListEntities(entities, deepClone, null);
+	}
 
-	public static List<FlowPageModel> getListFlowPageModelFromListEntities(List<FlowPage> entities, boolean deepClone) {
+	public static List<FlowPageModel> getListFlowPageModelFromListEntities(List<FlowPage> entities, boolean deepClone, String userType) {
 		List<FlowPageModel> dtoList = new ArrayList<FlowPageModel>();
 
 		entities.stream().forEach(entity -> {
-			FlowPageModel dto = EntityModelConverter.getFlowPageModel(entity,deepClone);
-			if(entity.getPageSections()!=null)
-			dto.setSections(getListPageSectionModelFromListEntities(entity.getPageSections()));
+			FlowPageModel dto = EntityModelConverter.getFlowPageModel(entity, deepClone);
+			if (entity.getPageSections() != null)
+				dto.setSections(getListPageSectionModelFromListEntities(entity.getPageSections(),userType));
 			dtoList.add(dto);
 		}
 
@@ -97,30 +109,31 @@ public class ListModelObject {
 	}
 
 	public static List<PageSectionModel> getListPageSectionModelFromListEntities(List<PageSection> entities,
-			boolean deepClone) {
+			boolean deepClone, String userType) {
 		List<PageSectionModel> dtoList = new ArrayList<PageSectionModel>();
-      if(entities!=null)
-      {
-    	  entities.stream().forEach(entity -> {
-  			PageSectionModel dto = EntityModelConverter.getPageSectionModel(entity);
-  			if (deepClone)
-  			{
-  				dto.setQuestions(getListQuestionModelFromListEntities(entity.getQuestions()));
-  			}
-  			else {
-  				dto.setQuestions(null);
-  			}
-  			dtoList.add(dto);
-  		});
-      }
+		if (entities != null) {
+			entities.stream().forEach(entity -> {
+				PageSectionModel dto = EntityModelConverter.getPageSectionModel(entity);
+				if (deepClone) {
+					dto.setQuestions(
+							getListQuestionModelFromListEntities(entity.getQuestions(), userType == null ? Util.getLoggedInUserType() : userType));
+				} else {
+					dto.setQuestions(null);
+				}
+				dtoList.add(dto);
+			});
+		}
 		return dtoList;
 	}
 
 	public static List<PageSectionModel> getListPageSectionModelFromListEntities(List<PageSection> entities) {
-		return getListPageSectionModelFromListEntities(entities, Boolean.TRUE);
+		return getListPageSectionModelFromListEntities(entities, Boolean.TRUE, null);
 	}
 	
-	
+	public static List<PageSectionModel> getListPageSectionModelFromListEntities(List<PageSection> entities, String userType) {
+		return getListPageSectionModelFromListEntities(entities, Boolean.TRUE, userType);
+	}
+
 	public static List<UserFormModel> getListUserFormModelFromListEntities(List<UserForm> entities) {
 		List<UserFormModel> dtoList = new ArrayList<UserFormModel>();
 
@@ -130,8 +143,7 @@ public class ListModelObject {
 		});
 		return dtoList;
 	}
-	
-	
+
 	public static List<UserPageModel> getListUserPageModelFromListEntities(List<UserPage> entities) {
 		List<UserPageModel> dtoList = new ArrayList<UserPageModel>();
 
@@ -141,6 +153,7 @@ public class ListModelObject {
 		});
 		return dtoList;
 	}
+
 	public static List<UserSectionModel> getListUserSectionModelFromListEntities(List<UserSection> entities) {
 		List<UserSectionModel> dtoList = new ArrayList<UserSectionModel>();
 
@@ -151,7 +164,7 @@ public class ListModelObject {
 		});
 		return dtoList;
 	}
-	
+
 	public static List<UserQuestionModel> getListUserQuestionModelFromListEntities(List<UserQuestion> entities) {
 		List<UserQuestionModel> dtoList = new ArrayList<UserQuestionModel>();
 

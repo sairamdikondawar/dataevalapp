@@ -7,7 +7,7 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { UserFormDataSouce } from 'src/app/datasoruce/fcdatasoruce/ufdatasouce.service';
-import { UserQuery } from 'src/app/model/common/userquery.model';
+import { UserFormQuery } from 'src/app/model/common/userformquery.model';
 import { Lookup } from 'src/app/model/lookup.model';
 import { UserForm } from 'src/app/model/user/userform.model';
 import { CommonService } from 'src/app/services/common.service';
@@ -77,7 +77,7 @@ export class UserformsComponent implements OnInit {
 
   list() {
 
-    this.dataSource.query=new UserQuery();
+    this.dataSource.query=new UserFormQuery();
     if(this.searchForm.controls.uName.value!=null)
       this.dataSource.query.userName=this.searchForm.controls.uName.value;
       this.dataSource.query.startDate=this.searchForm.controls.startDate.value;
@@ -109,7 +109,7 @@ export class UserformsComponent implements OnInit {
   }
   resetSearch()
   {
-    this.dataSource.query=new UserQuery();
+    this.dataSource.query=new UserFormQuery();
     this.dataSource.query.userName='';
     this.dataSource.query.roleName="";
     this.dataSource.query.startDate=null;

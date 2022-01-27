@@ -26,7 +26,7 @@ export class QuestionDataSouce implements DataSource<Question> {
     private countSubject = new BehaviorSubject<number>(0);
     public counter$ = this.countSubject.asObservable();
 
-    constructor(private questionservice: QuestionService) { }
+    constructor(private service: QuestionService) { }
 
 
     connect(collectionViewer: CollectionViewer): Observable<Question[]> {
@@ -51,7 +51,7 @@ export class QuestionDataSouce implements DataSource<Question> {
             this.query.order = this.sort.direction == 'asc' ? 0 : 1;
         }
 
-        this.questionservice.list(this.query)
+        this.service.list(this.query)
             .pipe(
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false))

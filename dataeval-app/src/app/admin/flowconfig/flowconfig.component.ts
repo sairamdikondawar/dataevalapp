@@ -53,17 +53,17 @@ export class FlowconfigComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private flowconfigservice: FlowconfigService,
+  constructor(private service: FlowconfigService,
     private modalService: NgbModal,
     private roleService: RoleService, private router:Router) {
 
     this.role = new Lookup(0, '');
   }
-  displayedColumns = ['id', 'flowName', 'role', 'actions'];
+  displayedColumns = ['id', 'role', 'actions'];
 
 
   ngOnInit() {
-    this.fcDataSource = new FCDataSource(this.flowconfigservice);
+    this.fcDataSource = new FCDataSource(this.service);
     this.fcDataSource.loadTodos();
 
     this.roleService.roleService()
@@ -94,10 +94,7 @@ export class FlowconfigComponent implements OnInit {
   }
 
   loadTodos() {
-    this.fcDataSource.loadTodos(this.paginator.pageIndex, this.paginator.pageSize);
-
-
-
+    this.fcDataSource.loadTodos(this.paginator.pageIndex, this.paginator.pageSize); 
   }
 
   closeResult = '';
@@ -139,27 +136,23 @@ export class FlowconfigComponent implements OnInit {
     console.log("Inside Select Role :" + this.role.name)
   }
 
-  saveFlowConfig() {
+  save() {
 
     // this.vehicleForm.controls.VehicleMake.value
     console.log('inside submit');
 
-    this.newFlowConfig.flowName = this.flowConfigForm.controls.flowConfigName.value;
+    this.newFlowConfig.flowName = this.createForm.controls.flowConfigName.value;
 
     this.newFlowConfig1 = new Flowconfig(0, "");
-    // this.flowConfigs.push(this.newFlowConfig);
-    // 
-
-
-
-    this.flowconfigservice.createFlow(this.newFlowConfig)
+    // this.flowConfigs.push(this.newFlowConfig);  
+    this.service.createFlow(this.newFlowConfig)
       .pipe(
         catchError(() => of([]))
 
       )
       .subscribe((result) => {
         console.log(result + " result");
-        this.flowConfigForm.reset();
+        this.createForm.reset();
     this.modalService.dismissAll();
     this.fcDataSource.loadTodos();
       }
@@ -168,14 +161,14 @@ export class FlowconfigComponent implements OnInit {
   }
 
 
-  flowConfigForm = new FormGroup({
+  createForm = new FormGroup({
     flowConfigName: new FormControl(this.newFlowConfig.flowName, [Validators.required,
     Validators.minLength(4)]),
     roleName: new FormControl(''),
 
   });
 
-  flowConfigEditForm = new FormGroup({
+  editForm = new FormGroup({
     flowConfigEName: new FormControl(this.newFlowConfig.flowName, [Validators.required,
     Validators.minLength(4)]),
     roleName: new FormControl('', [Validators.required]),
@@ -192,7 +185,7 @@ export class FlowconfigComponent implements OnInit {
       size: 'lg'
     });
     this.newFlowConfig=editFlow;
-    this.flowConfigEditForm.patchValue({
+    this.editForm.patchValue({
       id: editFlow.id,
       flowConfigEName: editFlow.flowName,
       roleName: editFlow.role.name,
@@ -212,22 +205,22 @@ export class FlowconfigComponent implements OnInit {
   }
 
 
-  get flowConfigName() { return this.flowConfigForm.get('flowConfigName'); }
+  get flowConfigName() { return this.createForm.get('flowConfigName'); }
 
-  get flowConfigEName() { return this.flowConfigEditForm.get('flowConfigEName'); }
+  get flowConfigEName() { return this.editForm.get('flowConfigEName'); }
 
 
   resetCreateForm(formData: any, formDirective: FormGroupDirective) {
-    this.flowConfigForm.reset();
+    this.createForm.reset();
   }
 
-  updateFlowConfig() {
+  update() {
     console.log('inside submit');
 
-    this.newFlowConfig.flowName=this.flowConfigEditForm.controls.flowConfigEName.value;
+    this.newFlowConfig.flowName=this.editForm.controls.flowConfigEName.value;
  
     
-    this.flowconfigservice.updateFlow(this.newFlowConfig)
+    this.service.updateFlow(this.newFlowConfig)
     .pipe(
         catchError(() => of([]))
          
@@ -237,7 +230,7 @@ export class FlowconfigComponent implements OnInit {
         this.fcDataSource.loadTodos();
     }
     );
-    this.flowConfigEditForm.reset();
+    this.editForm.reset();
     this.modalService.dismissAll();
    
   }

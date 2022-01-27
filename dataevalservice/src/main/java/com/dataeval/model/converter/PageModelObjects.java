@@ -20,6 +20,7 @@ import com.dataeval.model.pojo.QuestionTypeModel;
 import com.dataeval.model.pojo.RoleModel;
 import com.dataeval.model.pojo.UserFormModel;
 import com.dataeval.model.pojo.UserModel;
+import com.dataeval.util.Util;
 
 public class PageModelObjects {
 
@@ -108,7 +109,7 @@ public class PageModelObjects {
 				dto.setQuestions(null);
 				if(deepClone)
 				{
-					dto.setQuestions(ListModelObject.getListQuestionModelFromListEntities(entity.getQuestions()));
+					dto.setQuestions(ListModelObject.getListQuestionModelFromListEntities(entity.getQuestions(), Util.getLoggedInUserType()));
 				}
 				dto.setPage(EntityModelConverter.getFlowPageModel(entity.getPage()));
 				return dto;

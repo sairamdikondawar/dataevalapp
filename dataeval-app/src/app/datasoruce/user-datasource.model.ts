@@ -4,29 +4,30 @@ import { Observable, BehaviorSubject, of } from "rxjs";
 import { catchError, finalize } from "rxjs/operators";  
 import { Injectable } from '@angular/core';  
 import { UserForm } from 'src/app/model/user/userform.model';
-import { UserFormResponse } from 'src/app/model/user/user-form-response.model';
-import { UserFormService } from 'src/app/services/userform.service';
-import { UserFormQuery } from 'src/app/model/common/userformquery.model';
+
+  
 import { Sort } from '@angular/material/sort';
+import { UserService } from '../services/user.service';
+import { UserResponse } from '../model/response/user-response.model';
+import { User } from '../model/user.model'; 
+import { UserQuery } from '../model/common/userquery.model';
 
 @Injectable({
     providedIn: 'root'
   })
-export class UserFormDataSouce implements DataSource<UserForm> {
-
+export class UserDataSouce implements DataSource<User> {
 
     sort: Sort;
-    query = new UserFormQuery();
-
-  private todoSubject = new BehaviorSubject<UserForm[]>([]);
+    query = new UserQuery();
+  private todoSubject = new BehaviorSubject<User[]>([]);
   private loadingSubject = new BehaviorSubject<boolean>(false);
   private countSubject = new BehaviorSubject<number>(0);
   public counter$ = this.countSubject.asObservable();
 
-  constructor(private service: UserFormService) { }
+  constructor(private service: UserService) { }
  
 
-  connect(collectionViewer: CollectionViewer): Observable<UserForm[]> {
+  connect(collectionViewer: CollectionViewer): Observable<User[]> {
     return this.todoSubject.asObservable();
 }
 
@@ -53,7 +54,7 @@ list(pageNumber = 0, pageSize = 10) {
             catchError(() => of([])),
             finalize(() => this.loadingSubject.next(false))
         )
-        .subscribe((result: UserFormResponse) => {
+        .subscribe((result: UserResponse) => {
             this.todoSubject.next(result.content);
             this.countSubject.next(result.totalElements);
         }

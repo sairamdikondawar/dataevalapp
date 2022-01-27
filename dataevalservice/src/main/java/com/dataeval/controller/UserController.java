@@ -10,7 +10,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,26 +17,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dataeval.model.pojo.FlowConfigModel;
+import com.dataeval.model.pojo.UserModel;
 import com.dataeval.model.pojo.common.CommonCriteria;
 import com.dataeval.model.response.EmptySuccessResponse;
 import com.dataeval.model.response.ErrorResponse;
-import com.dataeval.service.FlowConfigService;
-import com.dataeval.util.Util;
+import com.dataeval.service.UserService;
 
-//@CrossOrigin(origins = {"http://localhost:4200","http://localhost:3200"})
 @RestController
-@RequestMapping("/api/v1/flow-config")
-public class FlowConfigController {
+@RequestMapping("/api/v1/user-config")
+public class UserController {
 
-	private static final Logger log = LoggerFactory.getLogger(FlowConfigController.class);
+	private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
-	private FlowConfigService flowConfigService;
+	private UserService userService;
 
 	@Autowired
 	private MessageSource messageSource;
@@ -46,51 +42,51 @@ public class FlowConfigController {
 
 	private String[] argumentsToReplace = new String[5];
 
-	@GetMapping("/flowconfigs")
-	public Page<FlowConfigModel> list(CommonCriteria common) {
+	@GetMapping("/users")
+	public Page<UserModel> list(CommonCriteria common) {
 		try { 
-			return flowConfigService.findAll(common);
+			return userService.findAll(common);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return Page.empty();
 	}
 
-	@PostMapping("/flowconfig")
+	@PostMapping("/user")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> create(@RequestBody FlowConfigModel model, BindingResult bindingResult) throws Exception {
-		log.info("Inside Create Site API");
+	public ResponseEntity<?> create(@RequestBody UserModel model, BindingResult bindingResult) throws Exception {
+		log.info("Inside Create User API");
 		try {
-			model = flowConfigService.create(model);
+			model = userService.create(model);
 		} catch (Exception e) {
-			String localizedErrorMessage = messageSource.getMessage("flowconfig.insert.unsuccessful", null,
+			String localizedErrorMessage = messageSource.getMessage("user.insert.unsuccessful", null,
 					currentLocale);
 			ErrorResponse resp = new ErrorResponse(localizedErrorMessage);
 			return new ResponseEntity<ErrorResponse>(resp, HttpStatus.BAD_REQUEST);
 		}
-		argumentsToReplace[0] = model.getFlowName();
-		String localizedErrorMessage = messageSource.getMessage("flowconfig.insert.successful", argumentsToReplace,
+		argumentsToReplace[0] = model.getUserName();
+		String localizedErrorMessage = messageSource.getMessage("user.insert.successful", argumentsToReplace,
 				currentLocale);
 		EmptySuccessResponse resp = new EmptySuccessResponse(localizedErrorMessage);
 		resp.setResource(model);
 		return new ResponseEntity<EmptySuccessResponse>(resp, HttpStatus.CREATED);
 	}
 
-	@PutMapping("/flowconfig/{id}")
-	public ResponseEntity<?> update(@RequestBody FlowConfigModel model, @PathVariable Long id) {
+	@PutMapping("/user/{id}")
+	public ResponseEntity<?> update(@RequestBody UserModel model, @PathVariable Long id) {
 
-		log.info("Inside update Site API");
+		log.info("Inside update User API");
 		try {
-			model = flowConfigService.create(model);
+			model = userService.update(model);
 		} catch (Exception e) {
-			String localizedErrorMessage = messageSource.getMessage("flowconfig.update.unsuccessful", null,
+			String localizedErrorMessage = messageSource.getMessage("user.update.unsuccessful", null,
 					currentLocale);
 			ErrorResponse resp = new ErrorResponse(localizedErrorMessage);
 			return new ResponseEntity<ErrorResponse>(resp, HttpStatus.BAD_REQUEST);
 		}
 
-		argumentsToReplace[0] = model.getFlowName();
-		String localizedSuccessMessage = messageSource.getMessage("flowconfig.update.successful", argumentsToReplace,
+		argumentsToReplace[0] = model.getUserName();
+		String localizedSuccessMessage = messageSource.getMessage("user.update.successful", argumentsToReplace,
 				currentLocale);
 		EmptySuccessResponse resp = new EmptySuccessResponse(localizedSuccessMessage);
 		resp.setResource(model);
@@ -98,18 +94,18 @@ public class FlowConfigController {
 
 	}
 
-	@GetMapping("/flowconfig/{id}")
+	@GetMapping("/user/{id}")
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
-		FlowConfigModel model = null;
+		UserModel model = null;
 		try {
-			model = flowConfigService.getById(id);
+			model = userService.getById(id);
 		} catch (Exception e) {
-			String localizedErrorMessage = messageSource.getMessage("flowconfig.nodata.found", null, currentLocale);
+			String localizedErrorMessage = messageSource.getMessage("user.nodata.found", null, currentLocale);
 			ErrorResponse resp = new ErrorResponse(localizedErrorMessage);
 			return new ResponseEntity<ErrorResponse>(resp, HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<FlowConfigModel>(model, HttpStatus.OK);
+		return new ResponseEntity<UserModel>(model, HttpStatus.OK);
 	}
 
 }

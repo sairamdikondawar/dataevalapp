@@ -56,7 +56,8 @@ export class PageconfigComponent implements OnInit {
 
     this.type = new Lookup(0, '');
   }
-  displayedColumns = ['id', 'name',   'status', 'sequence', 'actions'];
+  //, 'actions'
+  displayedColumns = ['id', 'name',   'status', 'sequence'];
 
 
   ngOnInit() {

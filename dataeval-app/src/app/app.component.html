@@ -15,37 +15,37 @@
 
         <!-- <img class="avatar mat-elevation-z8" src="https://source.unsplash.com/c_GmwfHBDzk/200x200" /> -->
 
-        <h4 class="name">Sai Ram</h4>
-        <p class="designation">Principle Engineer</p>
+        <h4 *ngIf="isLoggedIn" class="name">{{ userName | titlecase}}</h4>
+        <p *ngIf="isLoggedIn" class="designation">Principle Engineer</p>
 
-        <mat-divider></mat-divider>
+        <mat-divider *ngIf="isLoggedIn" ></mat-divider>
 
-        <button *ngIf="isLoggedIn" (click)="view('/flowconfig')" mat-button class="menu-button">
+        <button *ngIf="isLoggedIn && admin" (click)="view('/flowconfig')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
-            <span>Admin Forms</span>
+            <span>Role Based Forms</span>
         </button>
-        <button *ngIf="isLoggedIn" (click)="view('/userforms')" mat-button class="menu-button">
+        <button *ngIf="isLoggedIn && admin" (click)="view('/userforms')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>Manage User Forms</span>
         </button>
-        <button *ngIf="isLoggedIn" (click)="view('/patient')" mat-button class="menu-button">
+        <button *ngIf="isLoggedIn &&   !admin" (click)="view('/patient')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>User Form</span>
         </button>
-        <button *ngIf="isLoggedIn" (click)="view('/question')" mat-button class="menu-button">
+        <button *ngIf="isLoggedIn && admin" (click)="view('/question')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>Manage Fields</span>
         </button>
 
-        <button *ngIf="isLoggedIn" (click)="view('/user')" mat-button class="menu-button">
+        <button *ngIf="isLoggedIn && admin" (click)="view('/user')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>Manage Users</span>
         </button>
-        <button *ngIf="isLoggedIn" (click)="view('/sections')" mat-button class="menu-button">
+        <button *ngIf="isLoggedIn && admin" (click)="view('/sections')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>Manage Sections</span>
         </button>
-        <button *ngIf="isLoggedIn" (click)="view('/steps')" mat-button class="menu-button">
+        <button *ngIf="isLoggedIn && admin " (click)="view('/steps')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>Manage Steps</span>
         </button>

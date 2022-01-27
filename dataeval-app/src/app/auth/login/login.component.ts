@@ -29,7 +29,16 @@ export class LoginComponent implements OnInit {
       this.invalidLogin = false;
       this.loginSuccess = true;
       this.successMessage = 'Login Successful.';
-      this.router.navigate(['/user']);
+      this.authenticationService.userType.subscribe((userType) => {
+        
+        if(userType == 'admin')
+          {
+            this.router.navigate(['/user']);
+          }else{
+            this.router.navigate(['/patient']);
+          }});
+          
+       
     }, () => {
       this.invalidLogin = true;
       this.loginSuccess = false;

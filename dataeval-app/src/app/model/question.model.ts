@@ -9,6 +9,7 @@ export class Question {
     status :string;
     section: Section;
     sequence:number;
+    userTypesList:String[];
 
 
 constructor(id: number, type: string, label:string, status:string) {
@@ -17,5 +18,6 @@ constructor(id: number, type: string, label:string, status:string) {
         this.type =type;
         this.status=status;
         this.section=new Section("",null);
+        this.userTypesList=[];
     }
 }

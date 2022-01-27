@@ -16,6 +16,10 @@ export class AppComponent implements OnInit {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
   isLoggedIn = false;
+  userName:string;
+  userType:string;
+  admin:boolean;
+
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -27,7 +31,22 @@ export class AppComponent implements OnInit {
       this.isLoggedIn = isRunning;
        console.log('logged In :', this.isLoggedIn);
    });
-    console.log('menu ->' + this.isLoggedIn);
+    console.log('menu ->' + this.isLoggedIn); 
+
+    this.authenticationService.userName.subscribe((userName) => {
+      this.userName = userName;
+      
+       console.log('logged In User:', this.userName);
+   });
+
+   this.authenticationService.userType.subscribe((userType) => {
+    this.userType = userType;
+    if(userType == 'admin')
+      {
+        this.admin=true;
+      }
+     console.log('logged In UserType :', this.userType);
+ });
   }
 
   handleLogout() {

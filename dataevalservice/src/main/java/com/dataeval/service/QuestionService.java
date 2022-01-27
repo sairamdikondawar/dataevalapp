@@ -107,7 +107,7 @@ public class QuestionService {
 		List<QuestionModel> modelsList = new ArrayList<QuestionModel>();
 		try {
 			List<Question> entityList = questionRepository.findAll();
-			modelsList = ListModelObject.getListQuestionModelFromListEntities(entityList);
+			modelsList = ListModelObject.getListQuestionModelFromListEntities(entityList, Util.getLoggedInUserType());
 		} catch (Exception e) {
 			log.error("Error while findAll  Questions ", e);
 		}
@@ -123,5 +123,7 @@ public class QuestionService {
 			throw e;
 		}
 	}
+	
+	
 
 }
