@@ -13,6 +13,7 @@ export class AuthenticationService {
   // BASE_PATH: 'http://localhost:8080'
   USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
   USER_PWD_SESSION_ATTRIBUTE_NAME = 'authenticatedPWD';
+  USER_TYPE_SESSION_ATTRIBUTE_NAME = 'authenticatedType';
    
 
    runningSubject = new BehaviorSubject(true);
@@ -52,7 +53,7 @@ setUserType= (value : string) => {
         authority=authority.replace('"', '').replace('"', '').toLowerCase();;
         // alert()
         this.setUserType(authority);
-        this.registerSuccessfulLogin(username, password);
+        this.registerSuccessfulLogin(username, password, authority);
         this.isUserLoggedIn();
       }));
   }
@@ -62,22 +63,27 @@ setUserType= (value : string) => {
     return 'Basic ' + window.btoa(username + ":" + password)
   }
 
-  registerSuccessfulLogin(username: string, password: string) {
+  registerSuccessfulLogin(username: string, password: string,userType:string) {
     console.log('registerSuccessfulLogin' + username.toString());
     sessionStorage.setItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME, username.toString())
     sessionStorage.setItem(this.USER_PWD_SESSION_ATTRIBUTE_NAME, password.toString())
+    sessionStorage.setItem(this.USER_TYPE_SESSION_ATTRIBUTE_NAME, userType.toString())
+    
   }
 
   logout() {
     sessionStorage.removeItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME);
     sessionStorage.removeItem(this.USER_PWD_SESSION_ATTRIBUTE_NAME);
+    sessionStorage.removeItem(this.USER_TYPE_SESSION_ATTRIBUTE_NAME);
     this.username= null;
 ;    this.password = null;
+
 this.isUserLoggedIn();
   }
 
   isUserLoggedIn() {
     let user = sessionStorage.getItem(this.USER_NAME_SESSION_ATTRIBUTE_NAME)
+    let type = sessionStorage.getItem(this.USER_TYPE_SESSION_ATTRIBUTE_NAME)
     console.log("User Name :: "+user);
     if (user === null 
       // || this.username == null
@@ -88,6 +94,7 @@ this.isUserLoggedIn();
     }
     this.setRunning(true)
     this.setUserName(user);
+    this.setUserType(type);
     return true
   }
 

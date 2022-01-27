@@ -43,7 +43,7 @@ export class SectionsComponent implements OnInit {
 
      
   }
-  displayedColumns = ['id', 'name',  'stepName', 'status', 'sequence', 'actions'];
+  displayedColumns = ['id', 'name',  'stepName', 'status', 'sequence'];
 
 
   ngOnInit() {

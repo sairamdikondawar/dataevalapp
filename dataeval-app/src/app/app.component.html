@@ -7,12 +7,12 @@
             close
         </mat-icon>
     </button>
-    Data Evaluation {{sidenav.mode}} Test 
+    Data Evaluation 
 </mat-toolbar>
 
 <mat-sidenav-container>
     
-    <mat-sidenav #sidenav="matSidenav"     class="mat-elevation-z8">
+    <mat-sidenav #sidenav="matSidenav"  [style.display]="isLoggedIn ? 'block' : 'none'"    class="mat-elevation-z8">
 
         <!-- <img class="avatar mat-elevation-z8" src="https://source.unsplash.com/c_GmwfHBDzk/200x200" /> -->
 

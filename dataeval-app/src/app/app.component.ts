@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   isLoggedIn = false;
   userName:string;
   userType:string;
-  admin:boolean;
+  admin:boolean=false;
   opened:boolean=false;
 
 
@@ -53,11 +53,13 @@ export class AppComponent implements OnInit {
 
    this.authenticationService.userType.subscribe((userType) => {
     this.userType = userType;
+    this.admin=false;
     if(userType == 'admin')
       {
         this.admin=true;
+       
       }
-     console.log('logged In UserType :', this.userType);
+     console.log(this.admin + 'logged In UserType :', this.userType);
  });
   }
 
@@ -85,6 +87,9 @@ export class AppComponent implements OnInit {
         }
       });
      
+      this.opened=false;
+      this.sidenav.close();
+      this.sidenav.mode='over';
       if(!this.isLoggedIn)
      {
       this.opened=false;
