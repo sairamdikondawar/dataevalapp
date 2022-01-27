@@ -66,11 +66,11 @@ public class UserFormService {
 		try {
 			UserForm entity = new UserForm();
 			
-			entity.setUser(userRepository.findById(1).get());
-			entity.setCreatedBy("admin");
+			entity.setUser(userRepository.findById(Util.getLoggedInUserId()).get());
+			entity.setCreatedBy(entity.getUser().getUserName());
 			entity.setCreationDate(new Date(System.currentTimeMillis()));
 			entity.setUpdatedDate(new Date(System.currentTimeMillis()));
-			entity.setUpdatedBy("admin");
+			entity.setUpdatedBy(entity.getUser().getUserName());
 			entity = userFormRepository.save(entity);
 
 			List<Integer> fieldsIds = new ArrayList<Integer>();

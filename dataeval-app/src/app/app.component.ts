@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   userName:string;
   userType:string;
   admin:boolean;
+  opened:boolean=false;
 
 
   constructor(private route: ActivatedRoute,
@@ -27,8 +28,19 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.isLoggedIn = this.authenticationService.isUserLoggedIn();
+     
     this.authenticationService.running.subscribe((isRunning) => {
       this.isLoggedIn = isRunning;
+     
+     if(!this.isLoggedIn)
+     {
+      this.opened=false;
+      // this.sidenav.close();
+     }else{
+      this.opened=true;
+      // this.sidenav.open();
+     }
+
        console.log('logged In :', this.isLoggedIn);
    });
     console.log('menu ->' + this.isLoggedIn); 
@@ -65,11 +77,26 @@ export class AppComponent implements OnInit {
         if (res.matches) {
           this.sidenav.mode = 'over';
           this.sidenav.close();
+         
         } else {
           this.sidenav.mode = 'side';
           this.sidenav.open();
+           
         }
       });
+     
+      if(!this.isLoggedIn)
+     {
+      this.opened=false;
+      // alert(this.isLoggedIn)
+      this.sidenav.mode='over';
+      this.sidenav.close();
+     }else{
+      this.opened=true;
+      // this.sidenav.open();
+     }
+
+      
   }
 
   view(url: string) {

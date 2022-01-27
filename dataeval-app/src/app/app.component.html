@@ -1,5 +1,5 @@
 <mat-toolbar class="mat-elevation-z8">
-    <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+    <button mat-icon-button *ngIf="sidenav.mode === 'over'" >
         <mat-icon *ngIf="!sidenav.opened">
             menu
         </mat-icon>
@@ -7,11 +7,12 @@
             close
         </mat-icon>
     </button>
-    Data Evaluation
+    Data Evaluation {{sidenav.mode}} Test 
 </mat-toolbar>
 
 <mat-sidenav-container>
-    <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    
+    <mat-sidenav #sidenav="matSidenav"     class="mat-elevation-z8">
 
         <!-- <img class="avatar mat-elevation-z8" src="https://source.unsplash.com/c_GmwfHBDzk/200x200" /> -->
 
@@ -69,6 +70,7 @@
         
 
     </mat-sidenav>
+ 
     <mat-sidenav-content>
         <div class="content mat-elevation-z8">
             <div style="width:80%;float:right;">

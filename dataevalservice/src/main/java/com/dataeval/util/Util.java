@@ -135,5 +135,11 @@ public class Util {
 		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return user.getAuthorities().iterator().next().getAuthority();
 	}
+	
+	public static Integer getLoggedInUserId() {
+		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return user.getId();
+	}
+
 
 }

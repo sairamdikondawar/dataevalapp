@@ -116,7 +116,7 @@ public class ListModelObject {
 				PageSectionModel dto = EntityModelConverter.getPageSectionModel(entity);
 				if (deepClone) {
 					dto.setQuestions(
-							getListQuestionModelFromListEntities(entity.getQuestions(), userType == null ? Util.getLoggedInUserType() : userType));
+							getListQuestionModelFromListEntities(entity.getQuestions(), userType == null || userType.isEmpty() ? Util.getLoggedInUserType() : userType));
 				} else {
 					dto.setQuestions(null);
 				}
