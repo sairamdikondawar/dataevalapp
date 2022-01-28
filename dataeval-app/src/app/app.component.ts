@@ -94,8 +94,8 @@ export class AppComponent implements OnInit {
      {
       this.opened=false;
       // alert(this.isLoggedIn)
-      this.sidenav.mode='over';
-      this.sidenav.close();
+     this.sidenav.mode='over';
+      this.sidenav.close(); 
      }else{
       this.opened=true;
       // this.sidenav.open();
@@ -108,5 +108,12 @@ export class AppComponent implements OnInit {
     this.router.navigate([url]
     );
 
+  }
+
+  showMenu()
+  {
+    this.sidenav.mode='side';
+    this.sidenav.open(); 
+    this.opened=false;
   }
 }
