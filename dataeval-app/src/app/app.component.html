@@ -1,5 +1,5 @@
 <mat-toolbar class="mat-elevation-z8">
-    <button mat-icon-button *ngIf="sidenav.mode === 'over'" >
+    <button mat-icon-button *ngIf="isLoggedIn" (click)="showMenu()">
         <mat-icon *ngIf="!sidenav.opened">
             menu
         </mat-icon>
@@ -12,7 +12,7 @@
 
 <mat-sidenav-container>
     
-    <mat-sidenav #sidenav="matSidenav"  [style.display]="isLoggedIn ? 'block' : 'none'"    class="mat-elevation-z8">
+    <mat-sidenav #sidenav="matSidenav" mode="side" [(opened)]="opened"  [style.display]="isLoggedIn ? 'block' : 'none'"    class="mat-elevation-z8">
 
         <!-- <img class="avatar mat-elevation-z8" src="https://source.unsplash.com/c_GmwfHBDzk/200x200" /> -->
 
