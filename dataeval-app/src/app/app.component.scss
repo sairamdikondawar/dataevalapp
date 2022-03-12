@@ -62,6 +62,15 @@ mat-sidenav-container {
     color: lightgrey;
 }
 
+
+.displyContent {
+    display: block;
+}
+
+.hideContent {
+   display: none;
+}
+
 mat-divider {
     margin-top: 16px;
     margin-bottom: 16px;

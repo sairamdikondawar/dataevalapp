@@ -1,0 +1,26 @@
+.label-font{
+    font-size: 16px;
+  }
+
+  mat-header-cell {
+    display:flex;
+    justify-content:flex-center;
+   }
+
+   mat-cell {
+    display:flex;
+    justify-content:flex-start;
+   }
+ 
+
+   .displyContent {
+    display: block;
+}
+
+.hideContent {
+   display: none;
+}
+
+.showSpace{
+  padding-bottom:250px ;
+}

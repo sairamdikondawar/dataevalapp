@@ -8,7 +8,7 @@
     <div class="modal-body ">
        <form [formGroup]="searchForm"   (ngSubmit)="search()">
             
-        <div class="row">
+        <div class="row" style="margin-top:-15px; margin-bottom: -15px; ">
             <div class="form-group col-4">
                 <label for="rName" class="font-weight-bold text-dark label-font" >Role</label>
                 <input type="text" class="form-control" id="rName" placeholder="Enter Role Name"
@@ -30,7 +30,7 @@
         </div>
             
        
-        <div style="margin-top:10px; margin-bottom: 10px; text-align: right; margin-right: 50px;">
+        <div style="margin-top:-15px; margin-bottom: -15px; text-align: right; margin-right: 50px;">
             <button type="submit" class="btn btn-secondary" >Search</button> &nbsp;
             <button type="button" class="btn btn-secondary" (click)="resetSearch()" >Reset</button>
         </div>

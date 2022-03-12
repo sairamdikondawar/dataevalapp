@@ -2,32 +2,31 @@ import { DataSource } from '@angular/cdk/table';
 import { CollectionViewer } from '@angular/cdk/collections';
 import { Observable, BehaviorSubject, of } from "rxjs";   
 import { catchError, finalize } from "rxjs/operators";  
-import { Injectable } from '@angular/core';  
-import { UserForm } from 'src/app/model/user/userform.model';
+import { Injectable } from '@angular/core';   
 
   
-import { Sort } from '@angular/material/sort';
-import { UserService } from '../services/user.service';
-import { UserResponse } from '../model/response/user-response.model';
-import { User } from '../model/user.model'; 
-import { UserQuery } from '../model/common/userquery.model';
+import { Sort } from '@angular/material/sort'; 
+import { PatientCallLog } from '../model/patientcallog.model';
+import { PatinetCallLogQuery } from '../model/common/patientcalllogquery.model';
+import { PatinetCallLogResponse } from '../model/response/patientcalllog-response.model';
+import { PatientCallLogService } from '../services/patientcalllog.service';
 
 @Injectable({
     providedIn: 'root'
   })
-export class UserDataSouce implements DataSource<User> {
+export class PatientCallLogDataSouce implements DataSource<PatientCallLog> {
 
     sort: Sort;
-    query = new UserQuery();
-  private todoSubject = new BehaviorSubject<User[]>([]);
+    query = new PatinetCallLogQuery();
+  private todoSubject = new BehaviorSubject<PatientCallLog[]>([]);
   private loadingSubject = new BehaviorSubject<boolean>(false);
   private countSubject = new BehaviorSubject<number>(0);
   public counter$ = this.countSubject.asObservable();
 
-  constructor(private service: UserService) { }
+  constructor(private service: PatientCallLogService) { }
  
 
-  connect(collectionViewer: CollectionViewer): Observable<User[]> {
+  connect(collectionViewer: CollectionViewer): Observable<PatientCallLog[]> {
     return this.todoSubject.asObservable();
 }
 
@@ -54,16 +53,14 @@ list(pageNumber = 0, pageSize = 10) {
             catchError(() => of([])),
             finalize(() => this.loadingSubject.next(false))
         )
-        .subscribe((result: UserResponse) => {
+        .subscribe((result: PatinetCallLogResponse) => {
             this.todoSubject.next(result.content);
             this.countSubject.next(result.totalElements);
         }
         );
-
-        
 }
 
-patientlist(pageNumber = 0, pageSize = 10) {
+allList(pageNumber = 0, pageSize = 10) {
         
     this.loadingSubject.next(true);
 
@@ -75,12 +72,12 @@ patientlist(pageNumber = 0, pageSize = 10) {
         this.query.order = this.sort.direction == 'asc' ? 0 : 1;
     }
 
-    this.service.patientlist(this.query)
+    this.service.allList(this.query)
         .pipe(
             catchError(() => of([])),
             finalize(() => this.loadingSubject.next(false))
         )
-        .subscribe((result: UserResponse) => {
+        .subscribe((result: PatinetCallLogResponse) => {
             this.todoSubject.next(result.content);
             this.countSubject.next(result.totalElements);
         }

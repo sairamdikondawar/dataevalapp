@@ -13,8 +13,6 @@ import { UserForm } from "../model/user/userform.model";
 
     }
   
-    
-  
   list(params :any): Observable<any>{
       const endpoint = 'http://localhost:8080/api/v1/userform-config?'+encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}');//environment.apiUrl + "/todos";
        

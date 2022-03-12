@@ -1,0 +1,149 @@
+<div style="width:100%; margin-top: 5px;" class="border">
+
+
+    <div class="container-fluid rounded-top d-block  p-2 bg-dark text-white">
+
+
+
+        <div class="row">
+            <div class="col-6">
+                <h4 class="modal-title" id="modal-basic-title">Call Record</h4>
+                <div style="font-size: 15px;">Please fill the form below clearly indicating your interested call type
+                    and best
+                    time for calling.</div>
+            </div>
+            <div class="col">
+
+            </div>
+            <div class="col-4" style="text-align: center;">
+                <!-- <button type="button" class="btn btn-outline-light" (click)="start()">Start</button> &nbsp;
+                    <button type="button" class="btn btn-outline-light" (click)="stop()">Stop</button>   -->
+                <div style="font-size: 25px;"> Time Spent(MM:SS):
+                    <div style="font-size: 35px;"> 
+                    {{ (seconds() * 1000 )| date:'mm:ss' :'UTC' }}
+                    </div>
+                    <app-countdown-timer></app-countdown-timer>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div>
+
+        <div class="card">
+            <alert></alert>
+            <div class="card-body">
+    
+                <form [formGroup]="createForm" #formDirective="ngForm" (ngSubmit)="save()">
+
+
+                    <div class="form-group">
+                        <label for="callType" class="font-weight-bold label-font">Call Type <span
+                                class="required-asterisk">*</span></label>
+
+
+                        <select class="form-control custom-select" formControlName="callType" value="">
+                            <option value="Inbound" selected>Inbound</option>
+                            <option value="Outbound">Outbound</option>
+                            <option value="Conference">Conference</option> 
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="patientFName" class="font-weight-bold label-font">Patinet Name<span
+                                class="required-asterisk">*</span> :</label>
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="text" class="form-control" id="patientFName" placeholder="Patient First Name" name="patientFName"
+                                    formControlName="patientFName" readonly>
+                            </div>
+                            <div class="col-6">
+                                <input type="text" class="form-control" id="patientLName"
+                                    placeholder="Patient Last Name" name="patientLName" formControlName="patientLName" readonly>
+                                </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="staffFName" class="font-weight-bold label-font">Care Team Member Name :</label>
+                        <div class="row">
+                            <div class="col-6">
+
+                                <input type="text" class="form-control" id="staffFName" placeholder="Staff First Name"
+                                    name="staffFName" formControlName="staffFName" readonly>
+
+                            </div>
+                            <div class="col-6"><input type="text" class="form-control" id="staffLName"
+                                    placeholder=" Staff Last Name Name" name="lName" formControlName="staffLName"
+                                    readonly></div>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <label for="hCondition" class="font-weight-bold label-font">Health Conditions to discuss :</label>
+                        <textarea class="form-control" id="hCondition" placeholder="Enter Health Conditions to discuss"
+                            name="hCondition" formControlName="hCondition" ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mtOutCome" class="font-weight-bold label-font">Measurable Treatment outcome :</label>
+                        <textarea type="text" class="form-control" id="mtOutCome"
+                            placeholder="Enter Measurable Treatment outcome" name="mtOutCome" formControlName="mtOutCome"
+                            ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mSymptoms" class="font-weight-bold label-font">Managing Symptoms :</label>
+                        <textarea type="text" class="form-control" id="mSymptoms" placeholder="Enter Managing Symptoms"
+                            name="mSymptoms" formControlName="mSymptoms"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="addNotes" class="font-weight-bold label-font">Additional Notes :</label>
+                        <textarea type="text" class="form-control" id="addNotes" placeholder="Enter Additional Notes"
+                            name="addNotes" formControlName="addNotes"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nextAptDate" class="font-weight-bold label-font">Schedule Next Appointment :</label>
+                        <div class="row">
+                            <div class="col-4">
+                                <input type="datetime-local" class="form-control" id="nextAptDate" name="nextAptDate" min="{{visatedDate}}"
+                                    formControlName="nextAptDate">
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <!-- <div class="form-group">
+            <label for="userType" class="font-weight-bold">User Type</label>
+            <select class="custom-select"   formControlName="userType"> 
+                <option value="" disabled>Select Role</option>
+                <option *ngFor="let role of roles"  
+                    value="{{role.id}}">
+                    {{role.name | titlecase}}</option>
+            </select>
+        </div> -->
+
+
+
+                    <div class="container text-center">
+                        <button class="btn btn-success " [disabled]="!createForm.valid"
+                            class="btn btn-info">Save</button>
+                        &nbsp; &nbsp;
+                        <button type="button" class="btn  btn-secondary"
+                            (click)="navigateBack()">Cancel</button>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

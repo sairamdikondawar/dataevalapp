@@ -34,8 +34,13 @@ export class LoginComponent implements OnInit {
         if(userType == 'admin')
           {
             this.router.navigate(['/user']);
-          }else{
-            this.router.navigate(['/patient']);
+             location.reload();
+          }else if(userType === 'doctor' ){
+            this.router.navigate(['/viewpatientcalllogsearch']);
+             location.reload();
+          }else if(userType === 'nurse' ){
+            this.router.navigate(['/managepatient']);
+            location.reload();
           }});
           
        

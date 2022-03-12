@@ -27,17 +27,14 @@ export class ManageuserComponent implements OnInit {
 
   
 
-
+  today=new Date();
   roles: Lookup[];
 
-  types: Lookup[];
+ 
 
-  sections: Lookup[];
-
-  filterTypes: Lookup[];
-
-  type: Lookup;
-
+  
+ 
+ 
   selectedRoleId: number = 0;
 
   currentPageIndex:number=0;
@@ -46,6 +43,7 @@ export class ManageuserComponent implements OnInit {
 
   numberOfPages :number=0; 
   model = new User();
+  disableUserType:boolean=true;
 
 
   @ViewChild(MatSort) sort: MatSort;
@@ -60,37 +58,23 @@ export class ManageuserComponent implements OnInit {
     private modalService: NgbModal,
     private commonService: CommonService) {
 
-    this.type = new Lookup(0, '');
-
+   
     
   }
-  displayedColumns = ['id', 'name',   'userType','status', 'actions'];
+  displayedColumns = ['id', 'name', 'firstname', 'lastname' ,'dateOfBirth',  'userType','status', 'actions'];
 
 
   ngOnInit() {
+   
     this.dataSource = new UserDataSouce(this.service);
     this.dataSource.sort = this.sort;
     this.dataSource.list();
 
-    this.commonService.questionTypes()
-      .pipe(
-        catchError(() => of([]))
-      )
-      .subscribe((result) => {
-        this.types = (result);
-      }
-      );
+   
 
       
 
-    this.commonService.loadSections()
-      .pipe(
-        catchError(() => of([]))
-      )
-      .subscribe((result) => {
-        this.sections = (result);
-      }
-      );
+   
 
       this.roleService.roleService()
       .pipe(
@@ -169,6 +153,13 @@ export class ManageuserComponent implements OnInit {
     this.model.status = this.createForm.controls.status.value; 
 
     this.model.role.id=this.createForm.controls.userType.value;
+
+    this.model.firstName=this.createForm.controls.fName.value;
+
+    this.model.lastName=this.createForm.controls.lName.value;
+
+    this.model.dateOfBirth=this.createForm.controls.dateOfBirth.value;
+
     this.service.create(this.model)
       .pipe(
         catchError(() => of([]))
@@ -189,6 +180,11 @@ export class ManageuserComponent implements OnInit {
   createForm = new FormGroup({
     sName: new FormControl(this.model.label, [Validators.required,
     Validators.minLength(4)]), 
+    fName: new FormControl(this.model.label, [Validators.required,
+      Validators.minLength(4)]), 
+    lName: new FormControl(this.model.label, [Validators.required,
+        Validators.minLength(4)]),  
+    dateOfBirth: new FormControl(this.model.dateOfBirth), 
     status: new FormControl('Active', [Validators.required]), 
     userType: new FormControl('', [Validators.required])
   });
@@ -198,6 +194,11 @@ export class ManageuserComponent implements OnInit {
   editForm = new FormGroup({
     eName: new FormControl(this.model.label, [Validators.required,
     Validators.minLength(4)]), 
+    fName: new FormControl(this.model.label, [Validators.required,
+      Validators.minLength(4)]), 
+    lName: new FormControl(this.model.label, [Validators.required,
+        Validators.minLength(4)]),
+    dateOfBirth: new FormControl(this.model.dateOfBirth),  
     id: new FormControl(this.model.id),
 
     status: new FormControl(this.model.status, [Validators.required]), 
@@ -224,6 +225,9 @@ export class ManageuserComponent implements OnInit {
     this.editForm.patchValue({
       id: editModel.id,
       eName: editModel.label, 
+      fName:editModel.firstName,
+      lName:editModel.lastName,
+      dateOfBirth:editModel.dateOfBirth,
       // password:editModel.password;
       status: editModel.status,
       userType: (editModel.role != null ? editModel.role.id : null)
@@ -231,6 +235,14 @@ export class ManageuserComponent implements OnInit {
      
   }
   get sName() { return this.createForm.get('sName'); }
+
+  get fName() { return this.createForm.get('fName'); }
+
+  get efName() { return this.editForm.get('fName'); }
+
+  get elName() { return this.editForm.get('lName'); }
+
+  get lName() { return this.createForm.get('lName'); }
 
   get eName() { return this.editForm.get('eName'); }
 
@@ -240,6 +252,10 @@ export class ManageuserComponent implements OnInit {
     this.createForm = new FormGroup({
       sName: new FormControl(this.model.label, [Validators.required,
       Validators.minLength(4)]),
+      fName: new FormControl(this.model.label, [Validators.required,
+        Validators.minLength(4)]),
+      lName: new FormControl(this.model.label, [Validators.required,
+          Validators.minLength(4)]),
       // password: new FormControl(''),
       status: new FormControl('Active', [Validators.required]),
       userType: new FormControl('', [Validators.required])
@@ -254,6 +270,9 @@ export class ManageuserComponent implements OnInit {
     this.model.label = this.editForm.controls.eName.value;
     this.model.status = this.editForm.controls.status.value;
     this.model.role.id=this.editForm.controls.userType.value;
+    this.model.firstName=this.editForm.controls.fName.value;
+    this.model.lastName=this.editForm.controls.lName.value;
+    this.model.dateOfBirth=this.editForm.controls.dateOfBirth.value;
     this.service.update(this.model)
       .pipe(
         catchError(() => of([]))
@@ -309,7 +328,6 @@ export class ManageuserComponent implements OnInit {
 }
 
 }
-
 
 function filterByString(data: Lookup[], s: string) {
   return data.filter(e => (e.name == s))[0];

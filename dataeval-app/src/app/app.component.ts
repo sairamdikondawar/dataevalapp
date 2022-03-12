@@ -18,8 +18,9 @@ export class AppComponent implements OnInit {
   isLoggedIn = false;
   userName:string;
   userType:string;
-  admin:boolean=false;
-  opened:boolean=false;
+  admin:boolean=false; 
+  nurse:boolean=false;
+  doctor:boolean=false
 
 
   constructor(private route: ActivatedRoute,
@@ -31,15 +32,7 @@ export class AppComponent implements OnInit {
      
     this.authenticationService.running.subscribe((isRunning) => {
       this.isLoggedIn = isRunning;
-     
-     if(!this.isLoggedIn)
-     {
-      this.opened=false;
-      // this.sidenav.close();
-     }else{
-      this.opened=true;
-      // this.sidenav.open();
-     }
+      
 
        console.log('logged In :', this.isLoggedIn);
    });
@@ -51,69 +44,66 @@ export class AppComponent implements OnInit {
        console.log('logged In User:', this.userName);
    });
 
+   this.authenticationService.firstName.subscribe((firstName) => {
+     
+    
+     console.log('logged In User FirstName:', firstName);
+ });
+
    this.authenticationService.userType.subscribe((userType) => {
     this.userType = userType;
     this.admin=false;
-    if(userType == 'admin')
+    if(userType === 'admin')
       {
         this.admin=true;
        
+      }else
+      if(userType === 'nurse')
+      {
+        this.nurse=true;
+      }else 
+      if(userType === 'doctor')
+      {
+        this.doctor=true;
       }
      console.log(this.admin + 'logged In UserType :', this.userType);
+
+     console.log(this.nurse + 'logged In UserType :', this.userType);
+
+     console.log(this.doctor + 'logged In UserType :', this.userType);
  });
   }
 
   handleLogout() {
 
-   
+    this.sidenav.close(); 
     this.authenticationService.logout();
     this.view("/")
   }
 
   ngAfterViewInit() {
-    // alert("test");
-    this.observer
-      .observe(['(max-width: 800px;)'])
-      .pipe(delay(1))
-      .subscribe((res) => {
-        if (res.matches) {
-          this.sidenav.mode = 'over';
-          this.sidenav.close();
-         
-        } else {
-          this.sidenav.mode = 'side';
-          this.sidenav.open();
-           
-        }
-      });
-     
-      this.opened=false;
-      this.sidenav.close();
-      this.sidenav.mode='over';
-      if(!this.isLoggedIn)
-     {
-      this.opened=false;
-      // alert(this.isLoggedIn)
-     this.sidenav.mode='over';
+    
       this.sidenav.close(); 
-     }else{
-      this.opened=true;
-      // this.sidenav.open();
-     }
+      
 
       
   }
 
   view(url: string) {
-    this.router.navigate([url]
-    );
+    // alert(url);
+    this.router.navigate([url]);
 
   }
 
   showMenu()
   {
     this.sidenav.mode='side';
-    this.sidenav.open(); 
-    this.opened=false;
+    if(this.sidenav.opened){
+      this.sidenav.close(); 
+    }
+   else {
+      this.sidenav.open(); 
+    }
+   
   }
 }

@@ -7,48 +7,65 @@
             close
         </mat-icon>
     </button>
-    Data Evaluation 
+    <img class="mat-elevation-z8"  width="120" 
+    height="60" src="../assets/logo-final-Print-01.png" />
+     
 </mat-toolbar>
 
 <mat-sidenav-container>
     
-    <mat-sidenav #sidenav="matSidenav" mode="side" [(opened)]="opened"  [style.display]="isLoggedIn ? 'block' : 'none'"    class="mat-elevation-z8">
+    <mat-sidenav #sidenav="matSidenav" mode="side"    [style.display]="isLoggedIn ? 'block' : 'none'"     class="mat-elevation-z8">
 
-        <!-- <img class="avatar mat-elevation-z8" src="https://source.unsplash.com/c_GmwfHBDzk/200x200" /> -->
+        <img class="avatar mat-elevation-z8" src="../assets/logo-final-Print-01.png" />
 
         <h4 *ngIf="isLoggedIn" class="name">{{ userName | titlecase}}</h4>
         <p *ngIf="isLoggedIn" class="designation">Principle Engineer</p>
 
         <mat-divider *ngIf="isLoggedIn" ></mat-divider>
 
-        <button *ngIf="isLoggedIn && admin" (click)="view('/flowconfig')" mat-button class="menu-button">
+        <!-- <button *ngIf="isLoggedIn && admin" (click)="view('/flowconfig')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>Role Based Forms</span>
         </button>
         <button *ngIf="isLoggedIn && admin" (click)="view('/userforms')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>Manage User Forms</span>
-        </button>
-        <button *ngIf="isLoggedIn &&   !admin" (click)="view('/patient')" mat-button class="menu-button">
+        </button> -->
+        <!-- <button *ngIf="isLoggedIn &&   !admin" (click)="view('/patient')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>User Form</span>
-        </button>
-        <button *ngIf="isLoggedIn && admin" (click)="view('/question')" mat-button class="menu-button">
+        </button> -->
+        <!-- <button *ngIf="isLoggedIn && admin" (click)="view('/question')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>Manage Fields</span>
-        </button>
+        </button> -->
 
-        <button *ngIf="isLoggedIn && admin" (click)="view('/user')" mat-button class="menu-button">
+        <button *ngIf="isLoggedIn && (admin  )" (click)="view('/user')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>Manage Users</span>
         </button>
-        <button *ngIf="isLoggedIn && admin" (click)="view('/sections')" mat-button class="menu-button">
+        <!-- <button *ngIf="isLoggedIn && admin" (click)="view('/sections')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>Manage Sections</span>
         </button>
         <button *ngIf="isLoggedIn && admin " (click)="view('/steps')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>Manage Steps</span>
+        </button> -->
+
+        <button *ngIf="isLoggedIn && (admin   || nurse) " (click)="view('/managepatient')" mat-button class="menu-button">
+            <mat-icon>arrow_right</mat-icon>
+            <span>Patient Call Log</span>
+        </button>
+
+        <button *ngIf="isLoggedIn && (admin || doctor || nurse) " (click)="view('/viewpatientcalllogsearch')" mat-button class="menu-button">
+            <mat-icon>arrow_right</mat-icon>
+            <span>View Patient Call Log</span>
+        </button>
+
+        <button *ngIf="isLoggedIn && (admin || doctor || nurse) " (click)="view('/changepassword')" mat-button class="menu-button">
+            <mat-icon>arrow_right</mat-icon>
+            <span>Change Password</span>
         </button>
 
         <button mat-button class="menu-button">

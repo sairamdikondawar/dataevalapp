@@ -1,0 +1,96 @@
+<div style="width:100%; margin-top: 5px;" class="border">
+
+    <div class="container-fluid rounded-top d-block  p-2 bg-dark text-white">
+        <h4 class="modal-title" id="modal-basic-title">  <a    (click)="navigateBack()">
+            &#x25c0; </a> Select Patient</h4>
+    </div>
+      <div class="container-fluid">
+        
+    <div class="modal-body ">
+        <form [formGroup]="searchForm"   (ngSubmit)="search()">
+            
+        <div class="row">
+            <div class="form-group col-4">
+                <label for="uName" class="font-weight-bold text-dark label-font" >Name</label>
+                <input type="text" class="form-control" id="uName" placeholder="Enter Name"
+                    name="uName" formControlName="uName" required> 
+            </div> 
+            
+        </div>
+            
+       
+        <div style="margin-top:10px; margin-bottom: 10px; text-align: right; margin-right: 50px;">
+            <button type="submit" class="btn btn-secondary" >Search</button> &nbsp;
+            <button type="button" class="btn btn-secondary" (click)="resetSearch()" >Reset</button>
+        </div>
+
+        </form>
+    </div> 
+    </div>
+
+    <hr/> 
+    
+    <div class="mat-elevation-z8">
+
+        <mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+            <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef>S.No</mat-header-cell>
+                <mat-cell *matCellDef="let row; let i=index"> {{ i + (currentPageIndex)+1}} </mat-cell>
+            </ng-container>
+            
+            <!-- Progress Column -->
+            <ng-container matColumnDef="userType">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>User Type</mat-header-cell>
+                <mat-cell *matCellDef="let row" > {{ row.role.name | titlecase}} 
+                </mat-cell>
+            </ng-container>
+            
+
+            <!-- Name Column
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.label}} </mat-cell>
+            </ng-container> -->
+
+             <!-- First Name Column -->
+             <ng-container matColumnDef="firstname">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.firstName}} </mat-cell>
+            </ng-container>
+
+            <!-- Last Name Column -->
+            <ng-container matColumnDef="lastname">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.lastName}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="dateOfBirth">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Date Of Birth</mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.dateOfBirth | date: "longDate"}} </mat-cell>
+            </ng-container>
+
+
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.status}} </mat-cell>
+            </ng-container>
+ 
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <button mat-raised-button class="btn btn-secondary"  (click)="selectPatient(row.id)">
+                        Select </button>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;">
+            </mat-row> 
+        </mat-table> 
+        <mat-paginator [pageSizeOptions]="[10, 25, 100]" [pageSize]="10"></mat-paginator> 
+    </div> 
+
+</div>

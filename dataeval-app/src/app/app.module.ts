@@ -63,6 +63,16 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { UserformsComponent } from './admin/userforms/userforms.component';
 import { UserformdetailsComponent } from './admin/userformdetails/userformdetails.component';
 import { SectionsComponent } from './admin/sections/sections.component';
+import { ManagePatinetlogComponent } from './manage-patinetlog/manage-patinetlog.component';
+import { DateInputConverter } from './directives/date-input-converter.directive';
+import { PatinetCalllogDetailsComponent } from './patinet-calllog-details/patinet-calllog-details.component';
+import { CountdownTimerComponent } from './patinet-calllog-details/countdown-timer.component';
+import { SelectPatientComponent } from './patinet-calllog-details/select-patient.component';
+import { ViewPatinetCalllogDetailsComponent } from './patinet-calllog-details/view-patinet-calllog-details.component';
+import { ViewPatinetlogComponent } from './manage-patinetlog/view-patinetlog.component';
+import { ChangePasswordComponent } from './admin/change-password/change-password.component';
+import { AlertModule } from './alert';
+import { AlertComponent } from './alert/alert.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,7 +86,15 @@ import { SectionsComponent } from './admin/sections/sections.component';
     FormComponent,
     UserformsComponent,
     UserformdetailsComponent,
-    SectionsComponent
+    SectionsComponent,
+    ManagePatinetlogComponent,
+    DateInputConverter,
+    PatinetCalllogDetailsComponent,
+    CountdownTimerComponent,
+    SelectPatientComponent,
+    ViewPatinetCalllogDetailsComponent,
+    ViewPatinetlogComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -120,7 +138,8 @@ import { SectionsComponent } from './admin/sections/sections.component';
     MatPaginatorModule,
     MatSortModule,
     MatTableModule,
-    NgbModule
+    NgbModule,
+    AlertModule
   ],exports: [
     MatAutocompleteModule,
     MatCheckboxModule,

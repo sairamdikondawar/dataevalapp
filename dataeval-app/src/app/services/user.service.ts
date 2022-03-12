@@ -15,6 +15,12 @@ export class UserService {
       const endpoint = 'http://localhost:8080/api/v1/user-config/users';//environment.apiUrl + "/todos";
       return this.http.get(endpoint, { params });
   }
+
+  patientlist(params :any): Observable<any>{
+    const endpoint = 'http://localhost:8080/api/v1/user-config/patients';//environment.apiUrl + "/todos";
+    return this.http.get(endpoint, { params });
+}
+
   
   
   create(data:User): Observable<any>{
@@ -29,6 +35,11 @@ export class UserService {
   
   get(id :any): Observable<any>{
       const endpoint = 'http://localhost:8080/api/v1/user-config/user/'+id; 
+      return this.http.get(endpoint);
+    }
+
+    getpatient(id :any): Observable<any>{
+      const endpoint = 'http://localhost:8080/api/v1/user-config/patient/'+id; 
       return this.http.get(endpoint);
     }
     

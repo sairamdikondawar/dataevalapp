@@ -9,6 +9,12 @@ import { UserformsComponent } from './admin/userforms/userforms.component';
 import { UserformdetailsComponent } from './admin/userformdetails/userformdetails.component';
 import { PageconfigComponent } from './admin/pageconfig/pageconfig.component';
 import { SectionsComponent } from './admin/sections/sections.component';
+import { ManagePatinetlogComponent } from './manage-patinetlog/manage-patinetlog.component';
+import { PatinetCalllogDetailsComponent } from './patinet-calllog-details/patinet-calllog-details.component';
+import { SelectPatientComponent } from './patinet-calllog-details/select-patient.component';
+import { ViewPatinetCalllogDetailsComponent } from './patinet-calllog-details/view-patinet-calllog-details.component';
+import { ViewPatinetlogComponent } from './manage-patinetlog/view-patinetlog.component';
+import { ChangePasswordComponent } from './admin/change-password/change-password.component';
 
 const routes: Routes = [
   { path: 'flowconfig', component: FlowconfigComponent },
@@ -22,7 +28,24 @@ const routes: Routes = [
   { path: 'userforms', component: UserformsComponent},
   { path: 'steps', component: PageconfigComponent},
   { path: 'sections', component: SectionsComponent},
-  { path: 'userformdetails/:id', component: UserformdetailsComponent}
+  { path: 'userformdetails/:id', component: UserformdetailsComponent},
+  {path: 'managepatient', component: ManagePatinetlogComponent},
+  {
+    path: 'patientcalllog', component: PatinetCalllogDetailsComponent
+  },
+  {
+    path: 'patientcalllog/:id', component: PatinetCalllogDetailsComponent
+  },
+  {
+    path:'selectpatient',component:SelectPatientComponent
+  },{
+    path: 'viewpatientcalllog/:id', component: ViewPatinetCalllogDetailsComponent
+  },
+  {
+    path: 'viewpatientcalllogsearch', component: ViewPatinetlogComponent
+  },{
+    path: 'changepassword' , component: ChangePasswordComponent
+  }
 ];
 
 @NgModule({
