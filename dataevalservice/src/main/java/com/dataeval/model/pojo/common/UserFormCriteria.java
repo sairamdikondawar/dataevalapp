@@ -1,5 +1,8 @@
 package com.dataeval.model.pojo.common;
 
-public class UserFormCriteria {
+import lombok.Data;
+
+@Data
+public class UserFormCriteria extends CommonCriteria {
 
 }

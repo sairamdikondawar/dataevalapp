@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dataeval.model.pojo.ChangePasswordModel;
 import com.dataeval.model.pojo.UserModel;
-import com.dataeval.model.pojo.common.CommonCriteria;
+import com.dataeval.model.pojo.common.PatientSearchCriteria;
+import com.dataeval.model.pojo.common.UserSearchQuery;
 import com.dataeval.model.response.EmptySuccessResponse;
 import com.dataeval.model.response.ErrorResponse;
 import com.dataeval.service.UserService;
@@ -43,9 +45,19 @@ public class UserController {
 	private String[] argumentsToReplace = new String[5];
 
 	@GetMapping("/users")
-	public Page<UserModel> list(CommonCriteria common) {
+	public Page<UserModel> list(UserSearchQuery common) {
 		try { 
 			return userService.findAll(common);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Page.empty();
+	}
+	
+	@GetMapping("/patients")
+	public Page<UserModel> patinetList(PatientSearchCriteria common) {
+		try { 
+			return userService.findAllPatients(common);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -93,12 +105,47 @@ public class UserController {
 		return new ResponseEntity<EmptySuccessResponse>(resp, HttpStatus.OK);
 
 	}
+	@PutMapping("/user/password")
+	public ResponseEntity<?> updatePassword(@RequestBody ChangePasswordModel model) {
+
+		log.info("Inside update User API");
+		try {
+			model = userService.updatePassword(model);
+		} catch (Exception e) {
+			String localizedErrorMessage = messageSource.getMessage("user.update.unsuccessful", null,
+					currentLocale);
+			ErrorResponse resp = new ErrorResponse(localizedErrorMessage);
+			return new ResponseEntity<ErrorResponse>(resp, HttpStatus.BAD_REQUEST);
+		}
+
+		argumentsToReplace[0] = "";//model.getUserName();
+		String localizedSuccessMessage = messageSource.getMessage("user.update.successful", argumentsToReplace,
+				currentLocale);
+		EmptySuccessResponse resp = new EmptySuccessResponse(localizedSuccessMessage);
+		resp.setResource(model);
+		return new ResponseEntity<EmptySuccessResponse>(resp, HttpStatus.OK);
+
+	}
 
 	@GetMapping("/user/{id}")
 	public ResponseEntity<?> getById(@PathVariable Integer id) {
 		UserModel model = null;
 		try {
 			model = userService.getById(id);
+		} catch (Exception e) {
+			String localizedErrorMessage = messageSource.getMessage("user.nodata.found", null, currentLocale);
+			ErrorResponse resp = new ErrorResponse(localizedErrorMessage);
+			return new ResponseEntity<ErrorResponse>(resp, HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<UserModel>(model, HttpStatus.OK);
+	}
+	
+	@GetMapping("/patient/{id}")
+	public ResponseEntity<?> getPatientById(@PathVariable Integer id) {
+		UserModel model = null;
+		try {
+			model = userService.getPatientById(id);
 		} catch (Exception e) {
 			String localizedErrorMessage = messageSource.getMessage("user.nodata.found", null, currentLocale);
 			ErrorResponse resp = new ErrorResponse(localizedErrorMessage);

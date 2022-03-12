@@ -2,6 +2,8 @@ package com.dataeval.model.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,12 +12,15 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
-public class User implements Serializable {
+public class User extends AuditEntity  implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String password;
 	private String status;
 	private String userName;
+	private String firstName;
+	private String lastName;
+	private Date dateOfBirth;
 	private Role role;
 //	private List<Role> roles;
 
@@ -32,7 +37,7 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name="PASSWORD")
+	@Column(name = "PASSWORD")
 	public String getPassword() {
 		return this.password;
 	}
@@ -67,6 +72,33 @@ public class User implements Serializable {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	@Column(name = "FIRST_NAME")
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	@Column(name = "LAST_NAME")
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	@Column(name = "DATE_OF_BIRTH")
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	// bi-directional many-to-many association to Role

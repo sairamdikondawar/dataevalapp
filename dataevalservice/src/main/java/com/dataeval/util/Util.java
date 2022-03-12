@@ -1,15 +1,18 @@
 package com.dataeval.util;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.dataeval.model.config.UserDetailsImpl;
+import com.dataeval.model.entity.AuditEntity;
 import com.dataeval.model.pojo.common.CommonCriteria;
 import com.dataeval.model.pojo.common.SortInfo;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -46,7 +49,7 @@ public class Util {
 		return mapper;
 	}
 
-	public static PageRequest getPageObjectFromCriteria(CommonCriteria criteria) {
+	public static Pageable getPageObjectFromCriteria(CommonCriteria criteria) {
 		PageRequest page = PageRequest.of(0, 10);
 
 		try {
@@ -135,11 +138,20 @@ public class Util {
 		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return user.getAuthorities().iterator().next().getAuthority();
 	}
-	
+
 	public static Integer getLoggedInUserId() {
 		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return user.getId();
 	}
 
+	public static void updateHistory(AuditEntity entity, boolean isNew) {
+		if (entity.getCreatedBy() == null|| isNew)
+			entity.setCreatedBy(getLoggedInUserType());
+
+		entity.setUpdatedBy(getLoggedInUserType());
+		if (entity.getCreationDate() == null || isNew)
+			entity.setCreationDate(new Date(System.currentTimeMillis()));
+		entity.setUpdatedDate(new Date(System.currentTimeMillis()));
+	}
 
 }

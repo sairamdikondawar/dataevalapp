@@ -1,6 +1,7 @@
 package com.dataeval.model.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,5 +22,8 @@ public class UserModel implements Serializable {
 	@JsonProperty(value = "label")
 	private String userName;
 	private RoleModel role;
+	private String firstName;
+	private String lastName;
+	private Date dateOfBirth;
 
 }

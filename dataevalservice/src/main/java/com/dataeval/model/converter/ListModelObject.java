@@ -9,6 +9,7 @@ import com.dataeval.model.config.UserDetailsImpl;
 import com.dataeval.model.entity.FlowConfig;
 import com.dataeval.model.entity.FlowPage;
 import com.dataeval.model.entity.PageSection;
+import com.dataeval.model.entity.PatientCallLog;
 import com.dataeval.model.entity.Question;
 import com.dataeval.model.entity.QuestionType;
 import com.dataeval.model.entity.Role;
@@ -20,6 +21,7 @@ import com.dataeval.model.entity.UserSection;
 import com.dataeval.model.pojo.FlowConfigModel;
 import com.dataeval.model.pojo.FlowPageModel;
 import com.dataeval.model.pojo.PageSectionModel;
+import com.dataeval.model.pojo.PatientCallLogModel;
 import com.dataeval.model.pojo.QuestionModel;
 import com.dataeval.model.pojo.QuestionTypeModel;
 import com.dataeval.model.pojo.RoleModel;
@@ -67,19 +69,19 @@ public class ListModelObject {
 		});
 		return dtoList;
 	}
-	
-	public static List<FlowPageModel> getListFlowPageModelFromListEntities(List<FlowPage> entities, boolean deepClone) 
-	{
+
+	public static List<FlowPageModel> getListFlowPageModelFromListEntities(List<FlowPage> entities, boolean deepClone) {
 		return getListFlowPageModelFromListEntities(entities, deepClone, null);
 	}
 
-	public static List<FlowPageModel> getListFlowPageModelFromListEntities(List<FlowPage> entities, boolean deepClone, String userType) {
+	public static List<FlowPageModel> getListFlowPageModelFromListEntities(List<FlowPage> entities, boolean deepClone,
+			String userType) {
 		List<FlowPageModel> dtoList = new ArrayList<FlowPageModel>();
 
 		entities.stream().forEach(entity -> {
 			FlowPageModel dto = EntityModelConverter.getFlowPageModel(entity, deepClone);
 			if (entity.getPageSections() != null)
-				dto.setSections(getListPageSectionModelFromListEntities(entity.getPageSections(),userType));
+				dto.setSections(getListPageSectionModelFromListEntities(entity.getPageSections(), userType));
 			dtoList.add(dto);
 		}
 
@@ -115,8 +117,8 @@ public class ListModelObject {
 			entities.stream().forEach(entity -> {
 				PageSectionModel dto = EntityModelConverter.getPageSectionModel(entity);
 				if (deepClone) {
-					dto.setQuestions(
-							getListQuestionModelFromListEntities(entity.getQuestions(), userType == null || userType.isEmpty() ? Util.getLoggedInUserType() : userType));
+					dto.setQuestions(getListQuestionModelFromListEntities(entity.getQuestions(),
+							userType == null || userType.isEmpty() ? Util.getLoggedInUserType() : userType));
 				} else {
 					dto.setQuestions(null);
 				}
@@ -129,8 +131,9 @@ public class ListModelObject {
 	public static List<PageSectionModel> getListPageSectionModelFromListEntities(List<PageSection> entities) {
 		return getListPageSectionModelFromListEntities(entities, Boolean.TRUE, null);
 	}
-	
-	public static List<PageSectionModel> getListPageSectionModelFromListEntities(List<PageSection> entities, String userType) {
+
+	public static List<PageSectionModel> getListPageSectionModelFromListEntities(List<PageSection> entities,
+			String userType) {
 		return getListPageSectionModelFromListEntities(entities, Boolean.TRUE, userType);
 	}
 
@@ -170,6 +173,17 @@ public class ListModelObject {
 
 		entities.stream().forEach(entity -> {
 			UserQuestionModel dto = EntityModelConverter.getUserQuestionModel(entity);
+			dtoList.add(dto);
+		});
+		return dtoList;
+	}
+
+	public static List<PatientCallLogModel> getListPatientCallLogModelFromListEntities(
+			List<PatientCallLog> entities) {
+		List<PatientCallLogModel> dtoList = new ArrayList<PatientCallLogModel>();
+
+		entities.stream().forEach(entity -> {
+			PatientCallLogModel dto = EntityModelConverter.getPatienCallLogModel(entity);
 			dtoList.add(dto);
 		});
 		return dtoList;

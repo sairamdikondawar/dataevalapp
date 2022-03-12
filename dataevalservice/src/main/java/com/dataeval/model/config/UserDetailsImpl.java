@@ -12,6 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.dataeval.model.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Getter;
+import lombok.Setter;
  
 
 public class UserDetailsImpl implements UserDetails {
@@ -22,6 +25,14 @@ public class UserDetailsImpl implements UserDetails {
 	private String username;
 
 	private String email;
+	
+	@Getter
+	@Setter
+	private String firstName;
+	
+	@Getter
+	@Setter
+	private String lastName;
 
 	@JsonIgnore
 	private String password;
@@ -29,12 +40,14 @@ public class UserDetailsImpl implements UserDetails {
 	private Collection<? extends GrantedAuthority> authorities;
 
 	public UserDetailsImpl(Integer id, String username, String email, String password,
-			Collection<? extends GrantedAuthority> authorities) {
+			Collection<? extends GrantedAuthority> authorities, String firstName, String lastName) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.authorities = authorities;
+		this.firstName=firstName;
+		this.lastName=lastName;
 	}
 
 	public static UserDetailsImpl build(User user) {
@@ -51,7 +64,7 @@ public class UserDetailsImpl implements UserDetails {
 				user.getUserName(), 
 				 "test@test.com",
 				user.getPassword(), 
-				authorities);
+				authorities,user.getFirstName(), user.getLastName());
 	}
 
 	@Override

@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @MappedSuperclass
 public class AuditEntity {
@@ -16,6 +18,7 @@ public class AuditEntity {
 
 	private Date updatedDate;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATION_DATE")
 	public Date getCreationDate() {
 		return creationDate;
@@ -43,6 +46,7 @@ public class AuditEntity {
 		this.updatedBy = updatedBy;
 	}
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "UPDATED_DATE")
 	public Date getUpdatedDate() {
 		return updatedDate;

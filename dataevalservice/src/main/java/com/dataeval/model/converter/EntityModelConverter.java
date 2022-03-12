@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import com.dataeval.model.entity.FlowConfig;
 import com.dataeval.model.entity.FlowPage;
 import com.dataeval.model.entity.PageSection;
+import com.dataeval.model.entity.PatientCallLog;
 import com.dataeval.model.entity.Question;
 import com.dataeval.model.entity.QuestionType;
 import com.dataeval.model.entity.Role;
@@ -18,6 +19,7 @@ import com.dataeval.model.entity.UserSection;
 import com.dataeval.model.pojo.FlowConfigModel;
 import com.dataeval.model.pojo.FlowPageModel;
 import com.dataeval.model.pojo.PageSectionModel;
+import com.dataeval.model.pojo.PatientCallLogModel;
 import com.dataeval.model.pojo.QuestionModel;
 import com.dataeval.model.pojo.QuestionTypeModel;
 import com.dataeval.model.pojo.RoleModel;
@@ -46,15 +48,15 @@ public class EntityModelConverter {
 	public static FlowPageModel getFlowPageModel(FlowPage entity) {
 		return getFlowPageModel(entity, false);
 	}
-	
+
 	public static FlowPageModel getFlowPageModel(FlowPage entity, boolean deepClone) {
 		FlowPageModel model = new FlowPageModel();
 		try {
-			if(!deepClone)
-			  entity.setPageSections(null);
+			if (!deepClone)
+				entity.setPageSections(null);
 			BeanUtils.copyProperties(entity, model);
-			
-			if(!deepClone)
+
+			if (!deepClone)
 				model.setSections(null);
 		} catch (Exception e) {
 			log.error("Unable to prepare FlowPageModel Object", e);
@@ -65,8 +67,12 @@ public class EntityModelConverter {
 	public static UserModel getUserModel(User entity) {
 		UserModel model = new UserModel();
 		try {
+
+			if (entity == null)
+				return model;
+
 			BeanUtils.copyProperties(entity, model);
-			
+
 			model.setRole(getRoleModel(entity.getRole()));
 		} catch (Exception e) {
 			log.error("Unable to prepare UserModel Object", e);
@@ -77,6 +83,8 @@ public class EntityModelConverter {
 	public static RoleModel getRoleModel(Role entity) {
 		RoleModel model = new RoleModel();
 		try {
+			if (entity == null)
+				return model;
 			BeanUtils.copyProperties(entity, model);
 		} catch (Exception e) {
 			log.error("Unable to prepare RoleModel Object", e);
@@ -131,7 +139,7 @@ public class EntityModelConverter {
 		UserPageModel model = new UserPageModel();
 		try {
 			BeanUtils.copyProperties(entity, model);
-			
+
 			model.setUserSections(ListModelObject.getListUserSectionModelFromListEntities(entity.getUserSections()));
 		} catch (Exception e) {
 			log.error("Unable to prepare UserPageModel Object", e);
@@ -157,6 +165,18 @@ public class EntityModelConverter {
 			model.setUserSection(null);
 		} catch (Exception e) {
 			log.error("Unable to prepare UserQuestionModel Object", e);
+		}
+
+		return model;
+	}
+
+	public static PatientCallLogModel getPatienCallLogModel(PatientCallLog entity) {
+		PatientCallLogModel model = new PatientCallLogModel();
+		try {
+			BeanUtils.copyProperties(entity, model);
+			model.setUser(getUserModel(entity.getUser()));
+		} catch (Exception e) {
+			log.error("Unable to prepare PatientCallLogModel Object", e);
 		}
 		return model;
 	}

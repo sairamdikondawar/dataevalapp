@@ -51,12 +51,15 @@ public class TestReadData {
 		
 	
 	public static void main(String[] args) {
-		String admin="12345678";
+		String admin="admin";
 		
 		BCryptPasswordEncoder bb=new BCryptPasswordEncoder();
-	
-		
-		System.out.println(	bb.encode(admin));
+		String pwd1=bb.encode(admin);
+		String pwd2=bb.encode(admin);
+		System.out.println(	pwd1);
+		System.out.println(pwd2);
+		boolean match=bb.matches(admin, pwd2);
+		System.out.print(match);
 		
 	}
 	

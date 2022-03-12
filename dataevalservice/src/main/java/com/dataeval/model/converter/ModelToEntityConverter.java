@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import com.dataeval.model.entity.FlowConfig;
 import com.dataeval.model.entity.FlowPage;
 import com.dataeval.model.entity.PageSection;
+import com.dataeval.model.entity.PatientCallLog;
 import com.dataeval.model.entity.Question;
 import com.dataeval.model.entity.QuestionType;
 import com.dataeval.model.entity.Role;
@@ -21,6 +22,7 @@ import com.dataeval.model.entity.UserSection;
 import com.dataeval.model.pojo.FlowConfigModel;
 import com.dataeval.model.pojo.FlowPageModel;
 import com.dataeval.model.pojo.PageSectionModel;
+import com.dataeval.model.pojo.PatientCallLogModel;
 import com.dataeval.model.pojo.QuestionModel;
 import com.dataeval.model.pojo.QuestionTypeModel;
 import com.dataeval.model.pojo.RoleModel;
@@ -157,10 +159,9 @@ public class ModelToEntityConverter {
 				fields.add(ModelToEntityConverter.getUserQuestionEntity(question));
 
 			});
-			
+
 			entity.setUserQuestions(fields);
-			
-			
+
 		} catch (Exception e) {
 			log.error("Unable to prepare UserSection Object", e);
 		}
@@ -177,4 +178,17 @@ public class ModelToEntityConverter {
 		return entity;
 	}
 
+	public static PatientCallLog getPatienCallLogModel(PatientCallLogModel model) {
+		PatientCallLog entity = new PatientCallLog();
+		try {
+			BeanUtils.copyProperties(model, entity);
+			User user = new User();
+			user.setId(model.getUser().getId());
+			entity.setUser(user);
+
+		} catch (Exception e) {
+			log.error("Unable to prepare PatientCallRecord Object", e);
+		}
+		return entity;
+	}
 }

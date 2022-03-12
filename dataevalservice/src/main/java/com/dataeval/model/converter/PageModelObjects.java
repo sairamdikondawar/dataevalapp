@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import com.dataeval.model.entity.FlowConfig;
 import com.dataeval.model.entity.FlowPage;
 import com.dataeval.model.entity.PageSection;
+import com.dataeval.model.entity.PatientCallLog;
 import com.dataeval.model.entity.Question;
 import com.dataeval.model.entity.QuestionType;
 import com.dataeval.model.entity.Role;
@@ -15,6 +16,7 @@ import com.dataeval.model.entity.UserForm;
 import com.dataeval.model.pojo.FlowConfigModel;
 import com.dataeval.model.pojo.FlowPageModel;
 import com.dataeval.model.pojo.PageSectionModel;
+import com.dataeval.model.pojo.PatientCallLogModel;
 import com.dataeval.model.pojo.QuestionModel;
 import com.dataeval.model.pojo.QuestionTypeModel;
 import com.dataeval.model.pojo.RoleModel;
@@ -98,18 +100,19 @@ public class PageModelObjects {
 	}
 
 	public static Page<PageSectionModel> getPagePageSectionModelFromPageEntities(Page<PageSection> entities) {
-		 return getPagePageSectionModelFromPageEntities(entities, false);
+		return getPagePageSectionModelFromPageEntities(entities, false);
 	}
-	
-	public static Page<PageSectionModel> getPagePageSectionModelFromPageEntities(Page<PageSection> entities, boolean deepClone) {
+
+	public static Page<PageSectionModel> getPagePageSectionModelFromPageEntities(Page<PageSection> entities,
+			boolean deepClone) {
 		Page<PageSectionModel> dtoPage = entities.map(new Function<PageSection, PageSectionModel>() {
 			@Override
 			public PageSectionModel apply(PageSection entity) {
 				PageSectionModel dto = EntityModelConverter.getPageSectionModel(entity);
 				dto.setQuestions(null);
-				if(deepClone)
-				{
-					dto.setQuestions(ListModelObject.getListQuestionModelFromListEntities(entity.getQuestions(), Util.getLoggedInUserType()));
+				if (deepClone) {
+					dto.setQuestions(ListModelObject.getListQuestionModelFromListEntities(entity.getQuestions(),
+							Util.getLoggedInUserType()));
 				}
 				dto.setPage(EntityModelConverter.getFlowPageModel(entity.getPage()));
 				return dto;
@@ -123,6 +126,18 @@ public class PageModelObjects {
 			@Override
 			public UserFormModel apply(UserForm entity) {
 				UserFormModel dto = EntityModelConverter.getUserFormModel(entity);
+				return dto;
+			}
+		});
+		return dtoPage;
+	}
+
+	public static Page<PatientCallLogModel> getPagePatientCallLogModelModelFromPageEntities(
+			Page<PatientCallLog> entities) {
+		Page<PatientCallLogModel> dtoPage = entities.map(new Function<PatientCallLog, PatientCallLogModel>() {
+			@Override
+			public PatientCallLogModel apply(PatientCallLog entity) {
+				PatientCallLogModel dto = EntityModelConverter.getPatienCallLogModel(entity);
 				return dto;
 			}
 		});
