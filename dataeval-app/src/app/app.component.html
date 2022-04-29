@@ -6,9 +6,8 @@
         <mat-icon *ngIf="sidenav.opened">
             close
         </mat-icon>
-    </button>
-    <img class="mat-elevation-z8"  width="120" 
-    height="60" src="../assets/logo-final-Print-01.png" />
+    </button> 
+    <img src="https://tapasvihealth7.com/wp-content/uploads/2021/01/logo-final-322x134-1.png" height="50" alt="Tapasvi Halth7" id="logo" data-height-percentage="54" data-actual-width="322" data-actual-height="70">
      
 </mat-toolbar>
 
@@ -16,10 +15,10 @@
     
     <mat-sidenav #sidenav="matSidenav" mode="side"    [style.display]="isLoggedIn ? 'block' : 'none'"     class="mat-elevation-z8">
 
-        <img class="avatar mat-elevation-z8" src="../assets/logo-final-Print-01.png" />
+        <!-- <img class="avatar mat-elevation-z8" src="../assets/logo-final-Print-01.png" /> -->
 
         <h4 *ngIf="isLoggedIn" class="name">{{ userName | titlecase}}</h4>
-        <p *ngIf="isLoggedIn" class="designation">Principle Engineer</p>
+        <!-- <p *ngIf="isLoggedIn" class="designation">Principle Engineer</p> -->
 
         <mat-divider *ngIf="isLoggedIn" ></mat-divider>
 
@@ -42,7 +41,7 @@
 
         <button *ngIf="isLoggedIn && (admin  )" (click)="view('/user')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
-            <span>Manage Users</span>
+            <span>Manage Patient</span>
         </button>
         <!-- <button *ngIf="isLoggedIn && admin" (click)="view('/sections')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
@@ -68,17 +67,17 @@
             <span>Change Password</span>
         </button>
 
-        <button mat-button class="menu-button">
+        <!-- <button mat-button class="menu-button">
             <mat-icon>info</mat-icon>
             <span>About</span>
-        </button>
+        </button> -->
 
         <mat-divider></mat-divider>
 
-        <button mat-button class="menu-button">
+        <!-- <button mat-button class="menu-button">
             <mat-icon>help</mat-icon>
             <span>Help</span>
-        </button>
+        </button> -->
 
         <button *ngIf="isLoggedIn" (click)="handleLogout()" mat-button class="menu-button">
             <mat-icon>exit_to_app</mat-icon>
@@ -90,7 +89,8 @@
  
     <mat-sidenav-content>
         <div class="content mat-elevation-z8">
-            <div style="width:80%;float:right;">
+            <div style="width: 98%;float:right; margin-right: 10px ;">
+                <alert></alert>
                 <router-outlet style="width: 100px;"></router-outlet>
             </div>
         </div>

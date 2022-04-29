@@ -32,8 +32,10 @@ export class PatinetCalllogDetailsComponent implements AfterViewInit, OnInit {
   remaingTime: number;
   id: string;
   visatedDate: string;
+  visatedDateInDate:Date;
+  maxVisitDate:string;
   today = new Date().toISOString().slice(0, 16);
-
+  nowDate=new Date();
   options = {
     autoClose: true,
     keepAfterRouteChange: false
@@ -46,10 +48,8 @@ export class PatinetCalllogDetailsComponent implements AfterViewInit, OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
-    private alertService: AlertService) {
- 
-  }
-
+    private alertService: AlertService) { 
+  } 
   model = new PatientCallLog();
   patientModel = new User();
   ngAfterViewInit() { 
@@ -60,8 +60,12 @@ export class PatinetCalllogDetailsComponent implements AfterViewInit, OnInit {
 
     this.id = this.route.snapshot.paramMap.get('id');
     this.visatedDate = this.today;
+    let nowDate1=new Date();
+    nowDate1.setMonth(this.nowDate.getMonth())
+    this.maxVisitDate= new Date(nowDate1.getFullYear(), nowDate1.getMonth()+1, 1).toISOString().slice(0, 16);
+    // alert(this.maxVisitDate + " - "+this.visatedDate)
     this.createForm = new FormGroup({
-      callType: new FormControl('Inbound'),
+      callType: new FormControl('Patient Call'),
       patientFName: new FormControl(this.patientFirstName),
       patientLName: new FormControl(this.patientLastName),
       staffFName: new FormControl(this.firstName),
@@ -70,7 +74,7 @@ export class PatinetCalllogDetailsComponent implements AfterViewInit, OnInit {
       mtOutCome: new FormControl(''),
       mSymptoms: new FormControl(''),
       addNotes: new FormControl(''),
-      nextAptDate: new FormControl(),
+      nextAptDate: new FormControl('',[Validators.required]),
     });
     this.userService.getpatient(this.id).pipe(
       catchError(() => of([]))
@@ -98,21 +102,40 @@ export class PatinetCalllogDetailsComponent implements AfterViewInit, OnInit {
               alert(" 15 Mins is completed");
             } ;
 
-        });
+            if(timeInSeconds >= 1200)
+            {
+              // alert(" 15 Mins is completed"); nowDate
+              var dateTemp = new Date();
+              var firstDay= new Date(this.visatedDateInDate.getFullYear(), this.visatedDateInDate.getMonth()+1, 2)
+              this.visatedDate=firstDay.toISOString().slice(0, 16);
+              this.maxVisitDate= new Date(firstDay.getFullYear(), firstDay.getMonth()+2, 1).toISOString().slice(0, 16);
+            } ;
 
-
-
+        }); 
         this.createForm.patchValue({
           patientFName: (this.patientFirstName),
           patientLName: (this.patientLastName),
           staffFName: (this.firstName),
           staffLName: (this.lastName),
+           
+
         });
         this.service.getByPatient(this.id)
           .subscribe((response: PatientCallLog) => {
-            this.visatedDate = new Date(response.visitDate).toISOString().slice(0, 16);
+            // alert(response.nextMonthAppointmentDate);
+            this.createForm.patchValue({
+              hCondition:response.healthConditionsToDiscuss,
+              mtOutCome:response.measurableTreatmentOutcome,
+              mSymptoms:response.managingSymptoms,
+              addNotes:response.additionalNotes 
+    
+            });
+            this.visatedDateInDate=new Date(response.nextMonthAppointmentDate.toString());
+            this.maxVisitDate=new Date(this.visatedDateInDate.getFullYear(), this.visatedDateInDate.getMonth()+1, 1).toISOString().slice(0, 16);
+            this.visatedDate = new Date(response.nextMonthAppointmentDate).toISOString().slice(0, 16);
+            // alert(this.maxVisitDate);
             setTimeout(() => this.seconds = () => this.timerComponent.seconds, 0);
-            this.timerComponent.seconds = 1200 - response.remaingTime;
+            this.timerComponent.seconds =   response.totalTimeSpent;
             this.start();
 
           },
@@ -121,22 +144,14 @@ export class PatinetCalllogDetailsComponent implements AfterViewInit, OnInit {
               setTimeout(() => this.seconds = () => this.timerComponent.seconds, 0);
               this.timerComponent.seconds = 0;
               this.start();
-            });
-
-
-
-
-
+            }); 
       }
       );
-
-
-
   }
 
   createNewForm(): FormGroup {
     return new FormGroup({
-      callType: new FormControl('Inbound'),
+      callType: new FormControl('Patient Call'),
       patientFName: new FormControl(this.patientFirstName, [Validators.required]),
       patientLName: new FormControl(this.patientLastName),
       staffFName: new FormControl(this.firstName, [Validators.required]),
@@ -145,7 +160,7 @@ export class PatinetCalllogDetailsComponent implements AfterViewInit, OnInit {
       mtOutCome: new FormControl(''),
       mSymptoms: new FormControl(''),
       addNotes: new FormControl(''),
-      nextAptDate: new FormControl(),
+      nextAptDate: new FormControl([Validators.required]),
     });
   }
 
@@ -204,7 +219,7 @@ export class PatinetCalllogDetailsComponent implements AfterViewInit, OnInit {
   resetCreateForm() {
     this.createForm.reset();
     this.createForm = new FormGroup({
-      callType: new FormControl('Inbound', [Validators.required]),
+      callType: new FormControl('Patient Call', [Validators.required]),
       patientFName: new FormControl(this.patientFirstName),
       patientLName: new FormControl(this.patientLastName),
       staffFName: new FormControl(this.firstName),
@@ -213,7 +228,7 @@ export class PatinetCalllogDetailsComponent implements AfterViewInit, OnInit {
       mtOutCome: new FormControl(''),
       mSymptoms: new FormControl(''),
       addNotes: new FormControl(''),
-      nextAptDate: new FormControl(),
+      nextAptDate: new FormControl([Validators.required]),
     });
   }
 

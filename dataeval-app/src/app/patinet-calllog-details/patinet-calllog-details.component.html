@@ -1,7 +1,7 @@
 <div style="width:100%; margin-top: 5px;" class="border">
 
 
-    <div class="container-fluid rounded-top d-block  p-2 bg-dark text-white">
+    <div class=" sticky-top container-fluid rounded-top d-block  p-2 bg-dark text-white">
 
 
 
@@ -43,23 +43,27 @@
 
 
                         <select class="form-control custom-select" formControlName="callType" value="">
-                            <option value="Inbound" selected>Inbound</option>
-                            <option value="Outbound">Outbound</option>
-                            <option value="Conference">Conference</option> 
+                            
+
+                            <option value="Patient Call" selected >Patient Call</option>
+                            <option value="Pharmacy Calls">Pharmacy Calls</option>
+                            <option value="Referral Calls">Referral Calls</option>
+                            <option value="Personal Needs">Personal Needs</option>
+                            <option value="Community Needs">Community Needs</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="patientFName" class="font-weight-bold label-font">Patinet Name<span
+                        <label for="patientFName" class="font-weight-bold label-font">Patient Name<span
                                 class="required-asterisk">*</span> :</label>
                         <div class="row">
                             <div class="col-6">
                                 <input type="text" class="form-control" id="patientFName" placeholder="Patient First Name" name="patientFName"
-                                    formControlName="patientFName" readonly>
+                                    formControlName="patientFName" readonly required>
                             </div>
                             <div class="col-6">
                                 <input type="text" class="form-control" id="patientLName"
-                                    placeholder="Patient Last Name" name="patientLName" formControlName="patientLName" readonly>
+                                    placeholder="Patient Last Name" name="patientLName" formControlName="patientLName" readonly required>
                                 </div>
                         </div>
                     </div>
@@ -109,11 +113,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="nextAptDate" class="font-weight-bold label-font">Schedule Next Appointment :</label>
+                        <label for="nextAptDate" class="font-weight-bold label-font">Schedule Next Appointment <span
+                            class="required-asterisk">*</span>:</label>
                         <div class="row">
                             <div class="col-4">
-                                <input type="datetime-local" class="form-control" id="nextAptDate" name="nextAptDate" min="{{visatedDate}}"
-                                    formControlName="nextAptDate">
+                                <input type="datetime-local" class="form-control" id="nextAptDate" name="nextAptDate"  min="{{visatedDate}}" max="{{maxVisitDate}}"
+                                    formControlName="nextAptDate" required>
 
                             </div>
 
@@ -134,11 +139,11 @@
 
 
                     <div class="container text-center">
-                        <button class="btn btn-success " [disabled]="!createForm.valid"
-                            class="btn btn-info">Save</button>
+                        <button data-dismiss="modal" class="btn btn-success " [disabled]="!createForm.valid"
+                           >Save</button>
                         &nbsp; &nbsp;
                         <button type="button" class="btn  btn-secondary"
-                            (click)="navigateBack()">Cancel</button>
+                            (click)="navigateBack()">Cancel</button>    
 
                     </div>
 

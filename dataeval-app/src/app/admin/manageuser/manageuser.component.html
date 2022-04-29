@@ -1,7 +1,7 @@
 <div style="width:100%; margin-top: 5px;" class="border">
 
-    <div class="container-fluid rounded-top d-block  p-2 bg-dark text-white">
-        <h4 class="modal-title" id="modal-basic-title">Manage Users</h4>
+    <div class="sticky-top container-fluid rounded-top d-block  p-2 bg-secondary text-white">
+        <h4 class="modal-title" id="modal-basic-title">Manage Patients</h4>
     </div>
       <div class="container-fluid">
         
@@ -10,25 +10,25 @@
             
         <div class="row">
             <div class="form-group col-4">
-                <label for="uName" class="font-weight-bold text-dark label-font" >Name</label>
-                <input type="text" class="form-control" id="uName" placeholder="Enter Name"
+                <label for="uName" class="font-weight-bold text-dark label-font" >Patient Name</label>
+                <input type="text" class="form-control" id="uName" placeholder="Enter Patient Name to Search"
                     name="uName" formControlName="uName" required> 
             </div> 
-            <div class="form-group col-4"> 
-                <label for="rName"  class="font-weight-bold text-dark label-font">Section</label>
+            <!-- <div class="form-group col-4"> 
+                <label for="rName"  class="font-weight-bold text-dark label-font">User Type</label>
                 <select formControlName="rName"  class="form-control" value="">
                     <option value='' disabled selected="{{dataSource.query.roleId == '' ">Please select</option>
                     <option *ngFor="let role of roles" [value]="role.name">{{role.name | titlecase}}
                     </option>
                 </select>
-            </div>
+            </div> -->
         </div>
             
        
         <div style="  text-align: right; margin-right: 50px;">
             <button type="submit" class="btn btn-secondary btn-sm" >Search</button> &nbsp;
             <button type="button" class="btn btn-secondary btn-sm" (click)="resetSearch()" >Reset</button>&nbsp;
-            <button type="button" class="btn btn-secondary btn-sm" (click)="open(content)">Add</button>
+            <button type="button" class="btn btn-secondary btn-sm" (click)="add()">Add Patient</button>
         </div>
 
         </form>
@@ -88,7 +88,7 @@
             <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                    <button   class="btn btn-secondary btn-sm" *ngIf="row.role.name !=  'admin' && row.role.name !=  'ADMIN'" (click)="openEdit(contentEdit, row)">
+                    <button   class="btn btn-secondary btn-sm" *ngIf="row.role.name !=  'admin' && row.role.name !=  'ADMIN'" (click)="edit(row.id)">
                         Edit</button>
                 </mat-cell>
             </ng-container>
@@ -105,107 +105,14 @@
 
     <ng-template #content let-modal>
         <div class="modal-header">
-            <h4 class="modal-title" id="modal-basic-title">Add User</h4>
+            <h4 class="modal-title" id="modal-basic-title">Add New Patient</h4>
             <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"
                 #closeFlowConfigModal>
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-            <form [formGroup]="createForm" #formDirective="ngForm" (ngSubmit)="save()">
-                <div class="form-group">
-                    <label for="sName" class="font-weight-bold">User Name :</label>
-                    <input type="text" class="form-control" id="sName" placeholder="Enter User Name"
-                        name="sName" formControlName="sName" required>
-                </div>
-                <div class="mt-2">
-                    <div *ngIf="sName.invalid && (sName.dirty || sName.touched)"
-                        class="alert alert-danger">
-                        <div *ngIf="createForm.controls['sName']?.errors.required">
-                            User Name is required.
-                        </div>
-                        <div *ngIf="createForm.controls['sName']?.errors.minlength">
-                            User Name must be at least 4 characters long.
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="fName" class="font-weight-bold">First Name :</label>
-                    <input type="text" class="form-control" id="fName" placeholder="Enter First Name"
-                        name="fName" formControlName="fName" required>
-                </div>
-                <div class="mt-2">
-                    <div *ngIf="fName.invalid && (fName.dirty || fName.touched)"
-                        class="alert alert-danger">
-                        <div *ngIf="createForm.controls['fName']?.errors.required">
-                            First Name is required.
-                        </div>
-                        <div *ngIf="createForm.controls['fName']?.errors.minlength">
-                            First Name must be at least 4 characters long.
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="lName" class="font-weight-bold">Last Name :</label>
-                    <input type="text" class="form-control" id="lName" placeholder="Enter Last Name Name"
-                        name="lName" formControlName="lName" required>
-                </div>
-                <div class="mt-2">
-                    <div *ngIf="lName.invalid && (lName.dirty || lName.touched)"
-                        class="alert alert-danger">
-                        <div *ngIf="createForm.controls['lName']?.errors.required">
-                            Last Name is required.
-                        </div>
-                        <div *ngIf="createForm.controls['lName']?.errors.minlength">
-                            Last Name must be at least 4 characters long.
-                        </div>
-
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="dateOfBirth" class="font-weight-bold">Date Of Birth :</label>
-                    <input type="date" class="form-control" id="dateOfBirth" placeholder="Enter Last Name Name"
-                        name="dateOfBirth" formControlName="dateOfBirth" >
-                </div>
-                 
-                <div class="form-group">
-                    <label for="userType" class="font-weight-bold">User Type</label>
-                    <select class="custom-select"   formControlName="userType"> 
-                        <option value="" disabled>Select Role</option>
-                        <option *ngFor="let role of roles"  
-                            value="{{role.id}}">
-                            {{role.name | titlecase}}</option>
-                    </select>
-                </div>
-                
-
-                <div class="form-group">
-                    <label for="status" class="font-weight-bold">Status</label>
-
-
-                    <select class="form-control custom-select" formControlName="status"  value=""> 
-                         
-                        <option value="Active" selected>Active</option>
-                    </select>
-                </div>
-
-
-                <div class="container text-center">
-
-
-                    <button data-dismiss="modal" class="btn btn-success " [disabled]="!createForm.valid"
-                        class="btn btn-info">Save</button>
-                    &nbsp; &nbsp;
-                    <button type="button" class="btn  btn-secondary"
-                        (click)="resetCreateForm(createForm, formDirective)">reset</button>
-
-                </div>
-
-            </form>
+           
         </div>
 
     </ng-template>
@@ -219,103 +126,7 @@
             </button>
         </div>
         <div class="modal-body">
-            <form [formGroup]="editForm" (ngSubmit)="updateQuestion()">
-                <!-- <div class="form-group">
-                    <label for="id">Id</label>
-                    <div class="input-group">
-                        <input readonly class="form-control" formControlName="id">
-                    </div>
-                </div> -->
-
-                <div class="form-group">
-                    <label for="eName" class="font-weight-bold">Name :</label>
-                    <input type="text" class="form-control" id="eName" placeholder="Enter User Name"
-                        name="eName" formControlName="eName" required>
-
-
-                </div>
-                <div class="mt-2">
-                    <div *ngIf="eName.invalid && (eName.dirty || eName.touched)"
-                        class="alert alert-danger">
-                        <div *ngIf="editForm.controls['eName']?.errors.required">
-                            User Name is required.
-                        </div>
-                        <div *ngIf="editForm.controls['eName']?.errors.minlength">
-                            User Name must be at least 4 characters long.
-                        </div>
-
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    <label for="fName" class="font-weight-bold">First Name :</label>
-                    <input type="text" class="form-control" id="fName" placeholder="Enter First Name"
-                        name="fName" formControlName="fName" required>
-                </div>
-                <div class="mt-2">
-                    <div *ngIf="efName.invalid && (efName.dirty || efName.touched)"
-                        class="alert alert-danger">
-                        <div *ngIf="editForm.controls['fName']?.errors.required">
-                            First Name is required.
-                        </div>
-                        <div *ngIf="editForm.controls['fName']?.errors.minlength">
-                            First Name must be at least 4 characters long.
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="lName" class="font-weight-bold">Last Name :</label>
-                    <input type="text" class="form-control" id="lName" placeholder="Enter Last Name"
-                        name="lName" formControlName="lName" required>
-                </div>
-                <div class="mt-2">
-                    <div *ngIf="elName.invalid && (elName.dirty || elName.touched)"
-                        class="alert alert-danger">
-                        <div *ngIf="editForm.controls['lName']?.errors.required">
-                            Last Name is required.
-                        </div>
-                        <div *ngIf="editForm.controls['lName']?.errors.minlength">
-                            Last Name must be at least 4 characters long.
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="dateOfBirth" class="font-weight-bold">Date Of Birth :</label>
-                    <input type="date" class="form-control" id="dateOfBirth" placeholder="Enter Date Of Birth"
-                        name="dateOfBirth" formControlName="dateOfBirth"   >
-                </div>
-
-                
-                <div class="form-group">
-                    <label for="userType" class="font-weight-bold">User Type</label>
-
-
-                    <select class="custom-select"  formControlName="userType" > 
-                        <option *ngFor="let role of roles"  
-                            value="{{role.id}}">
-                            {{role.name | titlecase}}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="status" class="font-weight-bold">Status</label>
-                    <select class="custom-select" formControlName="status">
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select>
-                </div>
-                 
-
-
-                <div class="text-center">
-                    <button data-dismiss="modal" [disabled]="!editForm.valid"
-                        class="btn btn-info">Update</button>
-                </div>
-            </form>
+           
         </div>
 
     </ng-template>

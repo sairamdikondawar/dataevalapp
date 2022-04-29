@@ -1,7 +1,7 @@
 <div style="width:100%; margin-top: 5px;" class="border">
 
 
-    <div class="container-fluid rounded-top d-block  p-2 bg-dark text-white"> 
+    <div class=" sticky-top container-fluid rounded-top d-block  p-2 bg-dark text-white"> 
         <div class="row">
             <div class="col-6">
                 <h4 class="modal-title" id="modal-basic-title">Call Record</h4>
@@ -32,7 +32,7 @@
                 <form [formGroup]="createForm" #formDirective="ngForm" (ngSubmit)="save()">
                     
                 <div class="form-group">
-                        <label for="discusstionDate" class="font-weight-bold label-font">Schedule Next Appointment :</label>
+                        <label for="discusstionDate" class="font-weight-bold label-font">Appointment Date:</label>
                         <div class="row">
                             <div class="col-4">
                                 <input type="datetime-local" class="form-control" id="discusstionDate" name="discusstionDate" 
@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="patientFName" class="font-weight-bold label-font">Patinet Name<span
+                        <label for="patientFName" class="font-weight-bold label-font">Patient Name<span
                                 class="required-asterisk">*</span> :</label>
                         <div class="row">
                             <div class="col-6">

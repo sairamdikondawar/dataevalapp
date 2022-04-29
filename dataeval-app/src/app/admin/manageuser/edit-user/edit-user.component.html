@@ -1,0 +1,241 @@
+<div style="width:100%; margin-top: 5px;" class="border">
+
+
+    <div class="sticky-top container-fluid rounded-top d-block  p-2 bg-dark text-white">
+
+
+
+        <div class="row sticky-top">
+            <div class="col-6">
+                <h4 class="modal-title" id="modal-basic-title">Edit User</h4>
+
+            </div>
+            <div class="col">
+
+            </div>
+
+        </div>
+    </div>
+    <div>
+        <div class="card"> 
+            <div class="card-body">
+                <form [formGroup]="editForm" (ngSubmit)="updateQuestion()">
+                    <!-- <div class="form-group">
+                        <label for="id">Id</label>
+                        <div class="input-group">
+                            <input readonly class="form-control" formControlName="id">
+                        </div>
+                    </div> -->
+
+                    <div class="form-group">
+                        <label for="eName" class="font-weight-bold">User Name :</label>
+                        <input type="text" class="form-control" id="eName" placeholder="Enter User Name" name="eName"
+                            formControlName="eName" required>
+
+
+                    </div>
+                    <div class="mt-2">
+                        <div *ngIf="eName.invalid && (eName.dirty || eName.touched)" class="alert alert-danger">
+                            <div *ngIf="editForm.controls['eName']?.errors.required">
+                                User Name is required.
+                            </div>
+                            <div *ngIf="editForm.controls['eName']?.errors.minlength">
+                                User Name must be at least 4 characters long.
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fName" class="font-weight-bold">First Name :</label>
+                                <input type="text" class="form-control" id="fName" placeholder="Enter First Name"
+                                    name="fName" formControlName="fName" required>
+                            </div>
+                            <div class="mt-2">
+                                <div *ngIf="efName.invalid && (efName.dirty || efName.touched)"
+                                    class="alert alert-danger">
+                                    <div *ngIf="editForm.controls['fName']?.errors.required">
+                                        First Name is required.
+                                    </div>
+                                    <div *ngIf="editForm.controls['fName']?.errors.minlength">
+                                        First Name must be at least 4 characters long.
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lName" class="font-weight-bold">Last Name :</label>
+                                <input type="text" class="form-control" id="lName" placeholder="Enter Last Name"
+                                    name="lName" formControlName="lName" required>
+                            </div>
+                            <div class="mt-2">
+                                <div *ngIf="elName.invalid && (elName.dirty || elName.touched)"
+                                    class="alert alert-danger">
+                                    <div *ngIf="editForm.controls['lName']?.errors.required">
+                                        Last Name is required.
+                                    </div>
+                                    <div *ngIf="editForm.controls['lName']?.errors.minlength">
+                                        Last Name must be at least 4 characters long.
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="dateOfBirth" class="font-weight-bold">Date Of Birth :</label>
+                                <input type="date" class="form-control" id="dateOfBirth"  max="{{today | date:'yyyy-MM-dd'}}" 
+                                    placeholder="Enter Date Of Birth" name="dateOfBirth" formControlName="dateOfBirth">
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="userType" class="font-weight-bold">User Type</label>
+                                <select class="custom-select" formControlName="userType">
+                                    <option *ngFor="let role of roles" value="{{role.id}}">
+                                        {{role.name | titlecase}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="mdrNumber" class="font-weight-bold">Medical Record Number</label>
+                                <input type="text" class="form-control" id="mdrNumber"
+                                    placeholder="Enter Medical Record Number" name="mdrNumber"
+                                    formControlName="medicalRecordNumber" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="insNumber" class="font-weight-bold">Insurance Number</label>
+                                <input type="text" class="form-control" id="insNumber"
+                                    placeholder="Enter Insurance Number" name="insNumber"
+                                    formControlName="insuranceNumber" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="phNumber" class="font-weight-bold">Phone Number</label>
+                                <input type="text" class="form-control" id="phNumber" placeholder="Enter Phone Number"
+                                    name="phNumber" formControlName="phoneNumber" required>
+                            </div>
+                            <div class="mt-2">
+                                <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched) && editForm.controls['phoneNumber']?.errors.pattern"
+                                    class="alert alert-danger">
+
+                                    Invalid Phone Number
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="mobNumber" class="font-weight-bold">Mobile Number</label>
+                                <input type="text" class="form-control" id="mobNumber" placeholder="Enter Mobile Number"
+                                    name="mobNumber" formControlName="mobileNumber" required>
+                            </div>
+                            <div class="mt-2">
+                                <div *ngIf="mobileNumber.invalid && (mobileNumber.dirty || mobileNumber.touched) && editForm.controls['mobileNumber']?.errors.pattern"
+                                    class="alert alert-danger">
+
+
+                                    Invalid Mobile Number
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="altContact" class="font-weight-bold">Alternate Contact</label>
+                                <textarea type="text" class="form-control" id="altContact"
+                                    placeholder="Enter Alternate Contact" name="altContact"
+                                    formControlName="alternateContact" required></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="">Pharmacy Details</div>
+                        <hr>
+                        <div class="row ">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="pharmacyName" class="font-weight-bold">Pharmacy Name</label>
+                                    <input type="text" class="form-control" id="pharmacyName"
+                                        placeholder="Enter Pharmacy Name" name="pharmacyName"
+                                        formControlName="pharmacyName" required>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="phaddress" class="font-weight-bold">Address</label>
+                                    <textarea type="text" class="form-control" id="phaddress"
+                                        placeholder="Enter Address" name="phaddress" formControlName="address"
+                                        required> </textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row ">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pharmaPhone" class="font-weight-bold">Pharmacy Phone Number</label>
+                                <input type="text" class="form-control" id="pharmaPhone"
+                                    placeholder="Enter Phone Number" name="pharmaPhone"
+                                    formControlName="pharmacyPhoneNumber" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="pharmaFax" class="font-weight-bold">Fax Number</label>
+                                <input type="text" class="form-control" id="pharmaFax" placeholder="Enter Fax Number"
+                                    name="pharmaFax" formControlName="pharmacyFaxNumber" required>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="status" class="font-weight-bold">Patient Status</label>
+                                <select class="form-control" formControlName="status" value="">
+                                    <option value="Active" selected>Active</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="refferal" class="font-weight-bold">Enter Referal Doctor Info</label>
+                                <textarea type="text" class="form-control" id="refferal" placeholder="Enter Refferal"
+                                    name="refferal" formControlName="refferal"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="text-center">
+                        <button data-dismiss="modal" [disabled]="!editForm.valid" class="btn btn-info">Update</button>
+                        &nbsp; &nbsp;
+                        <button type="button" class="btn  btn-secondary" (click)="navigateBack()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -73,6 +73,8 @@ import { ViewPatinetlogComponent } from './manage-patinetlog/view-patinetlog.com
 import { ChangePasswordComponent } from './admin/change-password/change-password.component';
 import { AlertModule } from './alert';
 import { AlertComponent } from './alert/alert.component';
+import { AddUserComponent } from './admin/manageuser/add-user/add-user.component';
+import { EditUserComponent } from './admin/manageuser/edit-user/edit-user.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -94,7 +96,9 @@ import { AlertComponent } from './alert/alert.component';
     SelectPatientComponent,
     ViewPatinetCalllogDetailsComponent,
     ViewPatinetlogComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    AddUserComponent,
+    EditUserComponent
   ],
   imports: [
     BrowserModule,

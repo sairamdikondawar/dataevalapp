@@ -1,6 +1,6 @@
 <div style="width:100%; margin-top: 5px; margin-bottom: 20px;" class="border">
 
-    <div class="container-fluid rounded-top d-block  p-2 bg-dark text-white">
+    <div class=" sticky-top container-fluid rounded-top d-block  p-2 bg-dark text-white">
         <h4 class="modal-title" id="modal-basic-title">Manage Patient Call Log</h4>
     </div>
     <div class="container-fluid">
@@ -12,11 +12,20 @@
 
                     <div class="col-4">
                         <div class="form-group">
-                            <label for="callType" class="font-weight-bold text-dark label-font">Call Type</label>
+                            <label for="callType" class="font-weight-bold text-dark label-font">Month</label>
                             <select class="form-control" formControlName="callType" id="callType">
-                                <option value="Inbound">Inbound</option>
-                                <option value="Outbound">Outbound</option>
-                                <option value="Conference">Conference</option>
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option> 
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
                             </select>
                         </div>
                     </div>
@@ -24,7 +33,7 @@
                         <div class="form-group">
                             <label for="patientName" class="font-weight-bold text-dark label-font">Patient
                                 Name</label>
-                            <input type="text" class="form-control" id="patientName" placeholder="Enter Patient Name"
+                            <input type="text" class="form-control" id="patientName" placeholder="Enter Patient Name to Search"
                                 name="patientName" formControlName="patientName" required>
                         </div>
                     </div>
@@ -65,25 +74,25 @@
 
                 <ng-container style="width: 10px;" matColumnDef="id">
                     <mat-header-cell style="width: 10px;" *matHeaderCellDef> ID </mat-header-cell>
-                    <mat-cell style="width: 10px;" *matCellDef="let row; let i = index"> {{i + (currentPageIndex) +1}}
+                    <mat-cell class="{{row.totalTimeSpent == 0 ? 'table-danger'  : row.remaingTime%60 == 0 ? 'table-success' : 'table-warning' }} " style="width: 10px;" *matCellDef="let row; let i = index"> {{i + (currentPageIndex) +1}}
                     </mat-cell>
                 </ng-container><!-- Progress Column -->
                 <ng-container matColumnDef="patientname">
                     <mat-header-cell   *matHeaderCellDef>Patient Name</mat-header-cell>
-                    <mat-cell  *matCellDef="let row"> {{row.user.firstName}} {{row.user.lastName}}
+                    <mat-cell class="{{row.totalTimeSpent == 0 ? 'table-danger'  : row.remaingTime%60 == 0 ? 'table-success' : 'table-warning' }} "  *matCellDef="let row"> {{row.user.firstName}} {{row.user.lastName}}
                     </mat-cell>
                 </ng-container>
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="callType">
                     <mat-header-cell class="text-center" *matHeaderCellDef> Call Type </mat-header-cell>
-                    <mat-cell class="text-center" *matCellDef="let row"> {{row.callType | titlecase}} </mat-cell>
+                    <mat-cell class="text-center {{row.totalTimeSpent == 0 ? 'table-danger'  : row.remaingTime%60 == 0 ? 'table-success' : 'table-warning' }} " *matCellDef="let row"> {{row.callType | titlecase}} </mat-cell>
                 </ng-container>
 
                 <!-- Status Column -->
                 <ng-container matColumnDef="nextappnextMonthAppointmentDatedate">
                     <mat-header-cell *matHeaderCellDef> Appointment Date </mat-header-cell>
-                    <mat-cell class="text-center" *matCellDef="let row"> {{row.nextMonthAppointmentDate | date:
+                    <mat-cell class="text-center {{row.totalTimeSpent == 0 ? 'table-danger'  : row.remaingTime%60 == 0 ? 'table-success' : 'table-warning' }} " *matCellDef="let row"> {{row.nextMonthAppointmentDate | date:
                         "short":'UTC'}} </mat-cell>
                 </ng-container>
 
@@ -94,24 +103,24 @@
 
                 <ng-container matColumnDef="remainingtime">
                     <mat-header-cell *matHeaderCellDef> Remaining Time (MM:SS) </mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{(row.remaingTime- row.remaingTime%60)/60  }} : {{row.remaingTime%60}} </mat-cell>
+                    <mat-cell class="{{row.totalTimeSpent == 0 ? 'table-danger'  : row.remaingTime%60 == 0 ? 'table-success' : 'table-warning' }} " *matCellDef="let row">{{(row.remaingTime- row.remaingTime%60)/60  }} : {{row.remaingTime%60}} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="timeSpentInSession">
                     <mat-header-cell *matHeaderCellDef> Last Session Time (MM:SS) </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{(row.timeSpentInSession- row.timeSpentInSession%60)/60  }} : {{row.timeSpentInSession%60}} </mat-cell>
+                    <mat-cell class="{{row.totalTimeSpent == 0 ? 'table-danger'  : row.remaingTime%60 == 0 ? 'table-success' : 'table-warning' }} " *matCellDef="let row"> {{(row.timeSpentInSession- row.timeSpentInSession%60)/60  }} : {{row.timeSpentInSession%60}} </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="totalTimeSpent">
-                    <mat-header-cell *matHeaderCellDef> Last Session Time (MM:SS)</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{(row.totalTimeSpent- row.totalTimeSpent%60)/60  }} : {{row.totalTimeSpent%60}}</mat-cell>
+                    <mat-header-cell *matHeaderCellDef> Total Time Spent (MM:SS)</mat-header-cell>
+                    <mat-cell class="{{row.totalTimeSpent == 0 ? 'table-danger'  : row.remaingTime%60 == 0 ? 'table-success' : 'table-warning' }} " *matCellDef="let row"> {{(row.totalTimeSpent- row.totalTimeSpent%60)/60  }} : {{row.totalTimeSpent%60}}</mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="actions">
                     <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
-                    <mat-cell *matCellDef="let row">
+                    <mat-cell class="{{row.totalTimeSpent == 0 ? 'table-danger'  : row.remaingTime%60 == 0 ? 'table-success' : 'table-warning' }} " *matCellDef="let row">
                         
-                        <button  class="btn btn-secondary btn-sm" (click)="calllogrecord(row.user.id)">Record</button> 
+                        <button  class="btn btn-secondary btn-sm " [disabled]="!checkDisabled( row)" (click)="calllogrecord(row.user.id)">Record</button> 
                         &nbsp;
                         <button  class="btn btn-secondary btn-sm" (click)="viewcalllogrecord(row.user.id)">View</button>
                        

@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
+import { Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from "rxjs";
 import { catchError, tap } from 'rxjs/operators';
@@ -56,7 +57,8 @@ export class ManageuserComponent implements OnInit {
 
   constructor(private service: UserService, private roleService:RoleService,
     private modalService: NgbModal,
-    private commonService: CommonService) {
+    private commonService: CommonService,
+    private router: Router) {
 
    
     
@@ -129,6 +131,16 @@ export class ManageuserComponent implements OnInit {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  add()
+  {
+    this.router.navigate(['/adduser']);
+  }
+
+  edit(id:number)
+  {
+    this.router.navigate(['/edituser/'+id]);
   }
 
   private getDismissReason(reason: any): string {

@@ -9,5 +9,15 @@ export class User{
     dateOfBirth:Date;
     role:Role= new Role(null, null, null);
     status:string;
+    address:string;
+	alternateContact:string;
+	insuranceNumber:string;
+	medicalRecordNumber:string;
+	pharmacyFaxNumber:string;
+	pharmacyName:string;
+	pharmacyPhoneNumber:string;
+	phoneNumber:string;
+	refferal:string;
+    mobileNumber:string;
 
 }

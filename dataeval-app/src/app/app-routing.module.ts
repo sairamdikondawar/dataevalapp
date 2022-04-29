@@ -15,6 +15,8 @@ import { SelectPatientComponent } from './patinet-calllog-details/select-patient
 import { ViewPatinetCalllogDetailsComponent } from './patinet-calllog-details/view-patinet-calllog-details.component';
 import { ViewPatinetlogComponent } from './manage-patinetlog/view-patinetlog.component';
 import { ChangePasswordComponent } from './admin/change-password/change-password.component';
+import { AddUserComponent } from './admin/manageuser/add-user/add-user.component';
+import { EditUserComponent } from './admin/manageuser/edit-user/edit-user.component';
 
 const routes: Routes = [
   { path: 'flowconfig', component: FlowconfigComponent },
@@ -45,11 +47,16 @@ const routes: Routes = [
     path: 'viewpatientcalllogsearch', component: ViewPatinetlogComponent
   },{
     path: 'changepassword' , component: ChangePasswordComponent
+  },{
+    path: 'adduser' , component: AddUserComponent
+  }
+  ,{
+    path: 'edituser/:id' , component: EditUserComponent
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,{useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
