@@ -14,27 +14,27 @@ import { UserForm } from "../model/user/userform.model";
     }
   
   list(params :any): Observable<any>{
-      const endpoint = 'http://localhost:8080/api/v1/userform-config?'+encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}');//environment.apiUrl + "/todos";
+      const endpoint = '/api/v1/userform-config?'+encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}');//environment.apiUrl + "/todos";
        
       return this.http.get(endpoint, { params });
   }
   
   create(data:CreateUserForm): Observable<any>{
-    const endpoint = 'http://localhost:8080/api/v1/userform-config/question';
+    const endpoint = '/api/v1/userform-config/question';
     return this.http.post(endpoint, data);
   
     
   }
   
   update(data:UserForm): Observable<any>{
-    const endpoint = 'http://localhost:8080/api/v1/userform-config/'+data.id;
+    const endpoint = '/api/v1/userform-config/'+data.id;
     return this.http.put(endpoint, data);  
   }
    
    
   
   get(id :any): Observable<any>{
-    const endpoint = 'http://localhost:8080/api/v1/userform-config/'+id;
+    const endpoint = '/api/v1/userform-config/'+id;
      
     return this.http.get(endpoint);
   }

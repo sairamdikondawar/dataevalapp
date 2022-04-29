@@ -14,17 +14,17 @@ export class ChangePasswordService {
    
   
   update(data:ChangePassword): Observable<any>{
-    const endpoint = 'http://localhost:8080/api/v1/user-config/user/password/';
+    const endpoint = '/api/v1/user-config/user/password/';
     return this.http.put(endpoint, data);
   }
   
   get(id :any): Observable<any>{
-      const endpoint = 'http://localhost:8080/api/v1/user-config/user/'+id; 
+      const endpoint = '/api/v1/user-config/user/'+id; 
       return this.http.get(endpoint);
     }
 
     getpatient(id :any): Observable<any>{
-      const endpoint = 'http://localhost:8080/api/v1/user-config/patient/'+id; 
+      const endpoint = '/api/v1/user-config/patient/'+id; 
       return this.http.get(endpoint);
     }
     

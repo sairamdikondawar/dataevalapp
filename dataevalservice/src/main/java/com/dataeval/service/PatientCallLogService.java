@@ -1,8 +1,10 @@
 package com.dataeval.service;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -44,7 +46,7 @@ public class PatientCallLogService {
 		try {
 			PatientCallLog oldEntity = patientCallLogRepository
 					.findAllByPatientIdAndActiveStatus(model.getUser().getId()).orElse(null);
-
+           boolean monthChanged=false;
 			PatientCallLog entity = ModelToEntityConverter.getPatienCallLogModel(model);
 			Integer reamingTime = totalTime - entity.getTotalTimeSpent();
 
@@ -52,9 +54,19 @@ public class PatientCallLogService {
 
 			entity.setCallRecordStatus(CommonConstants.ACTIVE);
 			entity.setPatientStatus(CommonConstants.ACTIVE);
+			entity.setFinalReocrd(Boolean.TRUE+"");
 			if (oldEntity != null && oldEntity.getId() != null) {
 				entity.setTimeSpentInSession(entity.getTotalTimeSpent() - oldEntity.getTotalTimeSpent());
 				entity.setVisitDate(oldEntity.getVisitDate());
+				Period diff = Period.between(
+						Util.convertToLocalDateViaSqlDate(oldEntity.getNextMonthAppointmentDate()).withDayOfMonth(1),
+						Util.convertToLocalDateViaSqlDate(entity.getNextMonthAppointmentDate()).withDayOfMonth(1));
+			System.out.println(diff + "  Diff"); //P3M
+			if(diff.getMonths() >0)
+			{
+				monthChanged=true;
+			}
+			
 			} else {
 				entity.setTimeSpentInSession(entity.getTotalTimeSpent());
 				entity.setVisitDate(new Date(System.currentTimeMillis()));
@@ -62,31 +74,42 @@ public class PatientCallLogService {
 			Util.updateHistory(entity,Boolean.TRUE);
 			entity = patientCallLogRepository.save(entity);
 			
-			if(reamingTime<0)
+			if(reamingTime<=0  || monthChanged)
 			{
 				PatientCallLog nextEntity = ModelToEntityConverter.getPatienCallLogModel(model);
 				Calendar cal = Calendar.getInstance(); 
 				cal.setTime(entity.getVisitDate());
-				cal.add(Calendar.MONTH, 1);
+				cal.set(Calendar.MONTH, nextEntity.getNextMonthAppointmentDate().getMonth());
 				nextEntity.setVisitDate(cal.getTime());
 				nextEntity.setCallRecordStatus(CommonConstants.ACTIVE);
 				nextEntity.setPatientStatus(CommonConstants.ACTIVE);
-				nextEntity.setTimeSpentInSession(reamingTime*(-1));
-				nextEntity.setTotalTimeSpent(reamingTime*(-1));
-				nextEntity.setRemaingTime(totalTime+reamingTime); // Here remaining time would be in negative value
+				nextEntity.setAdditionalNotes(null);
+				nextEntity.setManagingSymptoms(null);
+				nextEntity.setHealthConditionsToDiscuss(null);
+				nextEntity.setMeasurableTreatmentOutcome(null);
+//				nextEntity.setTimeSpentInSession(reamingTime*(-1));
+//				nextEntity.setTotalTimeSpent(reamingTime*(-1));
+//				nextEntity.setRemaingTime(totalTime+reamingTime); // Here remaining time would be in negative value
+				
+				nextEntity.setTimeSpentInSession(0);
+				nextEntity.setTotalTimeSpent(0);
+				nextEntity.setRemaingTime(totalTime); 
+				nextEntity.setFinalReocrd(Boolean.TRUE+"");
+				
 				Util.updateHistory(nextEntity, Boolean.TRUE);
 				nextEntity = patientCallLogRepository.save(nextEntity);
 				
 				model = EntityModelConverter.getPatienCallLogModel(entity);
-				
+				nextEntity.setFinalReocrd(Boolean.TRUE+"");
 				model.setCallRecordStatus(CommonConstants.INACTIVE);
+				model.setNextMonthAppointmentDate(oldEntity.getNextMonthAppointmentDate());
 				update(model);
 				
 			}
 
 			if (oldEntity != null && oldEntity.getId() != null) {
 				oldEntity.setCallRecordStatus("INACTIVE");
-
+				oldEntity.setFinalReocrd(Boolean.FALSE+"");
 				update(EntityModelConverter.getPatienCallLogModel(oldEntity));
 			}
 			model = EntityModelConverter.getPatienCallLogModel(entity);
@@ -192,8 +215,28 @@ public class PatientCallLogService {
 			List<SortInfo> sortInfo = new ArrayList<SortInfo>();
 			sortInfo.add(sort);
 			commonCriteria.setSort(sortInfo);
+			
+			Date startDate=new Date(System.currentTimeMillis());
+			startDate.setMonth(Integer.parseInt(commonCriteria.getCallType())-1);
+			startDate.setDate(1);
+//			startDate.setHours(0);
+//			startDate.setMinutes(0);
+//			startDate.setSeconds(0);
+			
+			System.out.println("StartDate" + startDate);
+			Date endDate=new Date(System.currentTimeMillis());
+			endDate.setMonth(Integer.parseInt(commonCriteria.getCallType()));
+			endDate.setDate(1);
+//			endDate.setHours(0);
+//			endDate.setMinutes(0);
+//			endDate.setSeconds(0);
+			
+			
+			
+			System.out.println("EndDate" + endDate);
+			commonCriteria.setCallType(null);
 			Page<PatientCallLog> entityList = patientCallLogRepository.findAllPatinetLog(
-					commonCriteria.getPatientName(), commonCriteria.getCallType(),
+					commonCriteria.getPatientName(), commonCriteria.getCallType(),startDate, endDate,
 					Util.getPageObjectFromCriteria(commonCriteria));
 			return PageModelObjects.getPagePatientCallLogModelModelFromPageEntities(entityList);
 		} catch (Exception e) {

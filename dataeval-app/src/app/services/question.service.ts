@@ -19,7 +19,7 @@ export class QuestionService {
   
 
 list(params :any): Observable<any>{
-    const endpoint = 'http://localhost:8080/api/v1/question-config/questions';
+    const endpoint = '/api/v1/question-config/questions';
     // encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}');//environment.apiUrl + "/todos";
      
     return this.http.get(endpoint, { params });
@@ -27,19 +27,19 @@ list(params :any): Observable<any>{
 
 
 create(data:Question): Observable<any>{
-  const endpoint = 'http://localhost:8080/api/v1/question-config/question';
+  const endpoint = '/api/v1/question-config/question';
   return this.http.post(endpoint, data);
 
   
 }
 
 update(data:Question): Observable<any>{
-  const endpoint = 'http://localhost:8080/api/v1/question-config/question/'+data.id;
+  const endpoint = '/api/v1/question-config/question/'+data.id;
   return this.http.put(endpoint, data);  
 }
 
 get(id :any): Observable<any>{
-  const endpoint = 'http://localhost:8080/api/v1/question-config/question/'+id;
+  const endpoint = '/api/v1/question-config/question/'+id;
    
   return this.http.get(endpoint);
 }

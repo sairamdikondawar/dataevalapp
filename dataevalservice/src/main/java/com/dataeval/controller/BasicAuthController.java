@@ -1,5 +1,7 @@
 package com.dataeval.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +18,12 @@ import com.dataeval.model.pojo.common.AuthenticationBean;
 public class BasicAuthController {
 
 	@GetMapping(path = "/basicauth")
-	public UserDetailsImpl helloWorldBean() {
+	public UserDetailsImpl login() {
 		return (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	}	
+	
+	@GetMapping(path = "/logout")
+	public void logout(HttpServletRequest request) {
+		request.getSession().invalidate();
 	}	
 }

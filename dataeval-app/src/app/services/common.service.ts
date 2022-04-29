@@ -18,7 +18,7 @@ export class CommonService {
 questionTypes(): Observable<any>{
 
   console.log("inside questionTypes service");
-    const endpoint = 'http://localhost:8080/api/v1/lookup/questionTypes';
+    const endpoint = '/api/v1/lookup/questionTypes';
      
     return this.http.get(endpoint);
 }
@@ -26,7 +26,7 @@ questionTypes(): Observable<any>{
 loadPages(params:any): Observable<any>{
 
   console.log("inside Pages service");
-    const endpoint = 'http://localhost:8080/api/v1/lookup/pages';
+    const endpoint = '/api/v1/lookup/pages';
      
     return this.http.get(endpoint , {params});
 }
@@ -34,7 +34,7 @@ loadPages(params:any): Observable<any>{
 lookupPages(): Observable<any>{
 
   console.log("inside Pages service");
-    const endpoint = 'http://localhost:8080/api/v1/lookup/lpages';
+    const endpoint = '/api/v1/lookup/lpages';
      
     return this.http.get(endpoint );
 }
@@ -42,7 +42,7 @@ lookupPages(): Observable<any>{
 loadUserPages(id:string): Observable<any>{
 
   console.log("inside User Pages service");
-    const endpoint = 'http://localhost:8080/api/v1/userpage-config/userform/'+id;
+    const endpoint = '/api/v1/userpage-config/userform/'+id;
      
     return this.http.get(endpoint);
 }
@@ -50,13 +50,13 @@ loadUserPages(id:string): Observable<any>{
 loadSections(): Observable<any>{
 
   console.log("inside Section service");
-    const endpoint = 'http://localhost:8080/api/v1/lookup/sections';
+    const endpoint = '/api/v1/lookup/sections';
      
     return this.http.get(endpoint);
 }
 
 submitUserForm(data:CreateUserForm): Observable<any>{
-  const endpoint = 'http://localhost:8080/api/v1/userform-config';
+  const endpoint = '/api/v1/userform-config';
   return this.http.post(endpoint, data);
 
   

@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Entity
 @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
-public class User extends AuditEntity  implements Serializable {
+public class User extends AuditEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	private String password;
@@ -22,7 +22,17 @@ public class User extends AuditEntity  implements Serializable {
 	private String lastName;
 	private Date dateOfBirth;
 	private Role role;
-//	private List<Role> roles;
+
+	private String address;
+	private String alternateContact;
+	private String insuranceNumber;
+	private String medicalRecordNumber;
+	private String pharmacyFaxNumber;
+	private String pharmacyName;
+	private String pharmacyPhoneNumber;
+	private String phoneNumber;
+	private String refferal;
+	private String mobileNumber;
 
 	public User() {
 	}
@@ -99,6 +109,94 @@ public class User extends AuditEntity  implements Serializable {
 
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+
+	@Column(name = "PHARMACY_FAX_NUMBER")
+	public String getPharmacyFaxNumber() {
+		return this.pharmacyFaxNumber;
+	}
+
+	public void setPharmacyFaxNumber(String pharmacyFaxNumber) {
+		this.pharmacyFaxNumber = pharmacyFaxNumber;
+	}
+
+	@Column(name = "PHARMACY_NAME")
+	public String getPharmacyName() {
+		return this.pharmacyName;
+	}
+
+	public void setPharmacyName(String pharmacyName) {
+		this.pharmacyName = pharmacyName;
+	}
+
+	@Column(name = "PHARMACY_PHONE_NUMBER")
+	public String getPharmacyPhoneNumber() {
+		return this.pharmacyPhoneNumber;
+	}
+
+	public void setPharmacyPhoneNumber(String pharmacyPhoneNumber) {
+		this.pharmacyPhoneNumber = pharmacyPhoneNumber;
+	}
+
+	@Column(name = "PHONE_NUMBER")
+	public String getPhoneNumber() {
+		return this.phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getRefferal() {
+		return this.refferal;
+	}
+
+	public void setRefferal(String refferal) {
+		this.refferal = refferal;
+	}
+
+	@Column(name = "MEDICAL_RECORD_NUMBER")
+	public String getMedicalRecordNumber() {
+		return this.medicalRecordNumber;
+	}
+
+	public void setMedicalRecordNumber(String medicalRecordNumber) {
+		this.medicalRecordNumber = medicalRecordNumber;
+	}
+
+	public String getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	@Column(name = "ALTERNATE_CONTACT")
+	public String getAlternateContact() {
+		return this.alternateContact;
+	}
+
+	public void setAlternateContact(String alternateContact) {
+		this.alternateContact = alternateContact;
+	}
+
+	@Column(name = "INSURANCE_NUMBER")
+	public String getInsuranceNumber() {
+		return this.insuranceNumber;
+	}
+
+	public void setInsuranceNumber(String insuranceNumber) {
+		this.insuranceNumber = insuranceNumber;
+	}
+
+	@Column(name = "MOBILE_NUMBER")
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
 	}
 
 	// bi-directional many-to-many association to Role

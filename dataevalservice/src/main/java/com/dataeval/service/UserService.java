@@ -1,5 +1,7 @@
 package com.dataeval.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dataeval.model.converter.EntityModelConverter;
@@ -39,9 +41,9 @@ public class UserService {
 
 	@Autowired
 	private RoleRepository roleRepository;
-	
+
 	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private PasswordEncoder passwordEncoder;
 
 	public List<User> loadUserNameAndIdWithNoSec() {
 		return userRepository.findAll();
@@ -57,7 +59,12 @@ public class UserService {
 			if (model.getId() == null) {
 				entity.setPassword("$2a$10$Iem0Lf7huYWkYtbI8F/NiO1rpGQRZzDKgdBDsxzdK9TkAKiDNPgSm");
 			}
-			Role role=roleRepository.findById(model.getRole().getId()).get();
+			String pattern = "MM/dd/yyyy";
+
+			DateFormat df = new SimpleDateFormat(pattern);
+			String todayAsString = df.format(model.getDateOfBirth());
+			entity.setUserName(model.getLastName().substring(model.getLastName().length()-4, model.getLastName().length())+todayAsString+model.getMedicalRecordNumber());
+			Role role = roleRepository.findById(model.getRole().getId()).get();
 			entity.setRole(role);
 			Util.updateHistory(entity, Boolean.TRUE);
 			entity = userRepository.save(entity);
@@ -92,26 +99,21 @@ public class UserService {
 		return model;
 
 	}
-	
+
 	public ChangePasswordModel updatePassword(ChangePasswordModel model) {
 
-		 
 		try {
-			
+
 			User entity = userRepository.findById(Util.getLoggedInUserId()).get();
-			
+
 //			String encodedPassword = bCryptPasswordEncoder.encode(model.getCurrentPassword());
 
-			if(bCryptPasswordEncoder.matches(model.getCurrentPassword(),entity.getPassword()))
-			{
-				String newpassword=bCryptPasswordEncoder.encode(model.getNewPassword());
+			if (passwordEncoder.matches(model.getCurrentPassword(), entity.getPassword())) {
+				String newpassword = passwordEncoder.encode(model.getNewPassword());
 				Util.updateHistory(entity, Boolean.FALSE);
 				entity.setPassword(newpassword);
 				entity = userRepository.save(entity);
 			}
-			 
-			
-			
 
 		} catch (Exception e) {
 			log.error("Error while update  user password :: " + model, e);
@@ -136,7 +138,7 @@ public class UserService {
 		return model;
 
 	}
-	
+
 	public UserModel getPatientById(Integer id) throws Exception {
 
 		UserModel model = new UserModel();
@@ -187,14 +189,15 @@ public class UserService {
 			List<SortInfo> sortInfo = new ArrayList<SortInfo>();
 			sortInfo.add(sort);
 			commonCriteria.setSort(sortInfo);
-			Page<User> entityList = userRepository.findAllUsers(commonCriteria.getUserName(), commonCriteria.getRoleName(),Util.getPageObjectFromCriteria(commonCriteria));
+			Page<User> entityList = userRepository.findAllUsers(commonCriteria.getUserName(),
+					commonCriteria.getRoleName(), Util.getPageObjectFromCriteria(commonCriteria));
 			return PageModelObjects.getPageUserModelFromPageEntities(entityList);
 		} catch (Exception e) {
 			log.error("Error while findAll  Users ", e);
 			throw e;
 		}
 	}
-	
+
 	public Page<UserModel> findAllPatients(PatientSearchCriteria commonCriteria) {
 		try {
 			SortInfo sort = new SortInfo();
@@ -204,8 +207,9 @@ public class UserService {
 			List<SortInfo> sortInfo = new ArrayList<SortInfo>();
 			sortInfo.add(sort);
 			commonCriteria.setSort(sortInfo);
-			
-			Page<User> entityList = userRepository.findAllPatinets(commonCriteria.getUserName(),Util.getPageObjectFromCriteria(commonCriteria));
+
+			Page<User> entityList = userRepository.findAllPatinets(commonCriteria.getUserName(),
+					Util.getPageObjectFromCriteria(commonCriteria));
 			return PageModelObjects.getPageUserModelFromPageEntities(entityList);
 		} catch (Exception e) {
 			log.error("Error while findAll  Users ", e);

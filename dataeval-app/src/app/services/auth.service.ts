@@ -4,13 +4,14 @@ import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { UserDetails } from '../model/common/userdetails.model';
+import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  // BASE_PATH: 'http://localhost:8080'
+  // BASE_PATH: ''
   USER_NAME_SESSION_ATTRIBUTE_NAME = 'authenticatedUser';
   USER_PWD_SESSION_ATTRIBUTE_NAME = 'authenticatedPWD';
   USER_TYPE_SESSION_ATTRIBUTE_NAME = 'authenticatedType';
@@ -54,12 +55,15 @@ setLastName=(value :string) =>{
   
 
   constructor(private http: HttpClient , private route: ActivatedRoute,
-    private router: Router) {
-
+    private router: Router, private loc: Location) {
+      const angularRoute = this.loc.path();
+      const url = window.location.href; 
+      const domainAndApp = url.replace(angularRoute, '');
+      alert(domainAndApp);
   }
 
-  authenticationService(username: string, password: string) {
-    return this.http.get(`http://localhost:8080/api/v1/basicauth`,
+  authenticationService(username: string, password: string ) {
+    return this.http.get(`/api/v1/basicauth`,
       { headers: { authorization: this.createBasicAuthToken(username, password) } }).pipe(map((res :any) => {
         this.username = username;
         this.password = password;

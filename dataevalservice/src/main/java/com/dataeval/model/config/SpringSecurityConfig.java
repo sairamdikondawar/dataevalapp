@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,14 +18,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	     @Autowired
 	     private   AuthUserService userDetailsService ;
-	     @Autowired
-	     private   PasswordEncoder bCryptPasswordEncoder;
+	      
 
 	    @Override
 	    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 	        auth
 	                .userDetailsService(userDetailsService)
-	                .passwordEncoder(bCryptPasswordEncoder);
+	                .passwordEncoder(passwordEncoder());
 	    }
 
 	    @Bean
@@ -45,10 +45,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest()
+		http.csrf().disable().authorizeRequests().antMatchers("/","/*.html", "/*.txt", "/*.js","/*.css", "/*.png", "/*.ico").permitAll().antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest()
 				.authenticated().and()
 				// .formLogin().and()
 				.httpBasic();
+	}
+	
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+	    web.ignoring().antMatchers("/","/*.html", "/*.txt", "/*.js","/*.css", "/*.png", "/*.ico");
 	}
 	
 }

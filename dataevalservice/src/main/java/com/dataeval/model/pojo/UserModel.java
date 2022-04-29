@@ -25,5 +25,16 @@ public class UserModel implements Serializable {
 	private String firstName;
 	private String lastName;
 	private Date dateOfBirth;
+	
+	private String address;
+	private String alternateContact;
+	private String insuranceNumber;
+	private String medicalRecordNumber;
+	private String pharmacyFaxNumber;
+	private String pharmacyName;
+	private String pharmacyPhoneNumber;
+	private String phoneNumber;
+	private String refferal;
+	private String mobileNumber;
 
 }

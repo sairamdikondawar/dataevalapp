@@ -30,6 +30,8 @@ public class PatientCallLog extends AuditEntity implements Serializable {
 	private Integer remaingTime;
 	private Integer timeSpentInSession;
 	private Integer totalTimeSpent;
+	private String finalReocrd;
+	private String monthlyStatus;
 
 	public PatientCallLog() {
 	}
@@ -190,4 +192,21 @@ public class PatientCallLog extends AuditEntity implements Serializable {
 		this.totalTimeSpent = totalTimeSpent;
 	}
 
+	@Column(name = "FINAL_RECORD")
+	public String getFinalReocrd() {
+		return finalReocrd;
+	}
+
+	public void setFinalReocrd(String finalReocrd) {
+		this.finalReocrd = finalReocrd;
+	}
+
+	@Column(name = "MONTHLY_STATUS")
+	public String getMonthlyStatus() {
+		return monthlyStatus;
+	}
+
+	public void setMonthlyStatus(String monthlyStatus) {
+		this.monthlyStatus = monthlyStatus;
+	}
 }

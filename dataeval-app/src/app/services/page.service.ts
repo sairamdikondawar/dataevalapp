@@ -16,23 +16,23 @@ export class PageService {
   } 
 
 list(params :any): Observable<any>{
-    const endpoint = 'http://localhost:8080/api/v1/page-config/pages?'+encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}');//environment.apiUrl + "/todos";
+    const endpoint = '/api/v1/page-config/pages?'+encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}');//environment.apiUrl + "/todos";
     return this.http.get(endpoint, { params });
 }
 
 
 create(data:Page): Observable<any>{
-  const endpoint = 'http://localhost:8080/api/v1/page-config/page';
+  const endpoint = '/api/v1/page-config/page';
   return this.http.post(endpoint, data);  
 }
 
 update(data:Page): Observable<any>{
-  const endpoint = 'http://localhost:8080/api/v1/page-config/page/'+data.id;
+  const endpoint = '/api/v1/page-config/page/'+data.id;
   return this.http.put(endpoint, data);
 }
 
 get(id :any): Observable<any>{
-    const endpoint = 'http://localhost:8080/api/v1/page-config/page/'+id; 
+    const endpoint = '/api/v1/page-config/page/'+id; 
     return this.http.get(endpoint);
   }
   

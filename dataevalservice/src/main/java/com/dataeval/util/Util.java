@@ -1,6 +1,7 @@
 package com.dataeval.util;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -152,6 +153,10 @@ public class Util {
 		if (entity.getCreationDate() == null || isNew)
 			entity.setCreationDate(new Date(System.currentTimeMillis()));
 		entity.setUpdatedDate(new Date(System.currentTimeMillis()));
+	}
+	
+	public static LocalDate  convertToLocalDateViaSqlDate(Date dateToConvert) {
+	    return new java.sql.Date(dateToConvert.getTime()).toLocalDate();
 	}
 
 }

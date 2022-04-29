@@ -23,27 +23,27 @@ export class FlowconfigService {
   // flowconfigService() {
 
   //   console.log(encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}'));
-  //   // return this.http.get<Message>('http://localhost:8080/api/v1/greeting');
+  //   // return this.http.get<Message>('/api/v1/greeting');
   //   //const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa('javaguides' + ':' + 'password') });
-  //   return this.http.get<Flowconfig[]>('http://localhost:8080/api/v1/flow-config/flowconfigs?'+encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}'));
+  //   return this.http.get<Flowconfig[]>('/api/v1/flow-config/flowconfigs?'+encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}'));
   // }
 
 flowconfigService(params :any): Observable<any>{
-    const endpoint = 'http://localhost:8080/api/v1/flow-config/flowconfigs?'+encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}');//environment.apiUrl + "/todos";
+    const endpoint = '/api/v1/flow-config/flowconfigs?'+encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}');//environment.apiUrl + "/todos";
      
     return this.http.get(endpoint, { params });
 }
 
 
 createFlow(data:Flowconfig): Observable<any>{
-  const endpoint = 'http://localhost:8080/api/v1/flow-config/flowconfig';
+  const endpoint = '/api/v1/flow-config/flowconfig';
   return this.http.post(endpoint, data);
 
   
 }
 
 updateFlow(data:Flowconfig): Observable<any>{
-  const endpoint = 'http://localhost:8080/api/v1/flow-config/flowconfig/'+data.id;
+  const endpoint = '/api/v1/flow-config/flowconfig/'+data.id;
   return this.http.put(endpoint, data);
 
   

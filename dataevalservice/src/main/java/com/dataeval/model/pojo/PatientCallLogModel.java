@@ -24,5 +24,6 @@ public class PatientCallLogModel extends AuditModel {
 	private Integer remaingTime;
 	private Integer timeSpentInSession;
 	private Integer totalTimeSpent;
-
+	private String finalReocrd;
+	private String monthlyStatus;
 }
