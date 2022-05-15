@@ -6,5 +6,7 @@ import lombok.Data;
 public class PatientSearchCriteria extends CommonCriteria {
 
 	private String userName;
+	private String firstName;
+	private String lastName;
 
 }

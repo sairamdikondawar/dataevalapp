@@ -62,9 +62,10 @@ public class UserService {
 			String pattern = "MM/dd/yyyy";
 
 			DateFormat df = new SimpleDateFormat(pattern);
-			String todayAsString = df.format(model.getDateOfBirth());
+			String todayAsString = df.format(model.getDateOfBirth()).replace("/", "");
 			entity.setUserName(model.getLastName().substring(model.getLastName().length()-4, model.getLastName().length())+todayAsString+model.getMedicalRecordNumber());
-			Role role = roleRepository.findById(model.getRole().getId()).get();
+			Integer roleId=model.getRole().getId() == null  ? 2: model.getRole().getId();
+			Role role = roleRepository.findById(roleId).get();
 			entity.setRole(role);
 			Util.updateHistory(entity, Boolean.TRUE);
 			entity = userRepository.save(entity);
@@ -190,7 +191,7 @@ public class UserService {
 			sortInfo.add(sort);
 			commonCriteria.setSort(sortInfo);
 			Page<User> entityList = userRepository.findAllUsers(commonCriteria.getUserName(),
-					commonCriteria.getRoleName(), Util.getPageObjectFromCriteria(commonCriteria));
+					commonCriteria.getRoleName(),commonCriteria.getFirstName(), commonCriteria.getLastName(), Util.getPageObjectFromCriteria(commonCriteria));
 			return PageModelObjects.getPageUserModelFromPageEntities(entityList);
 		} catch (Exception e) {
 			log.error("Error while findAll  Users ", e);
@@ -208,7 +209,7 @@ public class UserService {
 			sortInfo.add(sort);
 			commonCriteria.setSort(sortInfo);
 
-			Page<User> entityList = userRepository.findAllPatinets(commonCriteria.getUserName(),
+			Page<User> entityList = userRepository.findAllPatinets(commonCriteria.getUserName(),commonCriteria.getFirstName(), commonCriteria.getLastName(),
 					Util.getPageObjectFromCriteria(commonCriteria));
 			return PageModelObjects.getPageUserModelFromPageEntities(entityList);
 		} catch (Exception e) {

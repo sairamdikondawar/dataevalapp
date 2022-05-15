@@ -236,7 +236,7 @@ public class PatientCallLogService {
 			System.out.println("EndDate" + endDate);
 			commonCriteria.setCallType(null);
 			Page<PatientCallLog> entityList = patientCallLogRepository.findAllPatinetLog(
-					commonCriteria.getPatientName(), commonCriteria.getCallType(),startDate, endDate,
+					commonCriteria.getPatientName(), commonCriteria.getCallType(),startDate, endDate,commonCriteria.getFirstName(), commonCriteria.getLastName(),
 					Util.getPageObjectFromCriteria(commonCriteria));
 			return PageModelObjects.getPagePatientCallLogModelModelFromPageEntities(entityList);
 		} catch (Exception e) {
@@ -256,7 +256,7 @@ public class PatientCallLogService {
 			sortInfo.add(sort);
 			commonCriteria.setSort(sortInfo);
 			Page<PatientCallLog> entityList = patientCallLogRepository.findAllPatinetLogHistory(
-					commonCriteria.getPatientName(), commonCriteria.getCallType(),
+					commonCriteria.getPatientName(), commonCriteria.getCallType(),commonCriteria.getFirstName(), commonCriteria.getLastName(),
 					Util.getPageObjectFromCriteria(commonCriteria));
 			return PageModelObjects.getPagePatientCallLogModelModelFromPageEntities(entityList);
 		} catch (Exception e) {

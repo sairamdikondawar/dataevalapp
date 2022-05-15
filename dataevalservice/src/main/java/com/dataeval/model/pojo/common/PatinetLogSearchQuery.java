@@ -16,5 +16,8 @@ public class PatinetLogSearchQuery extends CommonCriteria {
 	private String callType;
 	
 	private String patientName;
+	
+	private String firstName;
+	private String lastName;
 
 }

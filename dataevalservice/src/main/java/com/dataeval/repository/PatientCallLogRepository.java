@@ -14,11 +14,11 @@ import com.dataeval.model.entity.PatientCallLog;
 @Repository
 public interface PatientCallLogRepository extends JpaRepository<PatientCallLog, Integer> {
 
-	@Query("select log from PatientCallLog log where    log.finalReocrd ='true' and (?1 is null or ?1 = ''  or log.user.firstName like %?1%  or log.user.firstName like %?1%) and (?2 is null or ?2 is not null) and (  log.nextMonthAppointmentDate  between  ?3  and ?4  )")
-	public Page<PatientCallLog> findAllPatinetLog(String patientName, String callType,Date startDate, Date endDate, Pageable pageable);
+	@Query("select log from PatientCallLog log where    log.finalReocrd ='true' and (?1 is null or ?1 = ''  or log.user.userName like %?1% ) and (?2 is null or ?2 is not null) and (  log.nextMonthAppointmentDate  between  ?3  and ?4  ) and (?5 is null or ?5 = ''  or log.user.firstName like %?5% ) and (?6 is null or ?6 = ''  or log.user.lastName like %?6% )")
+	public Page<PatientCallLog> findAllPatinetLog(String patientName, String callType,Date startDate, Date endDate, String firstName, String lastName, Pageable pageable);
 	
-	@Query("select log from PatientCallLog log where    (?1 is null or ?1 = ''  or log.user.firstName like %?1%  or log.user.firstName like %?1%) and (?2 is null or ?2 = '' or log.callType =?2) and log.totalTimeSpent > 0")
-	public Page<PatientCallLog> findAllPatinetLogHistory(String patientName, String callType, Pageable pageable);
+	@Query("select log from PatientCallLog log where    (?1 is null or ?1 = ''  or log.user.userName  like %?1%) and (?2 is null or ?2 = '' or log.callType =?2) and log.totalTimeSpent > 0 and (?3 is null or ?3 = ''  or log.user.firstName like %?3%) and (?4 is null or ?4 = ''  or log.user.lastName like %?4% )   ")
+	public Page<PatientCallLog> findAllPatinetLogHistory(String patientName, String callType,String firstName, String lastName, Pageable pageable);
 
 	@Query("select log from PatientCallLog log where log.user.id = ?1 and log.callRecordStatus ='ACTIVE'")
 	public Optional<PatientCallLog> findAllByPatientIdAndActiveStatus(Integer patientId);

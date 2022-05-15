@@ -2,15 +2,19 @@ package com.dataeval.model.pojo.common;
 
 import lombok.Data;
 
- 
+@Data
 public class UserSearchQuery extends CommonCriteria {
 
 	private String roleName;
 
 	private String userName;
+	
+	private String firstName;
+	
+	private String lastName;
 
 	public String getRoleName() {
-		return roleName == null || roleName.isEmpty() ? null : roleName;
+		return roleName == null || roleName.isEmpty() ? "PATIENT" : roleName;
 	}
 
 	public void setRoleName(String roleName) {
