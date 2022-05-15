@@ -7,13 +7,13 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from "rxjs";
 import { catchError, tap } from 'rxjs/operators';
 import { QuestionDataSouce } from 'src/app/datasoruce/fcdatasoruce/questiondatasouce.service';
-import { UserDataSouce } from 'src/app/datasoruce/user-datasource.model'; 
+import { UserDataSouce } from 'src/app/datasoruce/user-datasource.model';
 import { UserQuery } from 'src/app/model/common/userquery.model';
-import { Lookup } from 'src/app/model/lookup.model'; 
+import { Lookup } from 'src/app/model/lookup.model';
 import { Role } from 'src/app/model/role.model';
 import { Section } from 'src/app/model/section.model';
 import { User } from 'src/app/model/user.model';
-import { CommonService } from 'src/app/services/common.service'; 
+import { CommonService } from 'src/app/services/common.service';
 import { RoleService } from 'src/app/services/role.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -26,25 +26,25 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ManageuserComponent implements OnInit {
 
-  
 
-  today=new Date();
+  panelOpenState = false;
+  today = new Date();
   roles: Lookup[];
 
- 
 
-  
- 
- 
+
+
+
+
   selectedRoleId: number = 0;
 
-  currentPageIndex:number=0;
+  currentPageIndex: number = 0;
 
-  searchForm:FormGroup;
+  searchForm: FormGroup;
 
-  numberOfPages :number=0; 
+  numberOfPages: number = 0;
   model = new User();
-  disableUserType:boolean=true;
+  disableUserType: boolean = true;
 
 
   @ViewChild(MatSort) sort: MatSort;
@@ -55,30 +55,30 @@ export class ManageuserComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private service: UserService, private roleService:RoleService,
+  constructor(private service: UserService, private roleService: RoleService,
     private modalService: NgbModal,
     private commonService: CommonService,
     private router: Router) {
 
-   
-    
+
+
   }
-  displayedColumns = ['id', 'name', 'firstname', 'lastname' ,'dateOfBirth',  'userType','status', 'actions'];
+  displayedColumns = ['id', 'name', 'firstname', 'lastname', 'dateOfBirth', 'userType', 'status', 'actions'];
 
 
   ngOnInit() {
-   
+
     this.dataSource = new UserDataSouce(this.service);
     this.dataSource.sort = this.sort;
     this.dataSource.list();
 
-   
 
-      
 
-   
 
-      this.roleService.roleService()
+
+
+
+    this.roleService.roleService()
       .pipe(
         catchError(() => of([]))
       )
@@ -87,10 +87,11 @@ export class ManageuserComponent implements OnInit {
       }
       );
 
-      this.searchForm=new FormGroup({
-        uName:new FormControl(''),
-        rName:new FormControl('')
-      })
+    this.searchForm = new FormGroup({
+      uName: new FormControl(''),
+      fName: new FormControl(''),
+      lName: new FormControl('')
+    })
 
   }
 
@@ -102,7 +103,6 @@ export class ManageuserComponent implements OnInit {
         })
       )
       .subscribe();
-
     this.paginator.page
       .pipe(
         tap(() => this.list())
@@ -111,13 +111,15 @@ export class ManageuserComponent implements OnInit {
   }
 
   list() {
-    this.dataSource.query=new UserQuery();
-    if(this.searchForm.controls.uName.value!=null)
-      this.dataSource.query.userName=this.searchForm.controls.uName.value;
-    this.dataSource.query.roleName=this.searchForm.controls.rName.value!=null ? this.searchForm.controls.rName.value : "";
+    this.dataSource.query = new UserQuery();
+    if (this.searchForm.controls.uName.value != null)
+      this.dataSource.query.userName = this.searchForm.controls.uName.value;
+    // this.dataSource.query.roleName = this.searchForm.controls.rName.value != null ? this.searchForm.controls.rName.value : "";
+    if (this.searchForm.controls.lName.value != null)
+      this.dataSource.query.lastName = this.searchForm.controls.lName.value;
+    if (this.searchForm.controls.fName.value != null)
+      this.dataSource.query.firstName = this.searchForm.controls.fName.value;
     this.dataSource.list(this.paginator.pageIndex, this.paginator.pageSize);
-
-
 
   }
 
@@ -133,14 +135,12 @@ export class ManageuserComponent implements OnInit {
     });
   }
 
-  add()
-  {
+  add() {
     this.router.navigate(['/adduser']);
   }
 
-  edit(id:number)
-  {
-    this.router.navigate(['/edituser/'+id]);
+  edit(id: number) {
+    this.router.navigate(['/edituser/' + id]);
   }
 
   private getDismissReason(reason: any): string {
@@ -153,7 +153,7 @@ export class ManageuserComponent implements OnInit {
     }
   }
 
-   
+
 
   save() {
 
@@ -162,15 +162,15 @@ export class ManageuserComponent implements OnInit {
 
     this.model.label = this.createForm.controls.sName.value;
 
-    this.model.status = this.createForm.controls.status.value; 
+    this.model.status = this.createForm.controls.status.value;
 
-    this.model.role.id=this.createForm.controls.userType.value;
+    this.model.role.id = this.createForm.controls.userType.value;
 
-    this.model.firstName=this.createForm.controls.fName.value;
+    this.model.firstName = this.createForm.controls.fName.value;
 
-    this.model.lastName=this.createForm.controls.lName.value;
+    this.model.lastName = this.createForm.controls.lName.value;
 
-    this.model.dateOfBirth=this.createForm.controls.dateOfBirth.value;
+    this.model.dateOfBirth = this.createForm.controls.dateOfBirth.value;
 
     this.service.create(this.model)
       .pipe(
@@ -191,13 +191,13 @@ export class ManageuserComponent implements OnInit {
 
   createForm = new FormGroup({
     sName: new FormControl(this.model.label, [Validators.required,
-    Validators.minLength(4)]), 
+    Validators.minLength(4)]),
     fName: new FormControl(this.model.label, [Validators.required,
-      Validators.minLength(4)]), 
+    Validators.minLength(4)]),
     lName: new FormControl(this.model.label, [Validators.required,
-        Validators.minLength(4)]),  
-    dateOfBirth: new FormControl(this.model.dateOfBirth), 
-    status: new FormControl('Active', [Validators.required]), 
+    Validators.minLength(4)]),
+    dateOfBirth: new FormControl(this.model.dateOfBirth),
+    status: new FormControl('Active', [Validators.required]),
     userType: new FormControl('', [Validators.required])
   });
 
@@ -205,15 +205,15 @@ export class ManageuserComponent implements OnInit {
 
   editForm = new FormGroup({
     eName: new FormControl(this.model.label, [Validators.required,
-    Validators.minLength(4)]), 
+    Validators.minLength(4)]),
     fName: new FormControl(this.model.label, [Validators.required,
-      Validators.minLength(4)]), 
+    Validators.minLength(4)]),
     lName: new FormControl(this.model.label, [Validators.required,
-        Validators.minLength(4)]),
-    dateOfBirth: new FormControl(this.model.dateOfBirth),  
+    Validators.minLength(4)]),
+    dateOfBirth: new FormControl(this.model.dateOfBirth),
     id: new FormControl(this.model.id),
 
-    status: new FormControl(this.model.status, [Validators.required]), 
+    status: new FormControl(this.model.status, [Validators.required]),
     userType: new FormControl(this.model.role.id, [Validators.required])
   });
 
@@ -236,15 +236,15 @@ export class ManageuserComponent implements OnInit {
 
     this.editForm.patchValue({
       id: editModel.id,
-      eName: editModel.label, 
-      fName:editModel.firstName,
-      lName:editModel.lastName,
-      dateOfBirth:editModel.dateOfBirth,
+      eName: editModel.label,
+      fName: editModel.firstName,
+      lName: editModel.lastName,
+      dateOfBirth: editModel.dateOfBirth,
       // password:editModel.password;
       status: editModel.status,
       userType: (editModel.role != null ? editModel.role.id : null)
     });
-     
+
   }
   get sName() { return this.createForm.get('sName'); }
 
@@ -265,9 +265,9 @@ export class ManageuserComponent implements OnInit {
       sName: new FormControl(this.model.label, [Validators.required,
       Validators.minLength(4)]),
       fName: new FormControl(this.model.label, [Validators.required,
-        Validators.minLength(4)]),
+      Validators.minLength(4)]),
       lName: new FormControl(this.model.label, [Validators.required,
-          Validators.minLength(4)]),
+      Validators.minLength(4)]),
       // password: new FormControl(''),
       status: new FormControl('Active', [Validators.required]),
       userType: new FormControl('', [Validators.required])
@@ -281,10 +281,10 @@ export class ManageuserComponent implements OnInit {
 
     this.model.label = this.editForm.controls.eName.value;
     this.model.status = this.editForm.controls.status.value;
-    this.model.role.id=this.editForm.controls.userType.value;
-    this.model.firstName=this.editForm.controls.fName.value;
-    this.model.lastName=this.editForm.controls.lName.value;
-    this.model.dateOfBirth=this.editForm.controls.dateOfBirth.value;
+    this.model.role.id = this.editForm.controls.userType.value;
+    this.model.firstName = this.editForm.controls.fName.value;
+    this.model.lastName = this.editForm.controls.lName.value;
+    this.model.dateOfBirth = this.editForm.controls.dateOfBirth.value;
     this.service.update(this.model)
       .pipe(
         catchError(() => of([]))
@@ -300,44 +300,47 @@ export class ManageuserComponent implements OnInit {
 
   }
 
-   
+
 
   sortData(sort: Sort) {
- 
+
     this.dataSource.sort = sort;
     this.dataSource.list();
   }
 
-  onPaginateChange(event:any){
-    this.currentPageIndex= event.pageIndex ==  0 ? 0 :(event.pageIndex)*10;
+  onPaginateChange(event: any) {
+    this.currentPageIndex = event.pageIndex == 0 ? 0 : (event.pageIndex) * 10;
   }
 
-  getNumberOfPages(){
+  getNumberOfPages() {
     return this.paginator.getNumberOfPages();
   }
 
-  search()
-  { 
-  if(this.searchForm.controls.uName.value!=null)
-     this.dataSource.query.userName=this.searchForm.controls.uName.value;
-    this.dataSource.query.roleName=this.searchForm.controls.rName.value !=null ? this.searchForm.controls.rName.value : "";
+  search() {
+    if (this.searchForm.controls.uName.value != null)
+      this.dataSource.query.userName = this.searchForm.controls.uName.value;
+    if (this.searchForm.controls.lName.value != null)
+      this.dataSource.query.lastName = this.searchForm.controls.lName.value;
+    if (this.searchForm.controls.fName.value != null)
+      this.dataSource.query.firstName = this.searchForm.controls.fName.value;
+
     this.dataSource.list();
   }
-  resetSearch()
-  {
-    this.dataSource.query=new UserQuery();
-    this.dataSource.query.roleName='';
-    this.dataSource.query.userName="";
+  resetSearch() {
+    this.dataSource.query = new UserQuery();
+    this.dataSource.query.roleName = '';
+    this.dataSource.query.userName = "";
     this.searchForm.controls.uName.setValue("");
-    this.searchForm.controls.rName.setValue("");
+    this.searchForm.controls.lName.setValue("");
+    this.searchForm.controls.fName.setValue("");
     this.searchForm.reset();
     this.dataSource.list();
     // alert(this.searchForm.controls.sname.value +  "  "+this.dataSource.query.sectionId)
   }
 
-  getToolTipData(issueId: string): string { 
+  getToolTipData(issueId: string): string {
     return issueId;
-}
+  }
 
 }
 

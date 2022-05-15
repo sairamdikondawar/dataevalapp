@@ -5,9 +5,9 @@ import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators'; 
-import { UserFormQuery } from 'src/app/model/common/userformquery.model'; 
-import { CommonService } from 'src/app/services/common.service'; 
+import { catchError, tap } from 'rxjs/operators';
+import { UserFormQuery } from 'src/app/model/common/userformquery.model';
+import { CommonService } from 'src/app/services/common.service';
 import { PatientCallLogDataSouce } from '../datasoruce/patientcalllog-datasource.model';
 import { PatinetCallLogQuery } from '../model/common/patientcalllogquery.model';
 import { PatientCallLogService } from '../services/patientcalllog.service';
@@ -20,16 +20,16 @@ import { PatientCallLogService } from '../services/patientcalllog.service';
 })
 export class ViewPatinetlogComponent implements OnInit {
 
-  currentPageIndex:number=0;
+  currentPageIndex: number = 0;
+  panelOpenState = false;
+  searchForm: FormGroup;
 
-   searchForm:FormGroup;
- 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('closeFlowConfigModal') closeFlowConfigModal: ElementRef;
 
 
   dataSource: PatientCallLogDataSouce;
-  count:number=0;
+  count: number = 0;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -41,23 +41,25 @@ export class ViewPatinetlogComponent implements OnInit {
   }
 
   // 'callRecordStatus',
-  displayedColumns = ['id', 'patientname','callType', 'creationDate', 'remainingtime','timeSpentInSession','totalTimeSpent', 'actions'];
+  displayedColumns = ['id', 'patientname', 'callType', 'creationDate', 'remainingtime', 'timeSpentInSession', 'totalTimeSpent', 'actions'];
 
 
   ngOnInit() {
     this.dataSource = new PatientCallLogDataSouce(this.service);
     this.dataSource.allList();
 
-    this.searchForm=new FormGroup({
-      callType:new FormControl('Inbound'),
-      patientName:new FormControl(''),
-      startDate:new FormControl('')
+    this.searchForm = new FormGroup({
+      callType: new FormControl('Inbound'),
+      patientName: new FormControl(''),
+      fName: new FormControl(''),
+      lName: new FormControl(''),
+      startDate: new FormControl('')
     });
 
     this.dataSource.counter$.subscribe((count) => {
-      this.count = count; 
-       console.log('result In count:', this.count);
-   });
+      this.count = count;
+      console.log('result In count:', this.count);
+    });
   }
 
   ngAfterViewInit() {
@@ -78,13 +80,17 @@ export class ViewPatinetlogComponent implements OnInit {
 
   allList() {
 
-    this.dataSource.query=new PatinetCallLogQuery();
-    if(this.searchForm.controls.uName.value!=null)
-      this.dataSource.query.patientName=this.searchForm.controls.patientName.value;
-      this.dataSource.query.startDate=this.searchForm.controls.startDate.value;
-    this.dataSource.query.callType=this.searchForm.controls.callType.value!=null ? this.searchForm.controls.callType.value : "";
+    this.dataSource.query = new PatinetCallLogQuery();
+    if (this.searchForm.controls.patientName.value != null)
+      this.dataSource.query.patientName = this.searchForm.controls.patientName.value;
+    if (this.searchForm.controls.fName.value != null)
+      this.dataSource.query.firstName = this.searchForm.controls.fName.value;
+    if (this.searchForm.controls.lName.value != null)
+      this.dataSource.query.lastName = this.searchForm.controls.lName.value;
+    this.dataSource.query.startDate = this.searchForm.controls.startDate.value;
+    this.dataSource.query.callType = this.searchForm.controls.callType.value != null ? this.searchForm.controls.callType.value : "";
     this.dataSource.allList(this.paginator.pageIndex, this.paginator.pageSize);
- 
+
   }
 
 
@@ -94,31 +100,35 @@ export class ViewPatinetlogComponent implements OnInit {
     );
 
   }
-  onPaginateChange(event:any){
-    this.currentPageIndex= event.pageIndex ==  0 ? 0 :(event.pageIndex)*10;
+  onPaginateChange(event: any) {
+    this.currentPageIndex = event.pageIndex == 0 ? 0 : (event.pageIndex) * 10;
   }
 
-  search()
-  { 
-  if(this.searchForm.controls.patientName.value!=null)
-     this.dataSource.query.patientName=this.searchForm.controls.patientName.value;
-     this.dataSource.query.startDate=this.searchForm.controls.startDate.value;
-    this.dataSource.query.callType=this.searchForm.controls.callType.value !=null ? this.searchForm.controls.callType.value : "";
+  search() {
+    if (this.searchForm.controls.patientName.value != null)
+      this.dataSource.query.patientName = this.searchForm.controls.patientName.value;
+    if (this.searchForm.controls.fName.value != null)
+      this.dataSource.query.firstName = this.searchForm.controls.fName.value;
+    if (this.searchForm.controls.lName.value != null)
+      this.dataSource.query.lastName = this.searchForm.controls.lName.value;
+    this.dataSource.query.startDate = this.searchForm.controls.startDate.value;
+    this.dataSource.query.callType = this.searchForm.controls.callType.value != null ? this.searchForm.controls.callType.value : "";
     this.dataSource.allList();
   }
-  resetSearch()
-  {
-    this.dataSource.query=new PatinetCallLogQuery();
-    this.dataSource.query.patientName='';
-    this.dataSource.query.callType="";
-    this.dataSource.query.startDate=null;
+  resetSearch() {
+    this.dataSource.query = new PatinetCallLogQuery();
+    this.dataSource.query.patientName = '';
+    this.dataSource.query.firstName = '';
+    this.dataSource.query.lastName = '';
+    this.dataSource.query.callType = "";
+    this.dataSource.query.startDate = null;
     this.searchForm.controls.startDate.setValue("");
     this.searchForm.reset();
     this.dataSource.allList();
     // alert(this.searchForm.controls.sname.value +  "  "+this.dataSource.query.sectionId)
   }
 
-   
+
 
   viewcalllogrecord(patientId: number) {
     this.router.navigate(['/viewpatientcalllog/' + patientId]

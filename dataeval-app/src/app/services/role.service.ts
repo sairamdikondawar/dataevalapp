@@ -4,6 +4,7 @@ import { Flowconfig } from '../model/flowconfig.model';
 import { Message } from '../model/message.model';
 import { FlowconfigResponse } from '../model/flowconfigResponse';
 import { Observable } from 'rxjs';
+import { ApplicationConstants } from '../constants/applicationConstants.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ roleService(): Observable<any>{
   console.log("inside role service");
     const endpoint = '/api/v1/role-config/roles';
      
-    return this.http.get(endpoint);
+    return this.http.get(ApplicationConstants.baseUrl+endpoint);
 }
 
 

@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label for="eName" class="font-weight-bold">User Name :</label>
                         <input type="text" class="form-control" id="eName" placeholder="Enter User Name" name="eName"
-                            formControlName="eName" required>
+                            formControlName="eName" readonly>
 
 
                     </div>
@@ -49,7 +49,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="fName" class="font-weight-bold">First Name :</label>
+                                <label for="fName" class="font-weight-bold">First Name <span
+                                    class="required-asterisk">*</span> :</label>
                                 <input type="text" class="form-control" id="fName" placeholder="Enter First Name"
                                     name="fName" formControlName="fName" required>
                             </div>
@@ -68,7 +69,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="lName" class="font-weight-bold">Last Name :</label>
+                                <label for="lName" class="font-weight-bold">Last Name <span
+                                    class="required-asterisk">*</span> :</label>
                                 <input type="text" class="form-control" id="lName" placeholder="Enter Last Name"
                                     name="lName" formControlName="lName" required>
                             </div>
@@ -89,23 +91,13 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="dateOfBirth" class="font-weight-bold">Date Of Birth :</label>
+                                <label for="dateOfBirth" class="font-weight-bold">Date Of Birth <span
+                                    class="required-asterisk">*</span> :</label>
                                 <input type="date" class="form-control" id="dateOfBirth"  max="{{today | date:'yyyy-MM-dd'}}" 
                                     placeholder="Enter Date Of Birth" name="dateOfBirth" formControlName="dateOfBirth">
                             </div>
 
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="userType" class="font-weight-bold">User Type</label>
-                                <select class="custom-select" formControlName="userType">
-                                    <option *ngFor="let role of roles" value="{{role.id}}">
-                                        {{role.name | titlecase}}</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row ">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="mdrNumber" class="font-weight-bold">Medical Record Number</label>
@@ -114,6 +106,10 @@
                                     formControlName="medicalRecordNumber" required>
                             </div>
                         </div>
+                        
+                    </div>
+                    <div class="row ">
+                       
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="insNumber" class="font-weight-bold">Insurance Number</label>
@@ -122,8 +118,6 @@
                                     formControlName="insuranceNumber" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="row ">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="phNumber" class="font-weight-bold">Phone Number</label>
@@ -138,6 +132,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row ">
+                        
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="mobNumber" class="font-weight-bold">Mobile Number</label>
@@ -155,8 +152,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row ">
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="altContact" class="font-weight-bold">Alternate Contact</label>
@@ -165,8 +161,8 @@
                                     formControlName="alternateContact" required></textarea>
                             </div>
                         </div>
-
                     </div>
+                    
                     <div class="panel panel-default">
                         <div class="">Pharmacy Details</div>
                         <hr>

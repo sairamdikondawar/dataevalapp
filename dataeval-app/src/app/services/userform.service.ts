@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { ApplicationConstants } from "../constants/applicationConstants.constants";
 import { CreateUserForm } from "../model/user-form.model";
 import { UserForm } from "../model/user/userform.model";
 
@@ -16,19 +17,19 @@ import { UserForm } from "../model/user/userform.model";
   list(params :any): Observable<any>{
       const endpoint = '/api/v1/userform-config?'+encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}');//environment.apiUrl + "/todos";
        
-      return this.http.get(endpoint, { params });
+      return this.http.get(ApplicationConstants.baseUrl+endpoint, { params });
   }
   
   create(data:CreateUserForm): Observable<any>{
     const endpoint = '/api/v1/userform-config/question';
-    return this.http.post(endpoint, data);
+    return this.http.post(ApplicationConstants.baseUrl+endpoint, data);
   
     
   }
   
   update(data:UserForm): Observable<any>{
     const endpoint = '/api/v1/userform-config/'+data.id;
-    return this.http.put(endpoint, data);  
+    return this.http.put(ApplicationConstants.baseUrl+endpoint, data);  
   }
    
    
@@ -36,7 +37,7 @@ import { UserForm } from "../model/user/userform.model";
   get(id :any): Observable<any>{
     const endpoint = '/api/v1/userform-config/'+id;
      
-    return this.http.get(endpoint);
+    return this.http.get(ApplicationConstants.baseUrl+endpoint);
   }
 
   }

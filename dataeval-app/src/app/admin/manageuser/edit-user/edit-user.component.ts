@@ -14,7 +14,7 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-edit-user',
   templateUrl: './edit-user.component.html',
-  styleUrls: ['./edit-user.component.sass']
+  styleUrls: ['./edit-user.component.css']
 })
 export class EditUserComponent implements OnInit {
 
@@ -189,7 +189,7 @@ export class EditUserComponent implements OnInit {
       )
       .subscribe((result) => {
         console.log(result + " result");
-        alert(result.message);
+       // alert(result.message);
         this.alertService.success(result.message, this.options);
         this.navigateBack();
       }

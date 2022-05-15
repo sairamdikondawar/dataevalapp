@@ -21,10 +21,11 @@ import { PatientCallLogService } from '../services/patientcalllog.service';
 export class ManagePatinetlogComponent implements OnInit {
 
   currentPageIndex: number = 0;
+  panelOpenState = false;
 
   searchForm: FormGroup;
   count: number = 0;
-  today: Date= new Date();
+  today: Date = new Date();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('closeFlowConfigModal') closeFlowConfigModal: ElementRef;
@@ -36,7 +37,7 @@ export class ManagePatinetlogComponent implements OnInit {
 
   constructor(private service: PatientCallLogService,
     private modalService: NgbModal,
-    private commonService: CommonService, private router: Router,) { 
+    private commonService: CommonService, private router: Router,) {
   }
 
   // 'callRecordStatus',
@@ -44,9 +45,11 @@ export class ManagePatinetlogComponent implements OnInit {
 
 
   ngOnInit() {
-    this.searchForm = new FormGroup({ 
-      callType: new FormControl(this.today.getMonth()+1),
+    this.searchForm = new FormGroup({
+      callType: new FormControl(this.today.getMonth() + 1),
       patientName: new FormControl(''),
+      fName: new FormControl(''),
+      lName: new FormControl(''),
       startDate: new FormControl('')
     })
     this.dataSource = new PatientCallLogDataSouce(this.service);
@@ -55,7 +58,7 @@ export class ManagePatinetlogComponent implements OnInit {
       this.count = count;
       console.log('result In count:', this.count);
     });
-   
+
   }
 
   ngAfterViewInit() {
@@ -78,6 +81,10 @@ export class ManagePatinetlogComponent implements OnInit {
     this.dataSource.query = new PatinetCallLogQuery();
     if (this.searchForm.controls.uName.value != null)
       this.dataSource.query.patientName = this.searchForm.controls.patientName.value;
+      if (this.searchForm.controls.fName.value != null)
+      this.dataSource.query.firstName = this.searchForm.controls.fName.value;
+    if (this.searchForm.controls.lName.value != null)
+      this.dataSource.query.lastName = this.searchForm.controls.lName.value;
     this.dataSource.query.startDate = this.searchForm.controls.startDate.value;
     this.dataSource.query.callType = this.searchForm.controls.callType.value != null ? this.searchForm.controls.callType.value : "";
     this.dataSource.list(this.paginator.pageIndex, this.paginator.pageSize);
@@ -95,6 +102,10 @@ export class ManagePatinetlogComponent implements OnInit {
   search() {
     if (this.searchForm.controls.patientName.value != null)
       this.dataSource.query.patientName = this.searchForm.controls.patientName.value;
+    if (this.searchForm.controls.fName.value != null)
+      this.dataSource.query.firstName = this.searchForm.controls.fName.value;
+    if (this.searchForm.controls.lName.value != null)
+      this.dataSource.query.lastName = this.searchForm.controls.lName.value;
     this.dataSource.query.startDate = this.searchForm.controls.startDate.value;
     this.dataSource.query.callType = this.searchForm.controls.callType.value != null ? this.searchForm.controls.callType.value : "";
     this.dataSource.list();
@@ -102,12 +113,14 @@ export class ManagePatinetlogComponent implements OnInit {
   resetSearch() {
     this.dataSource.query = new PatinetCallLogQuery();
     this.dataSource.query.patientName = '';
+    this.dataSource.query.firstName = '';
+    this.dataSource.query.lastName = '';
     this.dataSource.query.callType = "";
     this.dataSource.query.startDate = null;
     this.searchForm.controls.startDate.setValue("");
-    
+
     this.searchForm.reset();
-    this.searchForm.controls.callType.setValue(this.today.getMonth()+1);
+    this.searchForm.controls.callType.setValue(this.today.getMonth() + 1);
     this.search();
     // alert(this.searchForm.controls.sname.value +  "  "+this.dataSource.query.sectionId)
   }
@@ -128,9 +141,9 @@ export class ManagePatinetlogComponent implements OnInit {
 
   }
 
-  checkDisabled(row:any){
-    console.log(row.remaingTime/60);
-    return row.remaingTime/60 != 0;
+  checkDisabled(row: any) {
+    console.log(row.remaingTime / 60);
+    return row.remaingTime / 60 != 0;
   }
 
 

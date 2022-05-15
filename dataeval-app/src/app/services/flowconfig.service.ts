@@ -5,6 +5,7 @@ import { Message } from '../model/message.model';
 import { FlowconfigResponse } from '../model/flowconfigResponse';
 import { Observable } from 'rxjs';
 import { Role } from '../model/role.model';
+import { ApplicationConstants } from '../constants/applicationConstants.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -31,20 +32,20 @@ export class FlowconfigService {
 flowconfigService(params :any): Observable<any>{
     const endpoint = '/api/v1/flow-config/flowconfigs?'+encodeURI('searchCriteria={ "pageNo":0,"pageSize":10}');//environment.apiUrl + "/todos";
      
-    return this.http.get(endpoint, { params });
+    return this.http.get(ApplicationConstants.baseUrl+endpoint, { params });
 }
 
 
 createFlow(data:Flowconfig): Observable<any>{
   const endpoint = '/api/v1/flow-config/flowconfig';
-  return this.http.post(endpoint, data);
+  return this.http.post(ApplicationConstants.baseUrl+endpoint, data);
 
   
 }
 
 updateFlow(data:Flowconfig): Observable<any>{
   const endpoint = '/api/v1/flow-config/flowconfig/'+data.id;
-  return this.http.put(endpoint, data);
+  return this.http.put(ApplicationConstants.baseUrl+endpoint, data);
 
   
 }

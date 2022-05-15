@@ -61,11 +61,11 @@ export class AddUserComponent implements OnInit {
  
     console.log('inside submit');
 
-    this.model.label = this.createForm.controls.sName.value;
+    // this.model.label = this.createForm.controls.sName.value;
 
     this.model.status = this.createForm.controls.status.value; 
 
-    this.model.role.id=this.createForm.controls.userType.value;
+    // this.model.role.id=this.createForm.controls.userType.value;
 
     this.model.firstName=this.createForm.controls.fName.value;
 
@@ -100,15 +100,15 @@ export class AddUserComponent implements OnInit {
   } 
 
   createForm = new FormGroup({
-    sName: new FormControl(this.model.label, [Validators.required,
-    Validators.minLength(4)]), 
+    // sName: new FormControl(this.model.label, [Validators.required,
+    // Validators.minLength(4)]), 
     fName: new FormControl(this.model.label, [Validators.required,
       Validators.minLength(4)]), 
     lName: new FormControl(this.model.label, [Validators.required,
         Validators.minLength(4)]),  
     dateOfBirth: new FormControl(this.model.dateOfBirth), 
     status: new FormControl('Active', [Validators.required]), 
-    userType: new FormControl('', [Validators.required]),
+    // userType: new FormControl('', [Validators.required]),
     address:new FormControl('', [Validators.required]),
     alternateContact:new FormControl('', [Validators.required]),
     insuranceNumber:new FormControl('', [Validators.required]),
@@ -140,14 +140,14 @@ export class AddUserComponent implements OnInit {
   resetCreateForm(formData: any, formDirective: FormGroupDirective) {
     this.createForm.reset();
     this.createForm = new FormGroup({
-      sName: new FormControl(this.model.label, [Validators.required,
-      Validators.minLength(4)]),
+      // sName: new FormControl(this.model.label, [Validators.required,
+      // Validators.minLength(4)]),
       fName: new FormControl(this.model.label, [Validators.required,
         Validators.minLength(4)]),
       lName: new FormControl(this.model.label, [Validators.required,
           Validators.minLength(4)]),
       status: new FormControl('Active', [Validators.required]),
-      userType: new FormControl('', [Validators.required]),
+      // userType: new FormControl('', [Validators.required]),
       address:new FormControl('', [Validators.required]),
       alternateContact:new FormControl('', [Validators.required]),
       insuranceNumber:new FormControl('', [Validators.required]),

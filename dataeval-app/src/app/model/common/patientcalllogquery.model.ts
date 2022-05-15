@@ -4,5 +4,6 @@ export class PatinetCallLogQuery extends CustomQuery{
     callType:string;
     patientName:string;
     startDate:Date;
-
+    firstName:string;
+    lastName:string;
 }

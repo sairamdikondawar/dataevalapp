@@ -39,7 +39,7 @@
             <span>Manage Fields</span>
         </button> -->
 
-        <button *ngIf="isLoggedIn && (admin  )" (click)="view('/user')" mat-button class="menu-button">
+        <button *ngIf="isLoggedIn && (admin || doctor || nurse  )" (click)="view('/user')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>Manage Patient</span>
         </button>
@@ -52,7 +52,7 @@
             <span>Manage Steps</span>
         </button> -->
 
-        <button *ngIf="isLoggedIn && (admin   || nurse) " (click)="view('/managepatient')" mat-button class="menu-button">
+        <button *ngIf="isLoggedIn && (admin || doctor || nurse) " (click)="view('/managepatient')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>Patient Call Log</span>
         </button>
@@ -62,10 +62,10 @@
             <span>View Patient Call Log</span>
         </button>
 
-        <button *ngIf="isLoggedIn && (admin || doctor || nurse) " (click)="view('/changepassword')" mat-button class="menu-button">
+        <!-- <button *ngIf="isLoggedIn && (admin || doctor || nurse) " (click)="view('/changepassword')" mat-button class="menu-button">
             <mat-icon>arrow_right</mat-icon>
             <span>Change Password</span>
-        </button>
+        </button> -->
 
         <!-- <button mat-button class="menu-button">
             <mat-icon>info</mat-icon>

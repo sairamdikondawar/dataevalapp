@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { UserDetails } from '../model/common/userdetails.model';
 import { Location } from '@angular/common';
+import { ApplicationConstants } from '../constants/applicationConstants.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -56,14 +57,11 @@ setLastName=(value :string) =>{
 
   constructor(private http: HttpClient , private route: ActivatedRoute,
     private router: Router, private loc: Location) {
-      const angularRoute = this.loc.path();
-      const url = window.location.href; 
-      const domainAndApp = url.replace(angularRoute, '');
-      alert(domainAndApp);
+       
   }
 
   authenticationService(username: string, password: string ) {
-    return this.http.get(`/api/v1/basicauth`,
+    return this.http.get( ApplicationConstants.baseUrl+ `/api/v1/basicauth`,
       { headers: { authorization: this.createBasicAuthToken(username, password) } }).pipe(map((res :any) => {
         this.username = username;
         this.password = password;

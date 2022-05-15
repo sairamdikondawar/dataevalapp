@@ -22,7 +22,7 @@
             <div class="card-body">
                 <form [formGroup]="createForm" #formDirective="ngForm" (ngSubmit)="save()">
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="sName" class="font-weight-bold">User Name <span
                             class="required-asterisk">*</span> :</label>
                         <input type="text" class="form-control" id="sName" placeholder="Enter User Name" name="sName"
@@ -38,7 +38,7 @@
                             </div>
 
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row ">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -89,20 +89,6 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-
-                            <div class="form-group">
-                                <label for="userType" class="font-weight-bold">User Type<span
-                                    class="required-asterisk">*</span> :</label>
-                                <select class="form-control" formControlName="userType">
-                                    <option value="" disabled>Select Role</option>
-                                    <option *ngFor="let role of roles" value="{{role.id}}">
-                                        {{role.name | titlecase}}</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row ">
-                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="mdrNumber" class="font-weight-bold">Medical Record Number <span
                                     class="required-asterisk">*</span>:</label>
@@ -111,6 +97,9 @@
                                     formControlName="medicalRecordNumber" required>
                             </div>
                         </div>
+                    </div>
+                    <div class="row ">
+                       
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="insNumber" class="font-weight-bold">Insurance Number</label>
@@ -119,8 +108,6 @@
                                     formControlName="insuranceNumber" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="row ">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="phNumber" class="font-weight-bold">Phone Number </label>
@@ -135,6 +122,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row ">
+                        
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="mobNumber" class="font-weight-bold">Mobile Number</label>
@@ -152,8 +142,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row ">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="altContact" class="font-weight-bold">Alternate Contact</label>
@@ -162,6 +150,9 @@
                                     formControlName="alternateContact" required></textarea>
                             </div>
                         </div>
+                    </div>
+                    <div class="row ">
+                        
 
                     </div>
                     <div class="panel panel-default">

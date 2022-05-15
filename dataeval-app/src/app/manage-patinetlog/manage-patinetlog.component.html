@@ -3,61 +3,95 @@
     <div class=" sticky-top container-fluid rounded-top d-block  p-2 bg-dark text-white">
         <h4 class="modal-title" id="modal-basic-title">Manage Patient Call Log</h4>
     </div>
+
+    
     <div class="container-fluid">
+      <mat-expansion-panel (opened)="panelOpenState = true"
+                           (closed)="panelOpenState = false">
+        <mat-expansion-panel-header >
+          <mat-panel-title class="font-weight-bold text-dark label-font">
+            Search Patients Call Log
+          </mat-panel-title>
+          <mat-panel-description>
+            
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+       
 
-        <div class="modal-body ">
-            <form [formGroup]="searchForm" (ngSubmit)="search()">
-
-                <div class="row" style="margin-top:-15px; margin-bottom: -15px; ">
-
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="callType" class="font-weight-bold text-dark label-font">Month</label>
-                            <select class="form-control" formControlName="callType" id="callType">
-                                <option value="1">January</option>
-                                <option value="2">February</option>
-                                <option value="3">March</option>
-                                <option value="4">April</option>
-                                <option value="5">May</option>
-                                <option value="6">June</option>
-                                <option value="7">July</option> 
-                                <option value="8">August</option>
-                                <option value="9">September</option>
-                                <option value="10">October</option>
-                                <option value="11">November</option>
-                                <option value="12">December</option>
-                            </select>
+            <div  >
+                <form [formGroup]="searchForm" (ngSubmit)="search()">
+    
+                    <div class="row" >
+    
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="callType" class="font-weight-bold text-secondary label-font">Month</label>
+                                <select class="form-control" formControlName="callType" id="callType">
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option> 
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="form-group">
-                            <label for="patientName" class="font-weight-bold text-dark label-font">Patient
-                                Name</label>
-                            <input type="text" class="form-control" id="patientName" placeholder="Enter Patient Name to Search"
-                                name="patientName" formControlName="patientName" required>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="patientName" class="font-weight-bold text-secondary label-font">Patient
+                                   First  Name</label>
+                                <input type="text" class="form-control" id="fName"
+                                    placeholder="Enter Patient First Name" name="fName" formControlName="fName"
+                                    required>
+                            </div>
                         </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="lName" class="font-weight-bold text-secondary label-font">Patient
+                                   Last Name</label>
+                                <input type="text" class="form-control" id="lName"
+                                    placeholder="Enter Patient Last Name" name="lName" formControlName="lName"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="patientName" class="font-weight-bold text-secondary label-font">Patient
+                                    Name</label>
+                                <input type="text" class="form-control" id="patientName" placeholder="Enter Patient Name to Search"
+                                    name="patientName" formControlName="patientName" required>
+                            </div>
+                        </div>
+                        
+                        <!-- <div class="form-group col-4"> 
+                    <label for="sname"  class="font-weight-bold text-dark label-font">Section</label>
+                    <select formControlName="sname"  class="form-control" value="">
+                        <option value='' disabled selected="{{dataSource.query.sectionId == '' ">Please select</option>
+                        <option *ngFor="let section of sections" [value]="section.id">{{section.name}}
+                        </option>
+                    </select>
+                </div> -->
+    
                     </div>
-                    <!-- <div class="form-group col-4"> 
-                <label for="sname"  class="font-weight-bold text-dark label-font">Section</label>
-                <select formControlName="sname"  class="form-control" value="">
-                    <option value='' disabled selected="{{dataSource.query.sectionId == '' ">Please select</option>
-                    <option *ngFor="let section of sections" [value]="section.id">{{section.name}}
-                    </option>
-                </select>
-            </div> -->
+    
+    
+                    <div style="margin-top:-15px; margin-bottom: -15px;  text-align: right; margin-right: 50px;">
+                        <button type="submit" class="btn btn-secondary btn-sm">Search</button> &nbsp;
+                        <button type="button" class="btn btn-secondary btn-sm" (click)="resetSearch()">Reset</button> &nbsp; 
+    
+                    </div>
+    
+                </form>
+            </div>
+        
+      </mat-expansion-panel>
 
-                </div>
-
-
-                <div style="margin-top:-15px; margin-bottom: -15px;  text-align: right; margin-right: 50px;">
-                    <button type="submit" class="btn btn-secondary btn-sm">Search</button> &nbsp;
-                    <button type="button" class="btn btn-secondary btn-sm" (click)="resetSearch()">Reset</button> &nbsp;
-                    <button type="button" class="btn btn-secondary btn-sm" (click)="addcalllog()">Add</button>
-
-                </div>
-
-            </form>
-        </div>
     </div>
 
     <hr />
@@ -66,7 +100,13 @@
 
     <div  style="min-height: 600px;">
 
+
         <div class="  mat-elevation-z8 " >
+
+            <div style=" text-align: left; margin-left: 20px;">
+                <button type="button" class="btn btn-secondary btn-sm" (click)="addcalllog()">Add Patient To Call Log</button>
+
+            </div>
 
             <mat-table [dataSource]="dataSource">
                 <!--- Note that these columns can be defined in any order.
