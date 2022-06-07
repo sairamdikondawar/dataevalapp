@@ -88,13 +88,13 @@ export class EditUserComponent implements OnInit {
       status: new FormControl(this.model.status, [Validators.required]),
       userType: new FormControl(this.model.role.id, [Validators.required]),
    
-      address:new FormControl(this.model.address, [Validators.required]),
-    alternateContact:new FormControl(this.model.alternateContact, [Validators.required]),
+      address:new FormControl(this.model.address, []),
+    alternateContact:new FormControl(this.model.alternateContact, []),
     insuranceNumber:new FormControl(this.model.insuranceNumber, [Validators.required]),
     medicalRecordNumber:new FormControl(this.model.medicalRecordNumber, [Validators.required]),
-    pharmacyFaxNumber:new FormControl(this.model.pharmacyFaxNumber, [Validators.required]),
-    pharmacyName:new FormControl(this.model.pharmacyName, [Validators.required]),
-    pharmacyPhoneNumber:new FormControl(this.model.pharmacyPhoneNumber, [Validators.required]),
+    pharmacyFaxNumber:new FormControl(this.model.pharmacyFaxNumber, []),
+    pharmacyName:new FormControl(this.model.pharmacyName, []),
+    pharmacyPhoneNumber:new FormControl(this.model.pharmacyPhoneNumber, []),
     phoneNumber:new FormControl(this.model.phoneNumber, [Validators.pattern('[- +()0-9]+')]),
     refferal:new FormControl(this.model.refferal),
     mobileNumber:new FormControl(this.model.mobileNumber, [Validators.pattern('[- +()0-9]+')])

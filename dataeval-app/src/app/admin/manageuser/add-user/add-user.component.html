@@ -84,7 +84,7 @@
                                 <label for="dateOfBirth" class="font-weight-bold">Date Of Birth <span
                                     class="required-asterisk">*</span>:</label>
                                 <input type="date" class="form-control" id="dateOfBirth"
-                                    max="{{today | date:'yyyy-MM-dd'}}" placeholder="Enter Last Name Name"
+                                    max="{{today | date:'yyyy-MM-dd'}}" placeholder="Enter Date Of Birth"
                                     name="dateOfBirth" formControlName="dateOfBirth" required>
                             </div>
                         </div>
@@ -102,7 +102,8 @@
                        
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="insNumber" class="font-weight-bold">Insurance Number</label>
+                                <label for="insNumber" class="font-weight-bold">Insurance Number
+                                <span class="required-asterisk">*</span>:</label>
                                 <input type="text" class="form-control" id="insNumber"
                                     placeholder="Enter Insurance Number" name="insNumber"
                                     formControlName="insuranceNumber" required>
@@ -110,7 +111,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="phNumber" class="font-weight-bold">Phone Number </label>
+                                <label for="phNumber" class="font-weight-bold">Phone Number 
+                                    <span class="required-asterisk">*</span>:</label>
                                 <input type="text" class="form-control" id="phNumber" placeholder="Enter Phone Number"
                                     name="phNumber" formControlName="phoneNumber" required>
                             </div>
@@ -127,7 +129,8 @@
                         
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="mobNumber" class="font-weight-bold">Mobile Number</label>
+                                <label for="mobNumber" class="font-weight-bold">Mobile Number
+                                    <span class="required-asterisk">*</span>:</label>
                                 <input type="text" class="form-control" id="mobNumber" placeholder="Enter Mobile Number"
                                     name="mobNumber" formControlName="mobileNumber" required>
                             </div>
@@ -147,7 +150,7 @@
                                 <label for="altContact" class="font-weight-bold">Alternate Contact</label>
                                 <textarea type="text" class="form-control" id="altContact"
                                     placeholder="Enter Alternate Contact" name="altContact"
-                                    formControlName="alternateContact" required></textarea>
+                                    formControlName="alternateContact" ></textarea>
                             </div>
                         </div>
                     </div>
@@ -164,7 +167,7 @@
                                     <label for="pharmacyName" class="font-weight-bold">Pharmacy Name</label>
                                     <input type="text" class="form-control" id="pharmacyName"
                                         placeholder="Enter Pharmacy Name" name="pharmacyName"
-                                        formControlName="pharmacyName" required>
+                                        formControlName="pharmacyName" >
                                 </div>
                             </div>
 
@@ -174,7 +177,7 @@
                                     <label for="phaddress" class="font-weight-bold">Address</label>
                                     <textarea type="text" class="form-control" id="phaddress"
                                         placeholder="Enter Address" name="phaddress" formControlName="address"
-                                        required> </textarea>
+                                        > </textarea>
                                 </div>
                             </div>
                         </div>
@@ -186,14 +189,14 @@
                                 <label for="pharmaPhone" class="font-weight-bold">Pharmacy Phone Number</label>
                                 <input type="text" class="form-control" id="pharmaPhone"
                                     placeholder="Enter Phone Number" name="pharmaPhone"
-                                    formControlName="pharmacyPhoneNumber" required>
+                                    formControlName="pharmacyPhoneNumber" >
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="pharmaFax" class="font-weight-bold">Fax Number</label>
-                                <input type="text" class="form-control" id="pharmaFax" placeholder="Enter Fax Number"
-                                    name="pharmaFax" formControlName="pharmacyFaxNumber" required>
+                                <input type="text" class="form-control" id="pharmaFax" placeholder="Enter Fax Number" pattern="[- +()0-9]+"
+                                    name="pharmaFax" formControlName="pharmacyFaxNumber" >
                             </div>
                         </div>
                     </div>
