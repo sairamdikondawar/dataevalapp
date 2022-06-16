@@ -18,9 +18,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	     @Autowired
 	     private   AuthUserService userDetailsService ;
-	      
 
-	    @Override
+	@Autowired
+	private AuthEntryPointJwt unauthorizedHandler;
+
+
+
+	@Override
 	    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 	        auth
 	                .userDetailsService(userDetailsService)
@@ -45,15 +49,19 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/","/*.html", "/*.txt", "/*.js","/*.css", "/*.png", "/*.ico").permitAll().antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest()
+		http.csrf().disable().authorizeRequests()
+				.antMatchers( "/","/*.html", "/*.txt", "/*.js","/*.css", "/*.png", "/*.ico").permitAll()
+				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest()
 				.authenticated().and()
 				// .formLogin().and()
-				.httpBasic();
+				.httpBasic().authenticationEntryPoint(unauthorizedHandler);
 	}
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 	    web.ignoring().antMatchers("/","/*.html", "/*.txt", "/*.js","/*.css", "/*.png", "/*.ico");
 	}
+
+
 	
 }
